@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-function getContrastColor(color) {
+function getRgbValues(color) {
   let hexColor;
 
   if (color.slice(0, 1) === '#') {
@@ -22,16 +22,40 @@ function getContrastColor(color) {
     g = parseInt(hexColor.substr(2, 2), 16);
     b = parseInt(hexColor.substr(4, 2), 16);
   }
+  return { r, g, b };
+}
 
-  const ratio = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+function getContrastColor(color, isHoverOrActive) {
+  const hexColor = getRgbValues(color);
 
-  return ratio >= 128 ? '#484848' : 'white';
+  const ratio = ((hexColor.r * 299) + (hexColor.g * 587) + (hexColor.b * 114)) / 1000;
+
+  if (isHoverOrActive) {
+    return ratio >= 128 ? '#000' : '#fff';
+  }
+
+  return ratio >= 128 ? '#585858' : '#b8b8b8';
+}
+
+function getBackgroundColorWithOpacity(color) {
+  const hexColor = getRgbValues(color);
+
+  return `rgba(${hexColor.r},${hexColor.g},${hexColor.b},0.1)`;
 }
 
 const Container = styled.button`
-  background-color: ${({ bgColor, variant }) => (variant === 'outlined' ? 'transparent' : bgColor)};
+  background-color: ${({ bgColor, variant, active }) => {
+    if (variant === 'outlined') {
+      return (active) ? getBackgroundColorWithOpacity(bgColor) : 'transparent';
+    }
+    return bgColor;
+  }};
 
-  color: ${({ bgColor, variant }) => (variant === 'outlined' ? bgColor : getContrastColor(bgColor))};
+  color: ${({
+    bgColor,
+    variant,
+    active,
+  }) => (variant === 'outlined' ? bgColor : getContrastColor(bgColor, active))};
 
   margin: 8px;
   padding: ${({ size }) => {
@@ -66,6 +90,17 @@ const Container = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  
+  transition: background-color 250ms ease-in-out;
+
+  &:hover {
+    background-color: ${({ bgColor, variant }) => (variant === 'outlined' ? getBackgroundColorWithOpacity(bgColor) : null)};
+  }
+
+  &:hover * {
+    transition: color 200ms ease;
+    color: ${({ bgColor, variant }) => (variant === 'outlined' ? null : getContrastColor(bgColor, true))};
+  }
 `;
 
 const IconBox = styled.span`
@@ -80,7 +115,14 @@ const IconBox = styled.span`
         return 0;
     }
   }};
-  color: ${({ bgColor, variant }) => (variant === 'outlined' ? bgColor : getContrastColor(bgColor))};
+
+  transition: color 250ms ease-in-out;
+
+  color: ${({
+    bgColor,
+    variant,
+    active,
+  }) => (variant === 'outlined' ? bgColor : getContrastColor(bgColor, active))};
 
   width: ${({ size }) => {
     switch (size) {
@@ -104,17 +146,38 @@ const IconBox = styled.span`
   }}
 `;
 
+const Label = styled.span`
+  transition: color 250ms ease-in-out;
+`;
+
 function IconButton({
   color,
-  label,
   variant,
   size,
   icon,
+  label,
+  active,
+  ...props
 }) {
   return (
-    <Container bgColor={color} variant={variant} size={size}>
-      <IconBox size={size} bgColor={color} variant={variant}>{icon}</IconBox>
-      {label}
+    <Container
+      bgColor={color}
+      variant={variant}
+      size={size}
+      active={active}
+      {...props}
+    >
+      <IconBox
+        bgColor={color}
+        variant={variant}
+        size={size}
+        active={active}
+      >
+        {icon}
+      </IconBox>
+      <Label>
+        {label}
+      </Label>
     </Container>
   );
 }
@@ -125,12 +188,16 @@ IconButton.propTypes = {
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   icon: PropTypes.element.isRequired,
   label: PropTypes.string.isRequired,
+  active: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 IconButton.defaultProps = {
   variant: 'outlined',
   size: 'medium',
   color: '#000',
+  active: false,
+  onClick: undefined,
 };
 
 export default IconButton;
