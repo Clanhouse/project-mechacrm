@@ -3,13 +3,14 @@ package com.crm.model.db;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity(name = "car_entity")
+@Entity(name = "cars")
 public class CarEntity {
 
     @Id
-    private int id;
+    private long id;
 
     private String vin;
     private String registrationNumber;
@@ -19,5 +20,6 @@ public class CarEntity {
     private int mileage;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private CarType carType;
+    @JoinColumn(name = "car_types_id")
+    private CarTypeEntity carTypeEntity;
 }
