@@ -2,60 +2,26 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-function getRgbValues(color) {
-  let hexColor;
-
-  if (color.slice(0, 1) === '#') {
-    hexColor = color.slice(1);
-  }
-
-  let r;
-  let g;
-  let b;
-
-  if (hexColor.length < 6) {
-    r = parseInt(hexColor.charAt(0) + hexColor.charAt(0), 16);
-    g = parseInt(hexColor.charAt(1) + hexColor.charAt(1), 16);
-    b = parseInt(hexColor.charAt(2) + hexColor.charAt(2), 16);
-  } else {
-    r = parseInt(hexColor.substr(0, 2), 16);
-    g = parseInt(hexColor.substr(2, 2), 16);
-    b = parseInt(hexColor.substr(4, 2), 16);
-  }
-  return { r, g, b };
-}
-
-function getContrastColor(color, isHoverOrActive) {
-  const hexColor = getRgbValues(color);
-
-  const ratio = ((hexColor.r * 299) + (hexColor.g * 587) + (hexColor.b * 114)) / 1000;
-
-  if (isHoverOrActive) {
-    return ratio >= 128 ? '#000' : '#fff';
-  }
-
-  return ratio >= 128 ? '#585858' : '#b8b8b8';
-}
-
-function getBackgroundColorWithOpacity(color) {
-  const hexColor = getRgbValues(color);
-
-  return `rgba(${hexColor.r},${hexColor.g},${hexColor.b},0.1)`;
-}
+const theme = {
+  color: {
+    primary: '#007bff',
+    secondary: '#6c757d',
+    textColor: '#ccc',
+    active: '#eee',
+  },
+};
 
 const Container = styled.button`
-  background-color: ${({ bgColor, variant, active }) => {
-    if (variant === 'outlined') {
-      return (active) ? getBackgroundColorWithOpacity(bgColor) : 'transparent';
-    }
-    return bgColor;
-  }};
-
-  color: ${({
-    bgColor,
+  background-color: ${({
+    color,
     variant,
-    active,
-  }) => (variant === 'outlined' ? bgColor : getContrastColor(bgColor, active))};
+  }) => {
+    if (variant === 'contained') {
+      return color === 'primary' ? theme.color.primary : theme.color.secondary;
+    }
+    return 'transparent';
+  }};
+  color: ${({ active }) => (active ? theme.color.active : theme.color.textColor)};
 
   margin: 8px;
   padding: ${({ size }) => {
@@ -80,26 +46,23 @@ const Container = styled.button`
         return '14px';
     }
   }};
+
   font-weight: bolder;
   text-transform: uppercase;
 
   outline: none;
-  border: ${({ bgColor }) => `${bgColor} 1px solid`};
+  border: ${({ color }) => `${color === 'primary' ? theme.color.primary : theme.color.secondary} 1px solid`};
   border-radius: 5px;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  transition: background-color 250ms ease-in-out;
 
-  &:hover {
-    background-color: ${({ bgColor, variant }) => (variant === 'outlined' ? getBackgroundColorWithOpacity(bgColor) : null)};
-  }
+  transition: background-color 250ms ease-in-out;
 
   &:hover * {
     transition: color 200ms ease;
-    color: ${({ bgColor, variant }) => (variant === 'outlined' ? null : getContrastColor(bgColor, true))};
+    color: ${theme.color.active};
   }
 `;
 
@@ -119,10 +82,13 @@ const IconBox = styled.span`
   transition: color 250ms ease-in-out;
 
   color: ${({
-    bgColor,
-    variant,
     active,
-  }) => (variant === 'outlined' ? bgColor : getContrastColor(bgColor, active))};
+  }) => {
+    if (active) {
+      return theme.color.active;
+    }
+    return theme.color.textColor;
+  }};
 
   width: ${({ size }) => {
     switch (size) {
@@ -150,7 +116,7 @@ const Label = styled.span`
   transition: color 250ms ease-in-out;
 `;
 
-function IconButton({
+const IconButton = ({
   color,
   variant,
   size,
@@ -158,32 +124,30 @@ function IconButton({
   label,
   active,
   ...props
-}) {
-  return (
-    <Container
-      bgColor={color}
+}) => (
+  <Container
+    color={color}
+    variant={variant}
+    size={size}
+    active={active}
+    {...props}
+  >
+    <IconBox
+      color={color}
       variant={variant}
       size={size}
       active={active}
-      {...props}
     >
-      <IconBox
-        bgColor={color}
-        variant={variant}
-        size={size}
-        active={active}
-      >
-        {icon}
-      </IconBox>
-      <Label>
-        {label}
-      </Label>
-    </Container>
-  );
-}
+      {icon}
+    </IconBox>
+    <Label>
+      {label}
+    </Label>
+  </Container>
+);
 
 IconButton.propTypes = {
-  color: PropTypes.string,
+  color: PropTypes.oneOf(['primary', 'secondary']),
   variant: PropTypes.oneOf(['outlined', 'contained']),
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   icon: PropTypes.element.isRequired,
@@ -193,9 +157,9 @@ IconButton.propTypes = {
 };
 
 IconButton.defaultProps = {
+  color: 'primary',
   variant: 'outlined',
   size: 'medium',
-  color: '#000',
   active: false,
   onClick: undefined,
 };

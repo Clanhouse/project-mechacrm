@@ -12,13 +12,14 @@ const Template = (args) => <IconButton {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
+  color: 'primary',
   label: 'icon button',
   icon: <IconAlarm />,
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
+  color: 'secondary',
   label: 'icon button',
-  color: '#ffe800',
   icon: <IconCalendar />,
 };
