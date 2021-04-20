@@ -25,6 +25,4 @@ Avatar.propTypes = {
   imageLink: PropTypes.string.isRequired,
 };
 
-Avatar.defaultProps = {};
-
 export default Avatar;
