@@ -11,15 +11,13 @@ const Container = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  
+
   overflow: hidden;
 `;
 
-function Avatar({ imageLink }) {
-  return (
-    <Container imageLink={imageLink} />
-  );
-}
+const Avatar = ({ imageLink }) => (
+  <Container imageLink={imageLink} />
+);
 
 Avatar.propTypes = {
   imageLink: PropTypes.string.isRequired,
