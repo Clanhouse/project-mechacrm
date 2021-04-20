@@ -2,12 +2,14 @@ package com.crm.model.db;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Entity(name = "car_types")
+@Entity
+@Table(name = "car_types")
 public class CarTypeEntity {
 
     @Id
-    private long id;
+    private Long id;
 
     private String name;
 }
