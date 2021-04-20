@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS car_types (
-    car_id INT PRIMARY KEY UNIQUE GENERATED ALWAYS AS IDENTITY,
+    type_id INT PRIMARY KEY UNIQUE GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(30) NOT NULL
 );
 
@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS cars (
     production_year INT NOT NULL,
     mileage INT NOT NULL,
     description VARCHAR(250),
+    type_id INT,
     CONSTRAINT fk_car_type
-        FOREIGN KEY(car_id)
-            REFERENCES car_types(car_id)
+        FOREIGN KEY(type_id)
+            REFERENCES car_types(type_id)
 );
