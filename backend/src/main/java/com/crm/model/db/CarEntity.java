@@ -20,8 +20,9 @@ public class CarEntity {
     private String model;
     private Integer productionYear;
     private Integer mileage;
+    private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "car_types_id")
+    @JoinColumn(name = "type_id")
     private CarTypeEntity carTypeEntity;
 }
