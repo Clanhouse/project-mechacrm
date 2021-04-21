@@ -11,6 +11,10 @@
     ],
     "object-property-newline": "error"
   },
+  "env": {
+    "browser": true,
+    "jest": true
+  },
   "overrides": [
     {
       "files": ["**/*.spec.js", "**/*.spec.jsx"],

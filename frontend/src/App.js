@@ -1,10 +1,10 @@
 import React from 'react';
-import GlobalStyles from './views/GlobalStyles';
+import GlobalStyles from './theme/GlobalStyles';
 
 const App = () => (
   <>
     <GlobalStyles />
-    <div>global style</div>
+    <div>Hello world!</div>
   </>
 );
 
