@@ -1,8 +1,7 @@
-import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Container = styled.div`
+const Avatar = styled.div`
   border-radius: 50%;
   width: 100%;
   height: 100%;
@@ -12,10 +11,6 @@ const Container = styled.div`
   background-position: center;
   background-size: cover;
 `;
-
-const Avatar = ({ imageLink }) => (
-  <Container imageLink={imageLink} />
-);
 
 Avatar.propTypes = {
   imageLink: PropTypes.string.isRequired,
