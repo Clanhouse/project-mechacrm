@@ -1,6 +1,7 @@
 package com.crm.model.db;
 
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,12 +21,15 @@ public class CarEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private int vin;
+    @NotNull
     private String model;
 
+    @NotNull
     @Column(name = "production_year")
     private int productionYear;
-
+    @NotNull
     private int type;
 
 
