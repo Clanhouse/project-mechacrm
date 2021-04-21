@@ -1,15 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-
-const theme = {
-  color: {
-    primary: '#007bff',
-    secondary: '#6c757d',
-    textColor: '#ccc',
-    active: '#eee',
-  },
-};
+import theme from '../../../theme/MainTheme';
 
 const Container = styled.button`
   background-color: ${({
