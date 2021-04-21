@@ -36,7 +36,7 @@
                 <configuration>
                     <url>jdbc:postgresql://localhost:5432/crm</url>
                     <user>postgres</user>
-                    <password>postgres</password>
+                    <password>smentek12</password>
                 </configuration>
             </plugin>
         </plugins>
