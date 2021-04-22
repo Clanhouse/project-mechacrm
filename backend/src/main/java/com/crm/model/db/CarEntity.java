@@ -1,37 +1,40 @@
 package com.crm.model.db;
 
-
-import com.sun.istack.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+
 @Entity
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "cars")
 @Getter
 @Setter
-@Table(name = "cars")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CarEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private int vin;
-    @NotNull
+    private String vin;
+    private String registrationNumber;
+    private String brand;
     private String model;
+    private Integer productionYear;
+    private Integer mileage;
+    private String description;
 
-    @NotNull
-    @Column(name = "production_year")
-    private int productionYear;
-    @NotNull
-    private int type;
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "type_id")
+    private CarTypeEntity carTypeEntity;
 
     @ManyToMany(mappedBy="cars")
     Set<CustomerEntity> cars = new HashSet<>();
