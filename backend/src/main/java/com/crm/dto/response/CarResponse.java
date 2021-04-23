@@ -1,5 +1,6 @@
 package com.crm.dto.response;
 
+import com.crm.model.db.CarTypeEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,5 +17,5 @@ public class CarResponse {
     private Integer productionYear;
     private Integer mileage;
     private String description;
-    private String carType;
+    private CarTypeEntity carTypeEntity;
 }
