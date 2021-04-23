@@ -1,8 +1,5 @@
-CREATE TABLE IF NOT EXISTS customers_cars
-(
-    id           INT PRIMARY KEY UNIQUE GENERATED ALWAYS AS IDENTITY,
-    customers_id bigint  not null
-        references customers,
-    car_id       integer not null
-        references cars
+CREATE TABLE IF NOT EXISTS customers_cars(
+  id INT8 PRIMARY KEY UNIQUE GENERATED ALWAYS AS IDENTITY,
+  customers_id INT8 not null references customers(id),
+  car_id INT8 not null references cars(id)
 );
