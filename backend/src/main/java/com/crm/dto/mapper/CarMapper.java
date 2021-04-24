@@ -12,15 +12,15 @@ public class CarMapper {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CarMapper(ModelMapper modelMapper) {
+    public CarMapper(final ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
-    public CarResponse convertToDto(CarEntity carEntity) {
+    public CarResponse convertToDto(final CarEntity carEntity) {
         return modelMapper.map(carEntity, CarResponse.class);
     }
 
-    public CarEntity convertToEntity(CarResponse carResponse) {
+    public CarEntity convertToEntity(final CarResponse carResponse) {
         return modelMapper.map(carResponse, CarEntity.class);
     }
 }

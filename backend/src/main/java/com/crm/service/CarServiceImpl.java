@@ -21,13 +21,13 @@ public class CarServiceImpl implements CarService {
     private final CarMapper carMapper;
 
     @Autowired
-    public CarServiceImpl(CarRepository carRepository, CarMapper carMapper) {
+    public CarServiceImpl(final CarRepository carRepository, final CarMapper carMapper) {
         this.carRepository = carRepository;
         this.carMapper = carMapper;
     }
 
     @Override
-    public final Page<CarResponse> getCarsPaginated(int page, int size) {
+    public Page<CarResponse> getCarsPaginated(final int page, final int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<CarEntity> carsPage = carRepository.findAll(pageable);
 

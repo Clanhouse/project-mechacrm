@@ -5,5 +5,5 @@ import org.springframework.data.domain.Page;
 
 public interface CarService {
 
-    Page<CarResponse> getCarsPaginated(int page, int size);
+    Page<CarResponse> getCarsPaginated(final int page, final int size);
 }

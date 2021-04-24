@@ -22,8 +22,8 @@ public class CarController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<CarResponse>> getCarsPaginated(@RequestParam(required = false) int page,
-                                        @RequestParam(required = false, defaultValue = "20") int size) {
+    public ResponseEntity<Page<CarResponse>> getCarsPaginated(@RequestParam(required = false) final int page,
+                                        @RequestParam(required = false, defaultValue = "20") final int size) {
         return ResponseEntity.ok(carService.getCarsPaginated(page, size));
     }
 }
