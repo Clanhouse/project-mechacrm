@@ -1,7 +1,5 @@
 package com.crm.model.db;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +13,6 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CarEntity {
 
     @Id
@@ -34,6 +31,6 @@ public class CarEntity {
     @JoinColumn(name = "type_id")
     private CarTypeEntity carTypeEntity;
 
-    @ManyToMany(mappedBy="cars")
-    private  Set<CustomerEntity> cars = new HashSet<>();
+    @ManyToMany(mappedBy = "cars")
+    private Set<CustomerEntity> cars = new HashSet<>();
 }

@@ -3,14 +3,13 @@ package com.crm.model.db;
 
 import com.sun.istack.NotNull;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
+
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
