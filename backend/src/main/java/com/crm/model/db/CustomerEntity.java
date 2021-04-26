@@ -22,8 +22,6 @@ public class CustomerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-
     @NotNull
     private String name;
 
@@ -31,7 +29,7 @@ public class CustomerEntity {
     private String surname;
 
     @NotNull
-    private int phone;
+    private String phone;
 
     @NotNull
     private String address;
@@ -39,7 +37,7 @@ public class CustomerEntity {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "customers_cars",
-            joinColumns = @JoinColumn(name = "customer_id"),
+            joinColumns = @JoinColumn(name = "customers_id"),
             inverseJoinColumns = @JoinColumn(name = "car_id")
     )
     Set<CarEntity> cars = new HashSet<>();
