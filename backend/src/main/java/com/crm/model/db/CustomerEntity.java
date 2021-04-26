@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -40,6 +39,6 @@ public class CustomerEntity {
             joinColumns = @JoinColumn(name = "customers_id"),
             inverseJoinColumns = @JoinColumn(name = "car_id")
     )
-    Set<CarEntity> cars = new HashSet<>();
+    private Set<CarEntity> cars = new HashSet<>();
 
 }

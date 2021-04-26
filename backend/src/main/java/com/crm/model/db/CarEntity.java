@@ -10,12 +10,10 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "cars")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarEntity {
@@ -37,5 +35,5 @@ public class CarEntity {
     private CarTypeEntity carTypeEntity;
 
     @ManyToMany(mappedBy="cars")
-    Set<CustomerEntity> cars = new HashSet<>();
+    private  Set<CustomerEntity> cars = new HashSet<>();
 }
