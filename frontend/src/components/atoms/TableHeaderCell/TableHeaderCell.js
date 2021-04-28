@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 const Container = styled.div`
   margin: 0 8px;
+  padding: 8px;
   
   display: flex;
   justify-content: flex-start;
@@ -30,7 +31,7 @@ const IconBox = styled.div`
 const Label = styled.div`
   margin-left: 8px;
   
-  font-family: 'Roboto', sans-serif;
+  font-family: ${({ theme }) => theme.fontFamily};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: ${({ theme }) => theme.fontSize.m};
   
