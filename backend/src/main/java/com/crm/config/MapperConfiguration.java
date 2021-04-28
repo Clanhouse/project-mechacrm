@@ -1,4 +1,4 @@
-package com.crm.dto.mapper;
+package com.crm.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

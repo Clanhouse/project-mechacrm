@@ -18,8 +18,8 @@ public class SwaggerConfiguration {
     public Docket swaggerConfig() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .paths(PathSelectors.ant("/api/*"))
-                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.crm"))
                 .build()
                 .apiInfo(apiDetails());
     }
