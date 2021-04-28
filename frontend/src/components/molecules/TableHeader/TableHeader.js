@@ -1,9 +1,14 @@
 import React from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import TableHeaderCell from '../../atoms/TableHeaderCell/TableHeaderCell';
 
+const TableHeaderContainer = styled.thead`
+  background-color: ${({ theme }) => theme.color.white};
+`;
+
 const TableHeader = ({ columns }) => (
-  <thead>
+  <TableHeaderContainer>
     <tr>
       {columns.map((column) => (
         <th key={column.label}>
@@ -11,7 +16,7 @@ const TableHeader = ({ columns }) => (
         </th>
       ))}
     </tr>
-  </thead>
+  </TableHeaderContainer>
 );
 
 TableHeader.propTypes = {
