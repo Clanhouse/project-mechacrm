@@ -13,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 @Table(name = "customers")
 public class CustomerEntity {
 
