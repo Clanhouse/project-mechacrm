@@ -1,5 +1,6 @@
 package com.crm.api.v1;
 
+import com.crm.dto.request.AccountRequest;
 import com.crm.model.db.AccountEntity;
 import com.crm.service.AccountService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public String saveUser(@RequestBody AccountEntity accountEntity) {
-        return accountService.saveAccount(accountEntity).toString();
+    public String saveUser(@RequestBody AccountRequest accountRequest) {
+        return accountService.saveAccount(accountRequest).toString();
     }
 }
