@@ -8,7 +8,6 @@ import TableCell from '../../atoms/TableCell/TableCell';
 
 const Wrapper = styled.div`
   padding: 8px;
-
   background-color: ${({ theme }) => theme.color.grey};
 `;
 
@@ -17,15 +16,12 @@ const TableContainer = styled.table`
   border-spacing: 0;
 `;
 
-const TableBody = styled.tbody`
-`;
-
 const Table = ({ columns, rowsData }) => (
   <Wrapper>
     <Header title="customers" />
     <TableContainer>
       <TableHeader columns={columns} />
-      <TableBody>
+      <tbody>
         {rowsData.map((row) => (
           <TableRow key={row.id}>
             <TableCell>{row.id}</TableCell>
@@ -36,7 +32,7 @@ const Table = ({ columns, rowsData }) => (
             <TableCell>{row.cars}</TableCell>
           </TableRow>
         ))}
-      </TableBody>
+      </tbody>
     </TableContainer>
   </Wrapper>
 );
