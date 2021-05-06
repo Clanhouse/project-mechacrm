@@ -6,18 +6,14 @@ import TableRow from '../../molecules/TableRow/TableRow';
 import TableHeader from '../../molecules/TableHeader/TableHeader';
 import TableCell from '../../atoms/TableCell/TableCell';
 
-const Wrapper = styled.div`
-  padding: 8px;
-  background-color: ${({ theme }) => theme.color.grey};
-`;
-
 const TableContainer = styled.table`
   width: 100%;
   border-spacing: 0;
+  box-shadow: rgba(0,0,0,0.2) 5px 6px 6px;
 `;
 
 const Table = ({ columns, rowsData }) => (
-  <Wrapper>
+  <>
     <Header title="customers" />
     <TableContainer>
       <TableHeader columns={columns} />
@@ -34,7 +30,7 @@ const Table = ({ columns, rowsData }) => (
         ))}
       </tbody>
     </TableContainer>
-  </Wrapper>
+  </>
 );
 
 Table.propTypes = {

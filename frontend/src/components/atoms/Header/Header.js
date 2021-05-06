@@ -15,7 +15,7 @@ const Title = styled.div`
   font-size: ${({ theme }) => theme.fontSize.l};
   color: ${({ theme }) => theme.color.primary};
   
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  box-shadow: rgba(0, 0, 0, 0.2) 5px 6px 6px;
 `;
 
 const Header = ({ title }) => (
