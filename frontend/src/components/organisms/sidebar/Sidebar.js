@@ -14,7 +14,7 @@ const MenuWrapper = styled.div`
 
 const LogoWrapper = styled.div`
   display: inline-grid;
-  grid-template-columns: 50px auto;
+  grid-template-columns: 250px auto;
   justify-items: center;
   align-items: center;
   width: 100%;
@@ -41,12 +41,14 @@ font-weight: bolder;
 text-transform: uppercase;
 `;
 const Logo = styled.div`
-  width: 50px;
-  height: 50px;
+ 
+  width: 180px;
+  height: 100%;
   background-image: url(${LogoImage});
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 100%;
+  justify-self: center;
   `;
 const NavigationLink = styled(NavLink)`
   text-decoration: none;
@@ -61,13 +63,27 @@ class Sidebar extends React.Component {
           <Logo />
         </LogoWrapper>
         <MenuWrapper>
-          <NavigationLink exact to="/">
-            <IconButton label="dupa" icon={<IconAlarm />} />
+          <SpaceLine />
+          <NavigationLink exact to="dashboard">
+            <IconButton label="Dashboard" icon={<IconAlarm />} />
           </NavigationLink>
-          <NavigationLink to="/link">
-            <IconButton label="dupa1" icon={<IconAlarm />} />
+          <NavigationLink to="/customers">
+            <IconButton label="Customers" icon={<IconAlarm />} />
+          </NavigationLink>
+          <NavigationLink to="/cars">
+            <IconButton label="Cars" icon={<IconAlarm />} />
           </NavigationLink>
           <SpaceLine />
+          <NavigationLink to="/notifications">
+            <IconButton label="Notifications" icon={<IconAlarm />} />
+          </NavigationLink>
+          <NavigationLink to="/profile">
+            <IconButton label="Profile" icon={<IconAlarm />} />
+          </NavigationLink>
+          <SpaceLine />
+          <NavigationLink to="/logout">
+            <IconButton label="Logout" icon={<IconAlarm />} />
+          </NavigationLink>
         </MenuWrapper>
       </Wrapper>
     );
