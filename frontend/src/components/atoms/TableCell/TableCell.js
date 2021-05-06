@@ -18,7 +18,7 @@ const TableCell = ({ children }) => (
 );
 
 TableCell.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default TableCell;
