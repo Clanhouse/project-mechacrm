@@ -1,10 +1,15 @@
 import React from 'react';
+import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './theme/GlobalStyles';
+
+import theme from './theme/MainTheme';
 
 const App = () => (
   <>
     <GlobalStyles />
-    <div>Hello world!</div>
+    <ThemeProvider theme={theme}>
+      <div>Hello world!</div>
+    </ThemeProvider>
   </>
 );
 
