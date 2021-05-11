@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const Container = styled.div`
   color: ${({ theme }) => theme.color.grey300};
   background-color: ${({ theme }) => theme.color.grey100};
-  border-radius: 5px;
+  border-radius: 20px;
   padding: 8px 16px;
   font-family: ${({ theme }) => theme.fontFamily};
   display: flex;
