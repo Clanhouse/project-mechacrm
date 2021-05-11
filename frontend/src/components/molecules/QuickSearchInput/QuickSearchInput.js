@@ -8,16 +8,9 @@ const Container = styled.div`
   border-radius: 20px;
   padding: 8px 16px;
   font-family: ${({ theme }) => theme.fontFamily};
-  display: flex;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: auto 100%;
   align-items: center;
-`;
-
-const IconBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 16px;
 `;
 
 const SearchField = styled.input`
@@ -36,9 +29,7 @@ const SearchField = styled.input`
 
 const QuickSearchInput = ({ icon, placeholder, value, onChange }) => (
   <Container>
-    <IconBox>
-      {icon}
-    </IconBox>
+    {icon}
     <SearchField
       placeholder={placeholder}
       value={value}
