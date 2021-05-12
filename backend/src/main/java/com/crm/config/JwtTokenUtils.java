@@ -57,8 +57,7 @@ public class JwtTokenUtils {
     }
 
     private <T> T getClaim(final String token, final Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaims(token);
-        return claimsResolver.apply(claims);
+        return claimsResolver.apply(getAllClaims(token));
     }
 
     private Claims getAllClaims(final String token) {
@@ -66,8 +65,7 @@ public class JwtTokenUtils {
     }
 
     private Boolean isTokenExpired(final String token) {
-        final Date expiration = getExpirationDate(token);
-        return expiration.before(new Date());
+        return getExpirationDate(token).before(new Date());
     }
 
 }

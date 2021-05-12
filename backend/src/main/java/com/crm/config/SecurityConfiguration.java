@@ -32,22 +32,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.filterExceptionHandler = filterExceptionHandler;
     }
 
-
-//    @Override
-//    protected void configure(final HttpSecurity http) throws Exception {
-//
-//        http.authorizeRequests()
-//                .anyRequest().permitAll()
-//                .and()
-//                .formLogin()
-//                .and()
-//                .logout()
-//                .and()
-//                .csrf().disable();
-//    }
-
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http
                 .cors().and()
                 .csrf().disable()
@@ -87,7 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 
     }

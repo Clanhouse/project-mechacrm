@@ -25,13 +25,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtUserDetailsService userDetailsService;
     private final JwtTokenUtils jwtTokenUtils;
 
-    public JwtRequestFilter(final JwtUserDetailsService userDetailsService, JwtTokenUtils jwtTokenUtils) {
+    public JwtRequestFilter(final JwtUserDetailsService userDetailsService, final JwtTokenUtils jwtTokenUtils) {
         this.userDetailsService = userDetailsService;
         this.jwtTokenUtils = jwtTokenUtils;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader(AUTHORIZATION_HEADER);
         String jwtToken = null;
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
@@ -49,12 +49,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 } else {
                     throw new IllegalArgumentException("Invalid JWT token");
                 }
-            } catch (ExpiredJwtException ex) {
-                throw new UnauthorizedException();
+            } catch (final ExpiredJwtException ex) {
+                throw new UnauthorizedException("Unauthorized");
             }
-
         }
-
         filterChain.doFilter(request, response);
     }
 }
