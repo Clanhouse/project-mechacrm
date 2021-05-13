@@ -4,6 +4,7 @@ import com.crm.config.JwtTokenUtils;
 import com.crm.exception.UnauthorizedException;
 import com.crm.service.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,17 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final JwtUserDetailsService userDetailsService;
     private final JwtTokenUtils jwtTokenUtils;
-
-    public JwtRequestFilter(final JwtUserDetailsService userDetailsService, final JwtTokenUtils jwtTokenUtils) {
-        this.userDetailsService = userDetailsService;
-        this.jwtTokenUtils = jwtTokenUtils;
-    }
 
     @Override
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws ServletException, IOException {

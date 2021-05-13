@@ -4,6 +4,7 @@ import com.crm.config.JwtTokenUtils;
 import com.crm.dto.request.AccountRequest;
 import com.crm.dto.response.JwtResponse;
 import com.crm.service.JwtUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,20 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthenticationController {
 
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
     private final JwtUserDetailsService userDetailsService;
 
-
-    public AuthenticationController(final JwtTokenUtils jwtTokenUtils,
-                                    final AuthenticationManager authenticationManager,
-                                    final JwtUserDetailsService userDetailsService) {
-        this.jwtTokenUtils = jwtTokenUtils;
-        this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
-    }
 
     @PostMapping("/auth")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody final AccountRequest authenticationRequest) throws Exception {
