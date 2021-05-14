@@ -61,14 +61,14 @@ class JwtRequestFilterTest {
     }
 
     @Test
-    void should_username_equal_to_userName_in_token_when_jwt_expiration_token_time_is_600() {
+    void should_username_equal_to_userName_in_token_when_jwt_expiration_token_time_is_1000() {
         String token = jwtTokenUtils.generateToken(userDetails);
 
         assertThat(jwtTokenUtils.getUsername(token)).isEqualTo("userName");
     }
 
     @Test
-    void should_username_equal_to_userName_in_refreshed_token_when_jwt_expiration_token_time_is_600() {
+    void should_username_equal_to_userName_in_refreshed_token_when_jwt_expiration_token_time_is_1000() {
         String refreshToken = jwtTokenUtils.generateRefreshToken(userDetails);
 
         assertThat(jwtTokenUtils.getUsername(refreshToken)).isEqualTo("userName");
