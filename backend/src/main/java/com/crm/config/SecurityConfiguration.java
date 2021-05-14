@@ -1,8 +1,8 @@
 package com.crm.config;
 
-import com.crm.config.filter.FilterExceptionHandler;
 import com.crm.config.filter.JwtRequestFilter;
 import com.crm.service.JwtUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,17 +20,12 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtUserDetailsService userDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
-    private final FilterExceptionHandler filterExceptionHandler;
 
-    public SecurityConfiguration(JwtUserDetailsService userDetailsService, JwtRequestFilter jwtRequestFilter, FilterExceptionHandler filterExceptionHandler) {
-        this.userDetailsService = userDetailsService;
-        this.jwtRequestFilter = jwtRequestFilter;
-        this.filterExceptionHandler = filterExceptionHandler;
-    }
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
@@ -46,7 +41,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(filterExceptionHandler, JwtRequestFilter.class);
     }
 
     @Bean

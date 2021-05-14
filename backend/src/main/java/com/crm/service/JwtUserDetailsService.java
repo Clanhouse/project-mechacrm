@@ -16,7 +16,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     private final AccountRepository accountRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return new UserPrincipal(accountRepository.findByLogin(s).orElseThrow(() -> new UsernameNotFoundException(s)));
+    public UserDetails loadUserByUsername(final String userName) throws UsernameNotFoundException {
+        return new UserPrincipal(accountRepository.findByLogin(userName).orElseThrow(() -> new UsernameNotFoundException(userName)));
     }
 }
