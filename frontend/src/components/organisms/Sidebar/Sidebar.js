@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import LogoImage from '../../../assets/logo.png';
 import IconButton from '../../atoms/IconButton/IconButton';
 import { ReactComponent as IconAlarm } from '../../../assets/svgs/alarm-light.svg';
-import theme from '../../../theme/MainTheme';
 
 const MenuWrapper = styled.div`
   display: grid;
@@ -21,27 +20,27 @@ const LogoWrapper = styled.div`
   height: 100px;
   margin-bottom: 15px;
 `;
+
 const SpaceLine = styled.hr`
   height: 1px;
   width: 100%;
-  background-color: ${theme.grey400};
   border: none;
   margin: 40px 0;
 `;
 
 const Wrapper = styled.nav`
-width: 250px;
-height: 100%;
-position: fixed;
-display: flex;
-flex-direction: column;
-border: ${theme.color.primary} 1px solid;
-align-items: center;
-font-weight: bolder;
-text-transform: uppercase;
+  background-color: #FBFBFB;
+  width: 250px;
+  height: 100%;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bolder;
+  text-transform: uppercase;
 `;
+
 const Logo = styled.div`
- 
   width: 180px;
   height: 100%;
   background-image: url(${LogoImage});
@@ -50,12 +49,17 @@ const Logo = styled.div`
   background-size: 100%;
   justify-self: center;
   `;
+
 const NavigationLink = styled(NavLink)`
   text-decoration: none;
 `;
 
-// eslint-disable-next-line react/prefer-stateless-function
 class Sidebar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   render() {
     return (
       <Wrapper>
