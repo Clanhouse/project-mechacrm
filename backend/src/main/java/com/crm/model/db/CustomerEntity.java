@@ -1,6 +1,5 @@
 package com.crm.model.db;
 
-
 import com.sun.istack.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.crm.api.v1;
 
 import com.crm.dto.response.CarResponse;
-import com.crm.service.CarServiceImpl;
+import com.crm.service.impl.CarServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
