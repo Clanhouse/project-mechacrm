@@ -32,12 +32,10 @@ const Wrapper = styled.nav`
   background-color: #FBFBFB;
   width: 250px;
   height: 100%;
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 15px;
   font-weight: bolder;
   text-transform: uppercase;
+  box-shadow: 15px 7px 12px 0px rgba(0,0,0,0.27);
 `;
 
 const Logo = styled.div`
@@ -48,10 +46,11 @@ const Logo = styled.div`
   background-position: 50% 50%;
   background-size: 100%;
   justify-self: center;
-  `;
+ `;
 
 const NavigationLink = styled(NavLink)`
   text-decoration: none;
+  padding-left: 30px;
 `;
 
 class Sidebar extends React.Component {
