@@ -7,7 +7,6 @@ import lombok.Getter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class ErrorResponse {
     private Integer status;
