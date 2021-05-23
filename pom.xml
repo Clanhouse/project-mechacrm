@@ -12,6 +12,7 @@
     <modules>
         <module>backend</module>
         <module>db-migration</module>
+        <module>local-deployment</module>
     </modules>
 
     <dependencyManagement>
