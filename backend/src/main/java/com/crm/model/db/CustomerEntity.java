@@ -1,10 +1,7 @@
 package com.crm.model.db;
 
 import com.sun.istack.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -23,6 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode
+@Builder
 @Table(name = "customers")
 public class CustomerEntity {
 

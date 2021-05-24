@@ -15,7 +15,6 @@ public class CustomerControllerTest {
         // todo
     }
 
-
     @Test
     void shouldReturnAllCustomersBySizeByPageParameters(){
         // todo
