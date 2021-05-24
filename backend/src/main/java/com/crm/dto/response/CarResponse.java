@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CarResponse {
-    
+
     private String vin;
     private String registrationNumber;
     private String brand;

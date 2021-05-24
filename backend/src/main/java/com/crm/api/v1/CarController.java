@@ -26,7 +26,7 @@ public class CarController {
     @ApiOperation(value = "Finds all cars paginated", notes = "Add param \"page\" and/or \"size\""
             + " to specify page no. and size of each page.")
     public ResponseEntity<Page<CarResponse>> getCarsPaginated(@RequestParam(required = false, defaultValue = "0") final Integer page,
-                                                @RequestParam(required = false, defaultValue = "20") final Integer size) {
+                                                              @RequestParam(required = false, defaultValue = "20") final Integer size) {
         return ResponseEntity.ok(carService.getCarsPaginated(page, size));
     }
 }
