@@ -1,8 +1,8 @@
 package com.crm.exception;
 
 import lombok.AllArgsConstructor;
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
