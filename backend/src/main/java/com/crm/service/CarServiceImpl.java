@@ -4,7 +4,7 @@ import com.crm.dto.mapper.CarMapper;
 import com.crm.dto.response.CarResponse;
 import com.crm.model.db.CarEntity;
 import com.crm.repository.CarRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -15,16 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
     private final CarMapper carMapper;
-
-    @Autowired
-    public CarServiceImpl(final CarRepository carRepository, final CarMapper carMapper) {
-        this.carRepository = carRepository;
-        this.carMapper = carMapper;
-    }
 
     @Override
     public Page<CarResponse> getCarsPaginated(final int page, final int size) {
