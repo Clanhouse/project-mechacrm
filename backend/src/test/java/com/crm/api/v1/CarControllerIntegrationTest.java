@@ -1,16 +1,17 @@
 package com.crm.api.v1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -18,19 +19,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 class CarControllerIntegrationTest {
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private MockMvc mvc;
 
     @Test
     void shouldReturnResponseEntityPageCarResponse() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/cars?page=1"))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().is(200)).andReturn();
-
-        //TODO tutaj występuje problem
-//        ResponseEntity s = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ResponseEntity.class);
+        mvc.perform(get("/cars?page=1"))
+                .andDo(print())
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.pageable.pageNumber", is(1)));
 
     }
 
