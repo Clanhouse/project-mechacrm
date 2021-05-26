@@ -9,22 +9,19 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = App.class)
 @AutoConfigureMockMvc
 @WithMockUser
+@Transactional
 class CarControllerIntegrationTest {
 
     @Autowired
@@ -35,8 +32,10 @@ class CarControllerIntegrationTest {
 
     @Test
     void shouldResponseEntityHasPageNumberEqualTo1() throws Exception {
+        //when
         mvc.perform(get("/cars?page=1"))
                 .andDo(print())
+                //then
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.pageable.pageNumber", is(1)));
     }
@@ -54,8 +53,36 @@ class CarControllerIntegrationTest {
         mvc.perform(get("/cars?page=1&size=1"))
                 .andDo(print())
                 //then
+                .andExpect(status().is(200))
                 .andExpect(jsonPath("$.totalElements", is(2)))
                 .andExpect(jsonPath("$.totalPages", is(2)))
                 .andExpect(jsonPath("$.content", notNullValue()));
+    }
+
+    @Test
+    void shouldReturnProperValuesAccordingToEntryData() throws Exception {
+        //given
+        CarEntity carEntity = CarEntity.builder()
+                .brand("brand")
+                .description("description")
+                .model("model")
+                .productionYear(2000)
+                .mileage(1000)
+                .registrationNumber("registrationNumber")
+                .vin("vin")
+                .build();
+
+        carRepository.save(carEntity);
+        //when
+        mvc.perform(get("/cars"))
+                .andDo(print())
+                //then
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.content[0].vin", is("vin")))
+                .andExpect(jsonPath("$.content[0].registrationNumber", is("registrationNumber")))
+                .andExpect(jsonPath("$.content[0].brand", is("brand")))
+                .andExpect(jsonPath("$.content[0].productionYear", is(2000)))
+                .andExpect(jsonPath("$.content[0].mileage", is(1000)))
+                .andExpect(jsonPath("$.content[0].description", is("description")));
     }
 }
