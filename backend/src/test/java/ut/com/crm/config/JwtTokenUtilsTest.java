@@ -1,5 +1,6 @@
-package com.crm.config;
+package ut.com.crm.config;
 
+import com.crm.config.JwtTokenUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
