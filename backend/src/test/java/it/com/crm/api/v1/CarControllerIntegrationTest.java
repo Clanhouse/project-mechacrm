@@ -32,27 +32,23 @@ class CarControllerIntegrationTest {
 
     @Test
     void shouldResponseEntityHasPageNumberEqualTo1() throws Exception {
-        //when
         mvc.perform(get("/cars?page=1"))
                 .andDo(print())
-                //then
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.pageable.pageNumber", is(1)));
     }
 
     @Test
     void shouldResponseEntityHasPageNumberEqualTo2WhenParamSizeEqualTo1() throws Exception {
-        //given
         CarEntity carEntity = new CarEntity();
         carEntity.setBrand("testBrand");
         carRepository.save(carEntity);
         CarEntity carEntity2 = new CarEntity();
         carEntity.setBrand("testBrand2");
         carRepository.save(carEntity2);
-        //when
+
         mvc.perform(get("/cars?page=1&size=1"))
                 .andDo(print())
-                //then
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.totalElements", is(2)))
                 .andExpect(jsonPath("$.totalPages", is(2)))
@@ -61,7 +57,6 @@ class CarControllerIntegrationTest {
 
     @Test
     void shouldReturnProperValuesAccordingToEntryData() throws Exception {
-        //given
         CarEntity carEntity = CarEntity.builder()
                 .brand("brand")
                 .description("description")
@@ -71,12 +66,10 @@ class CarControllerIntegrationTest {
                 .registrationNumber("registrationNumber")
                 .vin("vin")
                 .build();
-
         carRepository.save(carEntity);
-        //when
+
         mvc.perform(get("/cars"))
                 .andDo(print())
-                //then
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.content[0].vin", is("vin")))
                 .andExpect(jsonPath("$.content[0].registrationNumber", is("registrationNumber")))
