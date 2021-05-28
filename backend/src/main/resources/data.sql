@@ -1,4 +1,4 @@
-INSERT INTO car_types(id, name) VALUES
+INSERT INTO car_types(id, name) OVERRIDING SYSTEM VALUE VALUES
     (1, 'Sedan'),
     (2, 'Hatchback'),
     (3, 'Combi'),
@@ -10,7 +10,7 @@ INSERT INTO car_types(id, name) VALUES
     (9, 'Truck'),
     (10, 'Other');
 
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description, type_id) VALUES
+INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description, type_id) OVERRIDING SYSTEM VALUE VALUES
     (1, 'JT3Z123KBW1589043', 'KR12PR', 'Toyota', 'Avensis', 2014, 123456, 'Some description', 3),
     (2, 'WVWZ321WBK1589044', 'EBEWM10', 'Volkswagen', 'Golf', 2013, 115000, 'Some description', 2),
     (3, 'JHWZ4H795FGU84012', 'WR34OP', 'Honda', 'Accord', 2012, 168546, 'Some description', 1),
@@ -37,7 +37,7 @@ INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mi
     (24, 'VF1Z123KRH408UH33', 'WS90WQ', 'Renault', 'Scenic', 2009, 210000, 'Some description', 5),
     (25, 'WP0122347650FH44F', 'KR22RT', 'Porsche', 'Carrera', 2006, 269350, 'Some description', 6);
 
-INSERT INTO customers(id, name, surname, phone, address) VALUES
+INSERT INTO customers(id, name, surname, phone, address) OVERRIDING SYSTEM VALUE VALUES
     (1, 'Jan', 'Kowalski', '665456987', 'Kaliska 12, Bełchatów'),
     (2, 'Maciej', 'Zalewski', '126434567', 'Warszawska 15, Kraków'),
     (3, 'Aneta', 'Korczyńska', '789456123', 'Miodowa 23, Nysa'),
@@ -64,43 +64,45 @@ INSERT INTO customers(id, name, surname, phone, address) VALUES
     (24, 'Anna', 'Kolanko', '852741963', 'Srebrna 40, Warszawa'),
     (25, 'Jacek', 'Górnik', '636696000', 'Obozowa 25, Wrocław');
 
-INSERT INTO customers_cars(customers_id, car_id) VALUES
-    (1, 2),
-    (2, 1),
-    (3, 14),
-    (4, 3),
-    (4, 15),
-    (5, 5),
-    (6, 5),
-    (7, 22),
-    (7, 23),
-    (7, 24),
-    (8, 18),
-    (9, 21),
-    (10, 12),
-    (11, 4),
-    (12, 8),
-    (13, 25),
-    (14, 17),
-    (14, 6),
-    (15, 9),
-    (15, 19),
-    (16, 9),
-    (17, 20),
-    (18, 7),
-    (19, 16),
-    (20, 10),
-    (21, 11),
-    (22, 13),
-    (23, 25),
-    (24, 25),
-    (25, 8);
+INSERT INTO customers_cars(id, customers_id, car_id) OVERRIDING SYSTEM VALUE VALUES
+    (1, 1, 2),
+    (2, 2, 1),
+    (3, 3, 14),
+    (4, 4, 3),
+    (5, 4, 15),
+    (6, 5, 5),
+    (7, 6, 5),
+    (8, 7, 22),
+    (9, 7, 23),
+    (10, 7, 24),
+    (11, 8, 18),
+    (12, 9, 21),
+    (13, 10, 12),
+    (14, 11, 4),
+    (15, 12, 8),
+    (16, 13, 25),
+    (17, 14, 17),
+    (18, 14, 6),
+    (19, 15, 9),
+    (20, 15, 19),
+    (21, 16, 9),
+    (22, 17, 20),
+    (23, 18, 7),
+    (24, 19, 16),
+    (25, 20, 10),
+    (26, 21, 11),
+    (27, 22, 13),
+    (28, 23, 25),
+    (29, 24, 25),
+    (30, 25, 8);
 
-INSERT INTO roles(id,name) VALUES
-    (1, 'admin');
-    (2, 'user'),
+INSERT INTO roles(id, name) OVERRIDING SYSTEM VALUE VALUES
+    (1, 'admin'),
+    (2, 'user');
 
 INSERT INTO accounts(id, login, password, email, login_attempts, registration_date, last_successful_login,
-                     last_failed_login, role_id) VALUES
-    (1, 'admin', 'admin', 'admin@mail.com', 6, 2021-05-24 16:00:00.000, 2021-05-26 16:00:00.000, 2021-05-25 16:00:00.000, 1),
-    (2, 'user', 'user', 'user@mail.com', 5, 2021-05-24 14:00:00.000, 2021-05-26 14:00:00.000, 2021-05-25 14:00:00.000, 2);
+                     last_failed_login, role_id) OVERRIDING SYSTEM VALUE VALUES
+    (1, 'admin', '$2y$12$v97WyUOPeTyHw55h4Pm3WeiRyCRfVne8LnFhq7Vg7bRR6b2uWCUoa', 'admin@mail.com', 6,
+     '2021-05-24 16:00:00', '2021-05-26 16:00:00', '2021-05-25 16:00:00', 1),
+    (2, 'user', '$2y$12$/EGOACr4sihV98Pl6mfjTeFZMI1O6bE1bDpa7UudeKdQIeVFmlQFe', 'user@mail.com', 5,
+     '2021-05-24 14:00:00', '2021-05-26 14:00:00', '2021-05-25 14:00:00', 2);
