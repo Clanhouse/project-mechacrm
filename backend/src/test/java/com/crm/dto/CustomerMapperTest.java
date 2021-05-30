@@ -3,12 +3,11 @@ package com.crm.dto;
 import com.crm.dto.mapper.CustomerMapper;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.model.db.CustomerEntity;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,13 +16,13 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class CustomerMapperTest {
 
-    @Mock
+    @Spy
     private ModelMapper modelMapper;
 
     @InjectMocks
@@ -37,8 +36,8 @@ public class CustomerMapperTest {
     private final String PHONE = "+48 111111111";
     private final String ADDRESS = "test";
 
-    @BeforeAll
-    void setUp() {
+    @Before
+    public void setUp() {
         customerResponse = CustomerResponse.builder()
                 .id(ID)
                 .name(NAME)
@@ -59,18 +58,19 @@ public class CustomerMapperTest {
 
     @Test
     public void shouldReturnMappedCustomerToCustomerDto() {
-        Mockito.when(customerMapper.convertToDto(any(CustomerEntity.class))).thenReturn(eq(customerResponse));
-        CustomerResponse customerResponse = customerMapper.convertToDto(eq(this.customerEntity));
-        assertEquals(eq(ID), eq(customerResponse.getId()));
+        final CustomerResponse customerResponse = customerMapper.convertToDto(customerEntity);
+
+        assertEquals(ID, customerResponse.getId());
         assertEquals(NAME, customerResponse.getName());
         assertEquals(SURNAME, customerResponse.getSurname());
         assertEquals(PHONE, customerResponse.getPhone());
         assertEquals(ADDRESS, customerResponse.getAddress());
+        verify(modelMapper, times(1)).map(customerEntity, CustomerResponse.class);
     }
 
     @Test
     public void shouldReturnMappedCustomerDtoToCustomer() {
-        Mockito.when(customerMapper.convertToEntity(any(CustomerResponse.class))).thenReturn(customerEntity);
+        when(customerMapper.convertToEntity(any(CustomerResponse.class))).thenReturn(customerEntity);
         CustomerEntity customerEntity = customerMapper.convertToEntity(this.customerResponse);
         assertEquals(ID, customerEntity.getId());
         assertEquals(NAME, customerEntity.getName());
