@@ -12,11 +12,11 @@ public class CustomerMapper {
 
     private final ModelMapper modelMapper;
 
-    public CustomerResponse convertToDto(CustomerEntity customerEntity) {
+    public CustomerResponse convertToDto(final CustomerEntity customerEntity) {
         return modelMapper.map(customerEntity, CustomerResponse.class);
     }
 
-    public CustomerEntity convertToEntity(CustomerResponse customerResponse) {
+    public CustomerEntity convertToEntity(final CustomerResponse customerResponse) {
         return modelMapper.map(customerResponse, CustomerEntity.class);
     }
 }
