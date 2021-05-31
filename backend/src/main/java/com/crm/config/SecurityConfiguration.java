@@ -26,6 +26,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtUserDetailsService userDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
 
+    private static final String[] AUTH_WHITELIST = {
+            // -- swagger ui
+            "/v2/api-docs",
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- other
+            "/auth**",
+            "/account**"
+    };
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
@@ -33,10 +43,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth**").permitAll()
-                .antMatchers("/account**").permitAll()
-                .and()
-                .authorizeRequests().anyRequest().authenticated()
+                .antMatchers(AUTH_WHITELIST).permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -69,6 +77,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
     }
 }
