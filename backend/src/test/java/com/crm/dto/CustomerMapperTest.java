@@ -15,8 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
@@ -70,13 +70,14 @@ public class CustomerMapperTest {
 
     @Test
     public void shouldReturnMappedCustomerDtoToCustomer() {
-        when(customerMapper.convertToEntity(any(CustomerResponse.class))).thenReturn(customerEntity);
-        CustomerEntity customerEntity = customerMapper.convertToEntity(this.customerResponse);
+        final CustomerEntity customerEntity = customerMapper.convertToEntity(customerResponse);
+
         assertEquals(ID, customerEntity.getId());
         assertEquals(NAME, customerEntity.getName());
         assertEquals(SURNAME, customerEntity.getSurname());
         assertEquals(PHONE, customerEntity.getPhone());
         assertEquals(ADDRESS, customerEntity.getAddress());
+        verify(modelMapper, times(1)).map(customerResponse, CustomerEntity.class);
     }
 
 }
