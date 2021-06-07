@@ -1,9 +1,10 @@
-package com.crm.service;
+package com.crm.service.impl;
 
 import com.crm.dto.mapper.CarMapper;
 import com.crm.dto.response.CarResponse;
 import com.crm.model.db.CarEntity;
 import com.crm.repository.CarRepository;
+import com.crm.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

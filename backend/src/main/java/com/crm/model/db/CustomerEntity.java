@@ -1,7 +1,8 @@
 package com.crm.model.db;
 
-
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +22,11 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
+@Builder
 @Table(name = "customers")
 public class CustomerEntity {
 
@@ -44,6 +47,7 @@ public class CustomerEntity {
     private String address;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
     @JoinTable(
             name = "customers_cars",
             joinColumns = @JoinColumn(name = "customers_id"),
