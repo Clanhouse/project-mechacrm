@@ -22,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper mapper;
 
     @Override
-    public Page<CustomerResponse> getCustomersPaginated(Pageable pageable) {
+    public Page<CustomerResponse> getCustomersPaginated(final Pageable pageable) {
         Page<CustomerEntity> customerEntities = repository.findAll(pageable);
 
         final List<CustomerResponse> customerResponses = customerEntities
