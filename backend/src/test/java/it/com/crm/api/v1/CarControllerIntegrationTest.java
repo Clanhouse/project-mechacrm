@@ -24,7 +24,7 @@ public class CarControllerIntegrationTest {
     private MockMvc mvc;
 
     @Test
-    void shouldReturnCorrectResponseWhenCallingCarsEndpoint() throws Exception {
+    void shouldReturnCorrectResponseWhenCallingCarsEndpointFirstValue() throws Exception {
         mvc.perform(get("/cars"))
                 .andExpect(status().is(OK.value()))
                 .andExpect(jsonPath("$.pageable.pageNumber", is(0)))
@@ -35,6 +35,20 @@ public class CarControllerIntegrationTest {
                 .andExpect(jsonPath("$.content[0].mileage", is(10000)))
                 .andExpect(jsonPath("$.content[0].description", is("TestData")));
     }
+
+    @Test
+    void shouldReturnCorrectResponseWhenCallingCarsEndpointSecondValue() throws Exception {
+        mvc.perform(get("/cars"))
+                .andExpect(status().is(OK.value()))
+                .andExpect(jsonPath("$.pageable.pageNumber", is(0)))
+                .andExpect(jsonPath("$.content[1].vin", is("testVin2")))
+                .andExpect(jsonPath("$.content[1].registrationNumber", is("EL00001")))
+                .andExpect(jsonPath("$.content[1].brand", is("Mercedes-Benz")))
+                .andExpect(jsonPath("$.content[1].productionYear", is(2021)))
+                .andExpect(jsonPath("$.content[1].mileage", is(10000)))
+                .andExpect(jsonPath("$.content[1].description", is("TestData2")));
+    }
+    
 
     @Test
     void shouldResponseEntityHasPageNumberEqualTo2WhenParamSizeEqualTo1() throws Exception {
