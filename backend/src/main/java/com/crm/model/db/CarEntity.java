@@ -21,10 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "cars")
 @Getter
-@Setter
 @NoArgsConstructor
-@Builder
-@AllArgsConstructor
 public class CarEntity {
 
     @Id

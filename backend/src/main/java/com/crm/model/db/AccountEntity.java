@@ -19,10 +19,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "accounts")
 @Getter
-@Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class AccountEntity {
 
     @Id
