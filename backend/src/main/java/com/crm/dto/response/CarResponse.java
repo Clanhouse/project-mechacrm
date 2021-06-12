@@ -3,7 +3,6 @@ package com.crm.dto.response;
 import com.crm.model.db.CarTypeEntity;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
