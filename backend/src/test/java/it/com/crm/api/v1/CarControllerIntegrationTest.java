@@ -60,4 +60,26 @@ public class CarControllerIntegrationTest {
                 .andExpect(jsonPath("$.totalPages", is(2)))
                 .andExpect(jsonPath("$.content", notNullValue()));
     }
+
+    @Test
+    void shouldResponseWithDefaultPageSize20() throws Exception {
+        mvc.perform(get("/cars?page=1"))
+                .andExpect(status().is(OK.value()))
+                .andExpect(jsonPath("$.pageable.pageNumber", is(1)))
+                .andExpect(jsonPath("$.pageable.pageSize", is(20)))
+                .andExpect(jsonPath("$.totalElements", is(1)))
+                .andExpect(jsonPath("$.totalPages", is(1)))
+                .andExpect(jsonPath("$.content", notNullValue()));
+    }
+
+    @Test
+    void shouldResponseWithDefaultPage0() throws Exception {
+        mvc.perform(get("/cars?size=10"))
+                .andExpect(status().is(OK.value()))
+                .andExpect(jsonPath("$.pageable.pageNumber", is(0)))
+                .andExpect(jsonPath("$.pageable.pageSize", is(10)))
+                .andExpect(jsonPath("$.totalElements", is(2)))
+                .andExpect(jsonPath("$.totalPages", is(1)))
+                .andExpect(jsonPath("$.content", notNullValue()));
+    }
 }
