@@ -2,7 +2,6 @@ package com.crm.model.db;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -19,7 +18,6 @@ import java.util.Set;
 @Entity
 @Table(name = "cars")
 @Getter
-@Setter
 @NoArgsConstructor
 public class CarEntity {
 
@@ -40,5 +38,5 @@ public class CarEntity {
     private CarTypeEntity carTypeEntity;
 
     @ManyToMany(mappedBy = "cars")
-    private Set<CustomerEntity> cars = new HashSet<>();
+    private final Set<CustomerEntity> cars = new HashSet<>();
 }
