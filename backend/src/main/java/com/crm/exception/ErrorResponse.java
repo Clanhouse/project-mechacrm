@@ -1,15 +1,17 @@
 package com.crm.exception;
 
 import lombok.AllArgsConstructor;
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 public class ErrorResponse {
-    private Integer status;
+    private HttpStatus status;
     private String source;
-    private Integer code;
-    private String message;
+    private List<String> message;
 }
