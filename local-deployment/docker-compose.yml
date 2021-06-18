@@ -15,3 +15,9 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "crm"
+  backend:
+    build: ./backend
+    ports:
+      [ "8080:8080" ]
+    depends_on:
+      - flyway
