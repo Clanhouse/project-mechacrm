@@ -1,6 +1,7 @@
 package com.crm.service.impl;
 
 import com.crm.dto.mapper.CustomerMapper;
+import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.model.db.CustomerEntity;
 import com.crm.repository.CustomerRepository;
@@ -33,4 +34,10 @@ public class CustomerServiceImpl implements CustomerService {
 
         return new PageImpl<>(customerResponses, pageable, customerEntities.getTotalElements());
     }
+
+    @Override
+    public void addCustomer(CustomerRequest customerRequest) {
+        repository.save(mapper.convertToEntity(customerRequest));
+    }
+
 }
