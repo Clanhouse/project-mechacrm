@@ -5,6 +5,7 @@
 
 # BACKEND
 */target
+/local-deployment/target/
 
 # FRONTEND
 frontend/package-lock.json
