@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +25,11 @@ public class CustomerController {
             + " to specify page no. and size of each page.")
     public ResponseEntity<Page<CustomerResponse>> getCustomersPaginated(@PageableDefault final Pageable pageable) {
         return ResponseEntity.ok(customerService.getCustomersPaginated(pageable));
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Finds customer by id")
+    public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable final Long id) {
+        return ResponseEntity.ok(customerService.getCustomerById(id));
     }
 }

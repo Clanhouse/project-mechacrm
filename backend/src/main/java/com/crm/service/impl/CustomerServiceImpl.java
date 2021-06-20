@@ -2,6 +2,7 @@ package com.crm.service.impl;
 
 import com.crm.dto.mapper.CustomerMapper;
 import com.crm.dto.response.CustomerResponse;
+import com.crm.exception.CustomerNotFoundException;
 import com.crm.model.db.CustomerEntity;
 import com.crm.repository.CustomerRepository;
 import com.crm.service.CustomerService;
@@ -32,5 +33,12 @@ public class CustomerServiceImpl implements CustomerService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(customerResponses, pageable, customerEntities.getTotalElements());
+    }
+
+    @Override
+    public CustomerResponse getCustomerById(final Long id) {
+        return repository.findById(id)
+                .map(mapper::convertToDto)
+                .orElseThrow(CustomerNotFoundException::new);
     }
 }
