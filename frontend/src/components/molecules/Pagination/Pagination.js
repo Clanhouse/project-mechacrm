@@ -20,6 +20,7 @@ const Number = styled.div`
   height: 32px;
 
   margin: 8px;
+  padding: 10px;
 
   border-radius: 5px;
   cursor: pointer;
@@ -32,8 +33,8 @@ const Number = styled.div`
   justify-content: center;
   align-items: center;
 
-  background-color: ${({ active }) => (active ? 'blue' : 'transparent')};
-  color: ${({ active }) => (active ? 'white' : 'inherit')};
+  background-color: ${({ active }) => (active ? '#0D47A1' : 'transparent')};
+  color: ${({ active }) => (active ? 'white' : '#707070')};
 
   &:hover {
     background-color: ${({ disableHover }) => (disableHover ? null : 'lightgray')};
