@@ -58,60 +58,138 @@ const ControlButton = styled.button`
   }
 `;
 
-const getFirstPaginationElement = (selectedPage) => (
-  <Number key={1} active={selectedPage === 1}>1</Number>
+const getFirstPaginationElement = (selectedPage, handlePage) => (
+  <Number
+    key={1}
+    active={selectedPage === 1}
+    onClick={() => handlePage(1)}
+  >
+    1
+  </Number>
 );
 
-const getSecondPaginationElement = (selectedPage, numberOfPages) => {
+const getSecondPaginationElement = (selectedPage, numberOfPages, handlePage) => {
   if (numberOfPages === 4 || numberOfPages === 5) {
-    return <Number key={2} active={selectedPage === 2}>2</Number>;
+    return (
+      <Number
+        key={2}
+        active={selectedPage === 2}
+        onClick={() => handlePage(2)}
+      >
+        2
+      </Number>
+    );
   }
   if (numberOfPages > 5) {
     if (selectedPage <= 3) {
-      return <Number key={2} active={selectedPage === 2}>2</Number>;
+      return (
+        <Number
+          key={2}
+          active={selectedPage === 2}
+          onClick={() => handlePage(2)}
+        >
+          2
+        </Number>
+      );
     }
     return <Number key="firstDots" disableHover>...</Number>;
   }
   return null;
 };
 
-const getMiddlePaginationElement = (selectedPage, numberOfPages) => {
+const getMiddlePaginationElement = (selectedPage, numberOfPages, handlePage) => {
   if (numberOfPages === 3) {
-    return <Number key={2} active={selectedPage === 2}>2</Number>;
+    return (
+      <Number
+        key={2}
+        active={selectedPage === 2}
+        onClick={() => handlePage(2)}
+      >
+        2
+      </Number>
+    );
   }
   if (numberOfPages === 5) {
-    return <Number key={3} active={selectedPage === 3}>3</Number>;
+    return (
+      <Number
+        key={3}
+        active={selectedPage === 3}
+        onClick={() => handlePage(3)}
+      >
+        3
+      </Number>
+    );
   }
 
   if (numberOfPages > 5) {
     if (selectedPage <= 3) {
-      return <Number key={3} active={selectedPage === 3}>3</Number>;
+      return (
+        <Number
+          key={3}
+          active={selectedPage === 3}
+          onClick={() => handlePage(3)}
+        >
+          3
+        </Number>
+      );
     }
     if (selectedPage >= numberOfPages - 2) {
       return (
-        <Number key={numberOfPages - 2} active={selectedPage < numberOfPages - 1}>
+        <Number
+          key={numberOfPages - 2}
+          active={selectedPage < numberOfPages - 1}
+          onClick={() => handlePage(numberOfPages - 2)}
+        >
           {numberOfPages - 2}
         </Number>
       );
     }
-    return <Number key={selectedPage} active>{selectedPage}</Number>;
+    return (
+      <Number
+        key={selectedPage}
+        active
+        onClick={() => handlePage(selectedPage)}
+      >
+        {selectedPage}
+      </Number>
+    );
   }
 
   return null;
 };
 
-const getPenultimatePaginationElement = (selectedPage, numberOfPages) => {
+const getPenultimatePaginationElement = (selectedPage, numberOfPages, handlePage) => {
   if (numberOfPages === 4) {
-    return <Number key={3} active={selectedPage === 3}>3</Number>;
+    return (
+      <Number
+        key={3}
+        active={selectedPage === 3}
+        onClick={() => handlePage(3)}
+      >
+        3
+      </Number>
+    );
   }
   if (numberOfPages === 5) {
-    return <Number key={4} active={selectedPage === 4}>4</Number>;
+    return (
+      <Number
+        key={4}
+        active={selectedPage === 4}
+        onClick={() => handlePage(4)}
+      >
+        4
+      </Number>
+    );
   }
 
   if (numberOfPages > 5) {
     if (selectedPage >= numberOfPages - 2) {
       return (
-        <Number key={numberOfPages - 1} active={selectedPage === numberOfPages - 1}>
+        <Number
+          key={numberOfPages - 1}
+          active={selectedPage === numberOfPages - 1}
+          onClick={() => handlePage(numberOfPages - 1)}
+        >
           {numberOfPages - 1}
         </Number>
       );
@@ -122,22 +200,26 @@ const getPenultimatePaginationElement = (selectedPage, numberOfPages) => {
   return null;
 };
 
-const getLastPaginationElement = (selectedPage, numberOfPages) => (
+const getLastPaginationElement = (selectedPage, numberOfPages, handlePage) => (
   numberOfPages > 1 ? (
-    <Number key={numberOfPages} active={selectedPage === numberOfPages}>
+    <Number
+      key={numberOfPages}
+      active={selectedPage === numberOfPages}
+      onClick={() => handlePage(numberOfPages)}
+    >
       {numberOfPages}
     </Number>
   ) : null
 );
 
-const renderPagination = (numberOfPages, selectedPage) => {
+const renderPagination = (numberOfPages, selectedPage, handlePage) => {
   const pagination = [];
 
-  pagination.push(getFirstPaginationElement(selectedPage));
-  pagination.push(getSecondPaginationElement(selectedPage, numberOfPages));
-  pagination.push(getMiddlePaginationElement(selectedPage, numberOfPages));
-  pagination.push(getPenultimatePaginationElement(selectedPage, numberOfPages));
-  pagination.push(getLastPaginationElement(selectedPage, numberOfPages));
+  pagination.push(getFirstPaginationElement(selectedPage, handlePage));
+  pagination.push(getSecondPaginationElement(selectedPage, numberOfPages, handlePage));
+  pagination.push(getMiddlePaginationElement(selectedPage, numberOfPages, handlePage));
+  pagination.push(getPenultimatePaginationElement(selectedPage, numberOfPages, handlePage));
+  pagination.push(getLastPaginationElement(selectedPage, numberOfPages, handlePage));
 
   return pagination;
 };
@@ -148,10 +230,19 @@ const Pagination = ({
   handlePage,
 }) => (
   <Container>
-    <ControlButton onClick={() => handlePage()}><KeyboardArrowLeftIcon fontSize="large" />
+    <ControlButton
+      onClick={() => handlePage(selectedPage - 1 < 1 ? 1 : selectedPage - 1)}
+    >
+      <KeyboardArrowLeftIcon
+        fontSize="large"
+      />
     </ControlButton>
-    {renderPagination(numberOfPages, selectedPage)}
-    <ControlButton onClick={() => handlePage(true)}>
+    {renderPagination(numberOfPages, selectedPage, handlePage)}
+    <ControlButton
+      onClick={() => handlePage(
+        selectedPage + 1 > numberOfPages ? numberOfPages : selectedPage + 1,
+      )}
+    >
       <KeyboardArrowRightIcon fontSize="large" />
     </ControlButton>
   </Container>

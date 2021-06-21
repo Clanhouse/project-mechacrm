@@ -6,7 +6,7 @@ export default {
   component: Pagination,
   argTypes: {
     numberOfPages: {
-      defaultValue: 3,
+      defaultValue: 13,
     },
   },
 };
@@ -16,13 +16,8 @@ export const PaginationStory = (args) => {
 
   const [page, setPage] = useState(1);
 
-  const handlePage = (right) => {
-    if (right) {
-      const p = page + 1;
-      return p > numberOfPages ? setPage(numberOfPages) : setPage(p);
-    }
-    const p = page - 1;
-    return p < 1 ? setPage(1) : setPage(p);
+  const handlePage = (newPageNumber) => {
+    setPage(newPageNumber);
   };
 
   return (<Pagination numberOfPages={numberOfPages} selectedPage={page} handlePage={handlePage} />);
