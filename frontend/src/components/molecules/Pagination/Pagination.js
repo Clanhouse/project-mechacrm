@@ -22,6 +22,7 @@ const Number = styled.div`
   margin: 8px;
 
   border-radius: 5px;
+  cursor: pointer;
 
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
@@ -33,6 +34,10 @@ const Number = styled.div`
 
   background-color: ${({ active }) => (active ? 'blue' : 'transparent')};
   color: ${({ active }) => (active ? 'white' : 'inherit')};
+
+  &:hover {
+    background-color: ${({ disableHover }) => (disableHover ? null : 'lightgray')};
+  }
 `;
 
 const ControlButton = styled.button`
@@ -41,6 +46,7 @@ const ControlButton = styled.button`
 
   border: none;
   border-radius: 5px;
+  cursor: pointer;
 
   padding: 4px;
   margin: 8px;
@@ -53,38 +59,42 @@ const ControlButton = styled.button`
 `;
 
 const getFirstPaginationElement = (selectedPage) => (
-  <Number active={selectedPage === 1}>1</Number>
+  <Number key={1} active={selectedPage === 1}>1</Number>
 );
 
 const getSecondPaginationElement = (selectedPage, numberOfPages) => {
   if (numberOfPages === 4 || numberOfPages === 5) {
-    return <Number active={selectedPage === 2}>2</Number>;
+    return <Number key={2} active={selectedPage === 2}>2</Number>;
   }
   if (numberOfPages > 5) {
     if (selectedPage <= 3) {
-      return <Number active={selectedPage === 2}>2</Number>;
+      return <Number key={2} active={selectedPage === 2}>2</Number>;
     }
-    return <Number>...</Number>;
+    return <Number key="firstDots" disableHover>...</Number>;
   }
   return null;
 };
 
 const getMiddlePaginationElement = (selectedPage, numberOfPages) => {
   if (numberOfPages === 3) {
-    return <Number active={selectedPage === 2}>2</Number>;
+    return <Number key={2} active={selectedPage === 2}>2</Number>;
   }
   if (numberOfPages === 5) {
-    return <Number active={selectedPage === 3}>3</Number>;
+    return <Number key={3} active={selectedPage === 3}>3</Number>;
   }
 
   if (numberOfPages > 5) {
     if (selectedPage <= 3) {
-      return <Number active={selectedPage === 3}>3</Number>;
+      return <Number key={3} active={selectedPage === 3}>3</Number>;
     }
     if (selectedPage >= numberOfPages - 2) {
-      return <Number active={selectedPage < numberOfPages - 1}>{numberOfPages - 2}</Number>;
+      return (
+        <Number key={numberOfPages - 2} active={selectedPage < numberOfPages - 1}>
+          {numberOfPages - 2}
+        </Number>
+      );
     }
-    return <Number active>{selectedPage}</Number>;
+    return <Number key={selectedPage} active>{selectedPage}</Number>;
   }
 
   return null;
@@ -92,17 +102,21 @@ const getMiddlePaginationElement = (selectedPage, numberOfPages) => {
 
 const getPenultimatePaginationElement = (selectedPage, numberOfPages) => {
   if (numberOfPages === 4) {
-    return <Number active={selectedPage === 3}>3</Number>;
+    return <Number key={3} active={selectedPage === 3}>3</Number>;
   }
   if (numberOfPages === 5) {
-    return <Number active={selectedPage === 4}>4</Number>;
+    return <Number key={4} active={selectedPage === 4}>4</Number>;
   }
 
   if (numberOfPages > 5) {
     if (selectedPage >= numberOfPages - 2) {
-      return <Number active={selectedPage === numberOfPages - 1}>{numberOfPages - 1}</Number>;
+      return (
+        <Number key={numberOfPages - 1} active={selectedPage === numberOfPages - 1}>
+          {numberOfPages - 1}
+        </Number>
+      );
     }
-    return <Number>...</Number>;
+    return <Number key="lastDots" disableHover>...</Number>;
   }
 
   return null;
@@ -110,7 +124,10 @@ const getPenultimatePaginationElement = (selectedPage, numberOfPages) => {
 
 const getLastPaginationElement = (selectedPage, numberOfPages) => (
   numberOfPages > 1 ? (
-    <Number active={selectedPage === numberOfPages}>{numberOfPages}</Number>) : null
+    <Number key={numberOfPages} active={selectedPage === numberOfPages}>
+      {numberOfPages}
+    </Number>
+  ) : null
 );
 
 const renderPagination = (numberOfPages, selectedPage) => {
