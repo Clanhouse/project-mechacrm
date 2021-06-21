@@ -52,6 +52,67 @@ const ControlButton = styled.button`
   }
 `;
 
+const getFirstPaginationElement = (selectedPage) => (
+  <Number active={selectedPage === 1}>1</Number>
+);
+
+const getSecondPaginationElement = (selectedPage, numberOfPages) => {
+  if (numberOfPages === 4 || numberOfPages === 5) {
+    return <Number active={selectedPage === 2}>2</Number>;
+  }
+  if (numberOfPages > 5) {
+    if (selectedPage <= 3) {
+      return <Number active={selectedPage === 2}>2</Number>;
+    }
+    return <Number>...</Number>;
+  }
+  return null;
+};
+
+const getMiddlePaginationElement = (selectedPage, numberOfPages) => {
+  if (numberOfPages === 3) {
+    return <Number active={selectedPage === 2}>2</Number>;
+  }
+  if (numberOfPages === 5) {
+    return <Number active={selectedPage === 3}>3</Number>;
+  }
+
+  if (numberOfPages > 5) {
+    if (selectedPage <= 3) {
+      return <Number active={selectedPage === 3}>3</Number>;
+    }
+    if (selectedPage >= numberOfPages - 2) {
+      return <Number active={selectedPage < numberOfPages - 1}>{numberOfPages - 2}</Number>;
+    }
+    return <Number active>{selectedPage}</Number>;
+  }
+
+  return null;
+};
+
+const getPenultimatePaginationElement = (selectedPage, numberOfPages) => {
+  if (numberOfPages === 4) {
+    return <Number active={selectedPage === 3}>3</Number>;
+  }
+  if (numberOfPages === 5) {
+    return <Number active={selectedPage === 4}>4</Number>;
+  }
+
+  if (numberOfPages > 5) {
+    if (selectedPage >= numberOfPages - 2) {
+      return <Number active={selectedPage === numberOfPages - 1}>{numberOfPages - 1}</Number>;
+    }
+    return <Number>...</Number>;
+  }
+
+  return null;
+};
+
+const getLastPaginationElement = (selectedPage, numberOfPages) => (
+  numberOfPages > 1 ? (
+    <Number active={selectedPage === numberOfPages}>{numberOfPages}</Number>) : null
+);
+
 const renderPagination = (numberOfPages, selectedPage) => {
   const pagination = [];
 

@@ -12,14 +12,14 @@ export default {
 };
 
 export const PaginationStory = (args) => {
-  const { count } = args;
+  const { numberOfPages } = args;
 
   const [page, setPage] = useState(1);
 
   const handlePage = (right) => {
     if (right) {
       const p = page + 1;
-      return p > count ? setPage(count) : setPage(p);
+      return p > numberOfPages ? setPage(numberOfPages) : setPage(p);
     }
     const p = page - 1;
     return p < 1 ? setPage(1) : setPage(p);
