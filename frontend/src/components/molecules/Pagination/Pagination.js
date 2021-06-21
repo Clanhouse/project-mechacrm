@@ -52,76 +52,36 @@ const ControlButton = styled.button`
   }
 `;
 
-const second = (count, page) => {
-  if (count <= 5 || (count > 5 && page <= 3)) {
-    return '2';
-  }
-  return '...';
-};
+const renderPagination = (numberOfPages, selectedPage) => {
+  const pagination = [];
 
-const third = (count, page) => {
-  if (page <= 3) {
-    return '3';
-  }
-  if (page > count - 2) {
-    return count - 2;
-  }
-  return page;
-};
+  pagination.push(getFirstPaginationElement(selectedPage));
+  pagination.push(getSecondPaginationElement(selectedPage, numberOfPages));
+  pagination.push(getMiddlePaginationElement(selectedPage, numberOfPages));
+  pagination.push(getPenultimatePaginationElement(selectedPage, numberOfPages));
+  pagination.push(getLastPaginationElement(selectedPage, numberOfPages));
 
-const fourth = (count, page) => {
-  if (count <= 5) {
-    return '4';
-  }
-  if (page < count - 1) {
-    return '...';
-  }
-  return count - 1;
+  return pagination;
 };
 
 const Pagination = ({
-  count,
-  page,
+  numberOfPages,
+  selectedPage,
   handlePage,
 }) => (
   <Container>
-    <ControlButton onClick={() => handlePage()}><KeyboardArrowLeftIcon fontSize="large" /></ControlButton>
-    {count > 0 && (
-      <Number active={page === 1}>
-        1
-      </Number>
-    )}
-
-    {count > 1 && (
-      <Number active={page === 2}>
-        {second(count, page)}
-      </Number>
-    )}
-
-    {count > 2 && (
-      <Number active={(page === 3) || (count > 5 && page <= count - 2 && page > 2)}>
-        {third(count, page)}
-      </Number>
-    )}
-
-    {count > 3 && (
-      <Number active={(page === 4 && count <= 5) || (count > 5 && page === count - 1)}>
-        {fourth(count, page)}
-      </Number>
-    )}
-
-    {count > 4 && (
-      <Number active={page === count}>
-        {count}
-      </Number>
-    )}
-    <ControlButton onClick={() => handlePage(true)}><KeyboardArrowRightIcon fontSize="large" /></ControlButton>
+    <ControlButton onClick={() => handlePage()}><KeyboardArrowLeftIcon fontSize="large" />
+    </ControlButton>
+    {renderPagination(numberOfPages, selectedPage)}
+    <ControlButton onClick={() => handlePage(true)}>
+      <KeyboardArrowRightIcon fontSize="large" />
+    </ControlButton>
   </Container>
 );
 
 Pagination.propTypes = {
-  count: PropTypes.number.isRequired,
-  page: PropTypes.number.isRequired,
+  numberOfPages: PropTypes.number.isRequired,
+  selectedPage: PropTypes.number.isRequired,
   handlePage: PropTypes.func.isRequired,
 };
 

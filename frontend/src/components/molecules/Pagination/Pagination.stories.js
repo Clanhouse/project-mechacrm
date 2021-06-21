@@ -5,8 +5,8 @@ export default {
   title: 'Organisms/Pagination',
   component: Pagination,
   argTypes: {
-    count: {
-      defaultValue: 12,
+    numberOfPages: {
+      defaultValue: 3,
     },
   },
 };
@@ -25,5 +25,5 @@ export const PaginationStory = (args) => {
     return p < 1 ? setPage(1) : setPage(p);
   };
 
-  return (<Pagination count={count} page={page} handlePage={handlePage} />);
+  return (<Pagination numberOfPages={numberOfPages} selectedPage={page} handlePage={handlePage} />);
 };
