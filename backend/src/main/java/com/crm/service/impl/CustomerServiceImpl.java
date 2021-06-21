@@ -39,6 +39,6 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponse getCustomerById(final Long id) {
         return repository.findById(id)
                 .map(mapper::convertToDto)
-                .orElseThrow(CustomerNotFoundException::new);
+                .orElseThrow(() -> new CustomerNotFoundException("Customer with given ID does not exist"));
     }
 }
