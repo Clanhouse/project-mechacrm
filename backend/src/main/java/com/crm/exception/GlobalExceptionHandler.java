@@ -4,6 +4,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -16,10 +17,11 @@ public class GlobalExceptionHandler {
 
     private static final String SOURCE_ERROR_MESSAGE = "Unknown source";
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
     public ErrorResponse handleTypeMismatchException(final BindException e, final HttpServletRequest request) {
         final List<String> errorMessages = e.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-        return new ErrorResponse(HttpStatus.BAD_REQUEST, getSource(request), errorMessages);
+        return new ErrorResponse(getSource(request), errorMessages);
     }
 
     private String getSource(final HttpServletRequest request) {

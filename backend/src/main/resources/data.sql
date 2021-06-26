@@ -1,3 +1,4 @@
+--Test data for car_types table
 INSERT INTO car_types(name) OVERRIDING SYSTEM VALUE
 VALUES ('Sedan'),
        ('Hatchback'),
@@ -10,34 +11,133 @@ VALUES ('Sedan'),
        ('Truck'),
        ('Other');
 
+--Test data for cars table
 INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) OVERRIDING SYSTEM VALUE
-VALUES ('JT3Z123KBW1589043', 'KR12PR', 'Toyota', 'Avensis', 2014, 123456, 'Some description', 3),
-       ('WVWZ321WBK1589044', 'EBEWM10', 'Volkswagen', 'Golf', 2013, 115000, 'Some description', 2),
-       ('JHWZ4H795FGU84012', 'WR34OP', 'Honda', 'Accord', 2012, 168546, 'Some description', 1),
-       ('WBA86H90021859321', 'ELAS23', 'BMW', 'M5', 2020, 22500, '', 1),
-       ('WAU34891024573567', 'KR78L0', 'Audi', 'A4', 2018, 50123, 'Some description', 1),
-       ('TMB1234FGH5678910', 'SK123F', 'Skoda', 'Octavia', 2010, 260000, null, 1),
-       ('JTR58904GH9480230', 'GWE002H', 'Toyota', 'Corolla', 2005, 282690, 'Some description', 1),
-       ('JTW2345O900039001', 'DW349W', 'Toyota', 'Avensis', 2007, 150990, 'Some description', 3),
-       ('VF7Z5670999910000', 'LJA346J', 'Citroen', 'C3', 2011, 122000, 'Some description', 2),
-       ('VF1F9H9HF3H989890', 'BS45PR', 'Renault', 'Kangoo', 2008, 261459, 'Some description', 4),
-       ('WVWFH749388504385', 'DLE21PL', 'Volkswagen', 'Passat', 1998, 358600, 'Some description', 3),
-       ('VF1F740000GK99303', 'EPA11XD', 'Renault', 'Traffic', 2020, 15000, 'Some description', 4),
-       ('5YJ3456JKFD900028', 'GD230P', 'Tesla', 'Model 3', 2019, 36900, null, 1),
-       ('W0LA2345670000123', 'ONY33PL', 'Opel', 'Astra', 2015, 88123, 'Some description', 1),
-       ('W0L0435993R034999', 'WW11JU', 'Opel', 'Zafira', 2014, 63500, 'Some description', 5),
-       ('TMBO0390000012345', 'SH35PR', 'Skoda', 'Superb', 2014, 45200, 'Some description', 1),
-       ('KNKOP569002920930', 'SK21RP', 'Kia', 'Ceed', 2012, 123123, null, 3),
-       ('TMB67890123456452', 'SC33FT', 'Skoda', 'Fabia', 2008, 231321, 'Some description', 2),
-       ('WAU47959HDH900045', 'LJA21BL', 'Audi', 'A3', 2002, 290900, 'Some description', 1),
-       ('1FBZ121200GHJK123', 'EBE14CC', 'Ford', 'Focus', 2004, 245630, 'Some description', 2),
-       ('VSSZ12GD4830J9994', 'WL003R', 'Seat', 'Leon', 2005, 190637, '', 2),
-       ('SAL009123FGHHJ002', 'WW89EK', 'Land Rover', 'Range Rover', 2014, 100000, 'Some description', 7),
-       ('JNW12300KL8945029', 'WWGH00', 'Nissan', 'Navara', 2010, 155000, 'Some description', 8),
-       ('VF1Z123KRH408UH33', 'WS90WQ', 'Renault', 'Scenic', 2009, 210000, 'Some description', 5),
-       ('WP0122347650FH44F', 'KR22RT', 'Porsche', 'Carrera', 2006, 269350, 'Some description', 6);
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'JT3Z123KBW1589043', 'KR12PR', 'Toyota', 'Avensis', 2014,
+                                                          123456, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Combi');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'WVWZ321WBK1589044', 'EBEWM10', 'Volkswagen', 'Golf', 2013,
+                                                          115000, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Hatchback');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'JHWZ4H795FGU84012', 'WR34OP', 'Honda', 'Accord', 2012,
+                                                          168546, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Sedan');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'WBA86H90021859321', 'ELAS23', 'BMW', 'M5', 2020, 22500, '', id
+                                                   FROM car_types
+                                                   WHERE name = 'Sedan');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'WAU34891024573567', 'KR78L0', 'Audi', 'A4', 2018, 50123,
+                                                          'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Sedan');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'TMB1234FGH5678910', 'SK123F', 'Skoda', 'Octavia', 2010,
+                                                          260000, NULL, id
+                                                   FROM car_types
+                                                   WHERE name = 'Sedan');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'JTR58904GH9480230', 'GWE002H', 'Toyota', 'Corolla', 2005,
+                                                          282690, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Sedan');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'JTW2345O900039001', 'DW349W', 'Toyota', 'Avensis', 2007,
+                                                          150990, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Combi');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'VF7Z5670999910000', 'LJA346J', 'Citroen', 'C3', 2011,
+                                                          122000, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Hatchback');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'VF1F9H9HF3H989890', 'BS45PR', 'Renault', 'Kangoo', 2008,
+                                                          261459, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'VAN');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'WVWFH749388504385', 'DLE21PL', 'Volkswagen', 'Passat', 1998,
+                                                          358600, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Combi');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'VF1F740000GK99303', 'EPA11XD', 'Renault', 'Traffic', 2020,
+                                                          15000, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'VAN');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT '5YJ3456JKFD900028', 'GD230P', 'Tesla', 'Model 3', 2019,
+                                                          36900, NULL, id
+                                                   FROM car_types
+                                                   WHERE name = 'Sedan');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'W0LA2345670000123', 'ONY33PL', 'Opel', 'Astra', 2015, 88123,
+                                                          'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Sedan');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'W0L0435993R034999', 'WW11JU', 'Opel', 'Zafira', 2014, 63500,
+                                                          'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Minivan');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'TMBO0390000012345', 'SH35PR', 'Skoda', 'Superb', 2014,
+                                                          45200, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Sedan');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'KNKOP569002920930', 'SK21RP', 'Kia', 'Ceed', 2012, 123123,
+                                                          NULL, id
+                                                   FROM car_types
+                                                   WHERE name = 'Combi');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'TMB67890123456452', 'SC33FT', 'Skoda', 'Fabia', 2008,
+                                                          231321, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Hatchback');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'WAU47959HDH900045', 'LJA21BL', 'Audi', 'A3', 2002, 290900,
+                                                          'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Sedan');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT '1FBZ121200GHJK123', 'EBE14CC', 'Ford', 'Focus', 2004,
+                                                          245630, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Hatchback');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'VSSZ12GD4830J9994', 'WL003R', 'Seat', 'Leon', 2005, 190637,
+                                                          '', id
+                                                   FROM car_types
+                                                   WHERE name = 'Hatchback');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'SAL009123FGHHJ002', 'WW89EK', 'Land Rover', 'Range Rover',
+                                                          2014, 100000, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'SUV');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'JNW12300KL8945029', 'WWGH00', 'Nissan', 'Navara', 2010,
+                                                          155000, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Pick-up');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'VF1Z123KRH408UH33', 'WS90WQ', 'Renault', 'Scenic', 2009,
+                                                          210000, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Minivan');
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) OVERRIDING SYSTEM VALUE (SELECT 'WP0122347650FH44F', 'KR22RT', 'Porsche', 'Carrera', 2006,
+                                                          269350, 'Some description', id
+                                                   FROM car_types
+                                                   WHERE name = 'Coupe');
 
+--Test data for customers table
 INSERT INTO customers(name, surname, phone, address) OVERRIDING SYSTEM VALUE
 VALUES ('Jan', 'Kowalski', '665456987', 'Kaliska 12, Bełchatów'),
        ('Maciej', 'Zalewski', '126434567', 'Warszawska 15, Kraków'),
@@ -65,45 +165,150 @@ VALUES ('Jan', 'Kowalski', '665456987', 'Kaliska 12, Bełchatów'),
        ('Anna', 'Kolanko', '852741963', 'Srebrna 40, Warszawa'),
        ('Jacek', 'Górnik', '636696000', 'Obozowa 25, Wrocław');
 
-INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE
-VALUES (1, 2),
-       (2, 1),
-       (3, 14),
-       (4, 3),
-       (4, 15),
-       (5, 5),
-       (6, 5),
-       (7, 22),
-       (7, 23),
-       (7, 24),
-       (8, 18),
-       (9, 21),
-       (10, 12),
-       (11, 4),
-       (12, 8),
-       (13, 25),
-       (14, 17),
-       (14, 6),
-       (15, 9),
-       (15, 19),
-       (16, 9),
-       (17, 20),
-       (18, 7),
-       (19, 16),
-       (20, 10),
-       (21, 11),
-       (22, 13),
-       (23, 25),
-       (24, 25),
-       (25, 8);
+--Test data for customers_cars table
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'WVWZ321WBK1589044')
+                                                                          FROM customers
+                                                                          WHERE phone = '665456987');
 
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'JT3Z123KBW1589043')
+                                                                          FROM customers
+                                                                          WHERE phone = '126434567');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'W0LA2345670000123')
+                                                                          FROM customers
+                                                                          WHERE phone = '789456123');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'JHWZ4H795FGU84012')
+                                                                          FROM customers
+                                                                          WHERE phone = '654321987');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'W0L0435993R034999')
+                                                                          FROM customers
+                                                                          WHERE phone = '654321987');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'WAU34891024573567')
+                                                                          FROM customers
+                                                                          WHERE phone = '660369852');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'WAU34891024573567')
+                                                                          FROM customers
+                                                                          WHERE phone = '721435678');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'SAL009123FGHHJ002')
+                                                                          FROM customers
+                                                                          WHERE phone = '620908901');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'JNW12300KL8945029')
+                                                                          FROM customers
+                                                                          WHERE phone = '620908901');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'VF1Z123KRH408UH33')
+                                                                          FROM customers
+                                                                          WHERE phone = '620908901');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'TMB67890123456452')
+                                                                          FROM customers
+                                                                          WHERE phone = '567890121');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'VSSZ12GD4830J9994')
+                                                                          FROM customers
+                                                                          WHERE phone = '500100890');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'VF1F740000GK99303')
+                                                                          FROM customers
+                                                                          WHERE phone = '882555444');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'WBA86H90021859321')
+                                                                          FROM customers
+                                                                          WHERE phone = '666555444');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'JTW2345O900039001')
+                                                                          FROM customers
+                                                                          WHERE phone = '789456000');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'WP0122347650FH44F')
+                                                                          FROM customers
+                                                                          WHERE phone = '802134678');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'KNKOP569002920930')
+                                                                          FROM customers
+                                                                          WHERE phone = '620908900');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'TMB1234FGH5678910')
+                                                                          FROM customers
+                                                                          WHERE phone = '620908900');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'VF7Z5670999910000')
+                                                                          FROM customers
+                                                                          WHERE phone = '777888999');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'WAU47959HDH900045')
+                                                                          FROM customers
+                                                                          WHERE phone = '777888999');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'VF7Z5670999910000')
+                                                                          FROM customers
+                                                                          WHERE phone = '745966365');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = '1FBZ121200GHJK123')
+                                                                          FROM customers
+                                                                          WHERE phone = '555444333');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'JTR58904GH9480230')
+                                                                          FROM customers
+                                                                          WHERE phone = '888777666');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'TMBO0390000012345')
+                                                                          FROM customers
+                                                                          WHERE phone = '789454987');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'VF1F9H9HF3H989890')
+                                                                          FROM customers
+                                                                          WHERE phone = '521321457');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'WVWFH749388504385')
+                                                                          FROM customers
+                                                                          WHERE phone = '504264111');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = '5YJ3456JKFD900028')
+                                                                          FROM customers
+                                                                          WHERE phone = '741852963');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'WP0122347650FH44F')
+                                                                          FROM customers
+                                                                          WHERE phone = '600400900');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'WP0122347650FH44F')
+                                                                          FROM customers
+                                                                          WHERE phone = '852741963');
+
+INSERT INTO customers_cars(customers_id, car_id) OVERRIDING SYSTEM VALUE (SELECT id, (SELECT id FROM cars WHERE vin = 'JTW2345O900039001')
+                                                                          FROM customers
+                                                                          WHERE phone = '636696000');
+
+--Test data for roles table
 INSERT INTO roles(name) OVERRIDING SYSTEM VALUE
 VALUES ('admin'),
        ('user');
 
+--Test data for account table
 INSERT INTO accounts(login, password, email, login_attempts, registration_date, last_successful_login,
-                     last_failed_login, role_id) OVERRIDING SYSTEM VALUE
-VALUES ('admin', '$2y$12$v97WyUOPeTyHw55h4Pm3WeiRyCRfVne8LnFhq7Vg7bRR6b2uWCUoa', 'admin@mail.com', 6,
-        '2021-05-24 16:00:00', '2021-05-26 16:00:00', '2021-05-25 16:00:00', 1),
-       ('user', '$2y$12$/EGOACr4sihV98Pl6mfjTeFZMI1O6bE1bDpa7UudeKdQIeVFmlQFe', 'user@mail.com', 5,
-        '2021-05-24 14:00:00', '2021-05-26 14:00:00', '2021-05-25 14:00:00', 2);
+                     last_failed_login, role_id) OVERRIDING SYSTEM VALUE (SELECT 'admin',
+                                                                                 '$2y$12$v97WyUOPeTyHw55h4Pm3WeiRyCRfVne8LnFhq7Vg7bRR6b2uWCUoa',
+                                                                                 'admin@mail.com', 6,
+                                                                                 '2021-05-24 16:00:00',
+                                                                                 '2021-05-26 16:00:00',
+                                                                                 '2021-05-25 16:00:00', id
+                                                                          FROM roles
+                                                                          WHERE name = 'admin');
+
+INSERT INTO accounts(login, password, email, login_attempts, registration_date, last_successful_login,
+                     last_failed_login, role_id) OVERRIDING SYSTEM VALUE (SELECT 'user',
+                                                                                 '$2y$12$/EGOACr4sihV98Pl6mfjTeFZMI1O6bE1bDpa7UudeKdQIeVFmlQFe',
+                                                                                 'user@mail.com', 5,
+                                                                                 '2021-05-24 14:00:00',
+                                                                                 '2021-05-26 14:00:00',
+                                                                                 '2021-05-25 14:00:00', id
+                                                                          FROM roles
+                                                                          WHERE name = 'user');
+

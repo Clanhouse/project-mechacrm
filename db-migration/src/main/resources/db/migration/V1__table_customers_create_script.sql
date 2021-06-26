@@ -1,7 +1,6 @@
-CREATE TABLE IF NOT EXISTS customers(
-  id int8 primary key not null unique generated always as identity,
-  name varchar(100) not null,
-  surname varchar(100) not null,
-  phone varchar(30) not null unique,
-  address varchar(255) not null
-);
+CREATE TABLE IF NOT EXISTS customers (
+	id      INT8 PRIMARY KEY NOT NULL UNIQUE GENERATED ALWAYS AS IDENTITY,
+	name    VARCHAR(100)     NOT NULL,
+	surname VARCHAR(100)     NOT NULL,
+	phone   VARCHAR(30)      NOT NULL UNIQUE,
+	address VARCHAR(255)     NOT NULL);
