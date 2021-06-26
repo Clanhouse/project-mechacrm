@@ -1,11 +1,13 @@
 package com.crm.dto.response;
 
 import com.crm.model.db.CarTypeEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CarResponse {
 
     private String vin;

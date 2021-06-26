@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,5 +27,11 @@ public class CarController {
             + " to specify page no. and size of each page.")
     public ResponseEntity<Page<CarResponse>> getCarsPaginated(@Valid PageRequest pageRequest) {
         return ResponseEntity.ok(carService.getCarsPaginated(pageRequest.getPage(), pageRequest.getSize()));
+    }
+
+    @GetMapping("/{carId}")
+    @ApiOperation(value = "Endpoint enable getting car by Id", notes = "Add param \"carId\" to specify which car should be returned")
+    public ResponseEntity<CarResponse> getCarById(@PathVariable Long carId) {
+        return ResponseEntity.ok(carService.getCarById(carId));
     }
 }

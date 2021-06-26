@@ -9,6 +9,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,5 +43,17 @@ public class CarControllerIntegrationTest {
                 .andExpect(status().is(OK.value()))
                 .andExpect(jsonPath("$.pageable.pageNumber", is(0)))
                 .andExpect(jsonPath("$.pageable.pageSize", is(20)));
+    }
+
+    @Test
+    public void shouldReturnCorrectResponseStatusWhenCallingCarWithExistingId() throws Exception {
+        mvc.perform(get("/cars/1"))
+                .andExpect(status().is(OK.value()));
+    }
+
+    @Test
+    public void shouldReturnBadResponseStatusWhenCallingCarWithNonExistingId() throws Exception {
+        mvc.perform(get("/cars/1000"))
+                .andExpect(status().is(BAD_REQUEST.value()));
     }
 }

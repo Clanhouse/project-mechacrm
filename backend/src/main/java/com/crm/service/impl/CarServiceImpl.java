@@ -2,6 +2,8 @@ package com.crm.service.impl;
 
 import com.crm.dto.mapper.CarMapper;
 import com.crm.dto.response.CarResponse;
+import com.crm.exception.CarNotFoundException;
+import com.crm.exception.ErrorDict;
 import com.crm.model.db.CarEntity;
 import com.crm.repository.CarRepository;
 import com.crm.service.CarService;
@@ -33,5 +35,11 @@ public class CarServiceImpl implements CarService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(carResponseList, pageable, carsPage.getTotalPages());
+    }
+
+    @Override
+    public CarResponse getCarById(final Long id) {
+        var carEntity = carRepository.findById(id).orElseThrow(() -> new CarNotFoundException(ErrorDict.CAR_NOT_FOUND));
+        return carMapper.convertToDto(carEntity);
     }
 }
