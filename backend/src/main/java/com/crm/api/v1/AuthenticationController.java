@@ -3,7 +3,11 @@ package com.crm.api.v1;
 import com.crm.config.JwtTokenUtils;
 import com.crm.dto.request.AccountRequest;
 import com.crm.dto.response.JwtResponse;
+import com.crm.service.AccountService;
+import com.crm.service.AccountServiceImpl;
 import com.crm.service.JwtUserDetailsService;
+import io.swagger.annotations.ApiOperation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +26,7 @@ public class AuthenticationController {
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
     private final JwtUserDetailsService userDetailsService;
+    private final AccountService accountService;
 
 
     @PostMapping("/auth")
@@ -31,6 +36,13 @@ public class AuthenticationController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getLogin());
 
         return ResponseEntity.ok(new JwtResponse(jwtTokenUtils.generateToken(userDetails), jwtTokenUtils.generateRefreshToken(userDetails)));
+    }
+
+    @ApiOperation(value = "Create and save new Account in database")
+    @PostMapping("/newAccount")
+    public ResponseEntity<?> createNewAccount(@RequestBody @Valid AccountRequest accountRequest) {
+        accountService.save(accountRequest);
+        return ResponseEntity.ok().build();
     }
 
 
