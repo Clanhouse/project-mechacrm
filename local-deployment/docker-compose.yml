@@ -16,7 +16,9 @@ services:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "crm"
   backend:
-    build: ../backend
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       [ "8000:8000" ]
     depends_on:
