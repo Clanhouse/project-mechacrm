@@ -1,19 +1,24 @@
 package com.crm.dto.request;
 
-import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import com.crm.exception.ErrorDict;
+import lombok.*;
+
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
+@Builder
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class CustomerRequest {
 
-    @NotNull
+    @NotEmpty(message = ErrorDict.CUSTOMER_NAME_INVALID)
     private String name;
-    @NotNull
+    @NotEmpty(message = ErrorDict.CUSTOMER_SURNAME_INVALID)
     private String surname;
-    @NotNull
+    @NotEmpty(message = ErrorDict.CUSTOMER_PHONE_INVALID)
     private String phone;
-    @NotNull
+    @NotEmpty(message = ErrorDict.CUSTOMER_ADDRESS_INVALID)
     private String address;
 }

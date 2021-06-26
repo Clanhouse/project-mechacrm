@@ -4,6 +4,7 @@ import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.service.CustomerService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +30,10 @@ public class CustomerController {
     }
 
     @PostMapping
+    @ApiOperation(value = "Endpoint is used to create a new customer")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCustomer(@Valid @RequestBody final CustomerRequest customerRequest) {
+    public void addCustomer(@ApiParam(name = "customerRequest", type = "CustomerRequest", value = "Object represents the customer " +
+            "that will be added to the database", required = true) @Valid @RequestBody final CustomerRequest customerRequest) {
         customerService.addCustomer(customerRequest);
     }
 }

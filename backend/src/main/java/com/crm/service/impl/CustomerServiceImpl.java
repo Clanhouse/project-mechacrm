@@ -3,6 +3,8 @@ package com.crm.service.impl;
 import com.crm.dto.mapper.CustomerMapper;
 import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.response.CustomerResponse;
+import com.crm.exception.CustomerException;
+import com.crm.exception.ErrorDict;
 import com.crm.model.db.CustomerEntity;
 import com.crm.repository.CustomerRepository;
 import com.crm.service.CustomerService;
@@ -37,7 +39,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void addCustomer(CustomerRequest customerRequest) {
-        repository.save(mapper.convertToEntity(customerRequest));
+        try {
+            repository.save(mapper.convertToEntity(customerRequest));
+        } catch (RuntimeException exc) {
+            throw new CustomerException(ErrorDict.CUSTOMER_INSERT_IMPOSSIBLE);
+        }
     }
 
 }
