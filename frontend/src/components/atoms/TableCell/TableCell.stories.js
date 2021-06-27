@@ -5,7 +5,6 @@ import TableCell from './TableCell';
 const DivContainer = styled.div`
   display: flex;
   justify-content: center;
-  border: green 1px solid;
   padding: 8px 16px;
   font-size: 14px;
 `;
@@ -13,14 +12,15 @@ const DivContainer = styled.div`
 const Button = styled.button`
   border-radius: 5px;
   border: none;
-  background-color: rgba(102, 51, 153, 0.8);
-  color: white;
+  background-color: ${({ theme }) => theme.color.blue};
+  color: ${({ theme }) => theme.color.light100};
   padding: 8px 16px;
   text-transform: uppercase;
   font-weight: bold;
   
   &:hover {
-    background-color: rgba(102, 51, 153, 1);
+    background-color:${({ theme }) => theme.color.light100};
+    color:${({ theme }) => theme.color.dark};
   }
 `;
 

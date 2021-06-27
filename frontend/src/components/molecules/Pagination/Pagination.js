@@ -7,7 +7,7 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 const Container = styled.div`
   box-shadow: rgba(0, 0, 0, 0.15) 10.95px 10.95px 20.6px;
 
-  border: lightgray 1px solid;
+  border: ${({ theme }) => theme.color.light400}; 1px solid;
   border-radius: 5px;
 
   display: flex;
@@ -33,17 +33,17 @@ const Number = styled.div`
   justify-content: center;
   align-items: center;
 
-  background-color: ${({ active }) => (active ? '#0D47A1' : 'transparent')};
-  color: ${({ active }) => (active ? 'white' : '#707070')};
+  background-color: ${({ active, theme }) => (active ? theme.color.blue : 'transparent')};
+  color: ${({ active, theme }) => (active ? theme.color.light : theme.color.grey)};
 
   &:hover {
-    background-color: ${({ disableHover }) => (disableHover ? null : 'lightgray')};
+    background-color: ${({ disableHover, theme }) => (disableHover ? null : theme.color.light300)};
   }
 `;
 
 const ControlButton = styled.button`
-  background-color: white; //TODO
-  color: dimgray; //TODO
+  background-color: ${({ theme }) => theme.color.light};
+  color: ${({ theme }) => theme.color.grey};
 
   border: none;
   border-radius: 5px;
@@ -55,7 +55,7 @@ const ControlButton = styled.button`
   transition: background-color 200ms ease-in-out;
 
   &:hover {
-    background-color: lightgray;
+    background-color: ${({ theme }) => theme.color.light300};
   }
 `;
 

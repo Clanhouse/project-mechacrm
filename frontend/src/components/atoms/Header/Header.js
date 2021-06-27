@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Container = styled.div`
-  background-color: ${({ theme }) => theme.color.white};
+  background-color: ${({ theme }) => theme.color.light};
   margin-bottom: 2px;
 `;
 
@@ -13,7 +13,7 @@ const Title = styled.div`
   font-family: ${({ theme }) => theme.fontFamily};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: ${({ theme }) => theme.fontSize.l};
-  color: ${({ theme }) => theme.color.primary};
+  color: ${({ theme }) => theme.color.blue};
   
   box-shadow: rgba(0, 0, 0, 0.2) 5px 6px 6px;
 `;

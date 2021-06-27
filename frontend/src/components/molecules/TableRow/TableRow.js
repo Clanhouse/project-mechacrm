@@ -3,11 +3,11 @@ import styled from 'styled-components';
 const TableRow = styled.tr`
 
   &:nth-child(odd) {
-    background-color: ${({ theme }) => theme.color.grey100};
+    background-color: ${({ theme }) => theme.color.light100};
   }
 
   &:nth-child(even) {
-    background-color: ${({ theme }) => theme.color.white};
+    background-color: ${({ theme }) => theme.color.light};
   }
 `;
 

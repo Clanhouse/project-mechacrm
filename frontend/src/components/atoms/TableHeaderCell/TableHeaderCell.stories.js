@@ -26,7 +26,7 @@ export default {
       defaultValue: 'header',
     },
     color: {
-      options: ['primary', 'secondary', 'success', 'info', 'warning', 'danger'],
+      options: ['blue'],
       control: {
         type: 'select',
       },

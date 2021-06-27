@@ -16,26 +16,32 @@ const columns = [
   {
     label: 'id',
     icon: <FingerprintIcon />,
+    color: 'blue',
   },
   {
     label: 'name',
     icon: <PersonIcon />,
+    color: 'blue',
   },
   {
     label: 'surname',
     icon: <PortraitIcon />,
+    color: 'blue',
   },
   {
     label: 'phone',
     icon: <PhoneIcon />,
+    color: 'blue',
   },
   {
     label: 'address',
     icon: <HomeIcon />,
+    color: 'blue',
   },
   {
     label: 'cars',
     icon: <DriveEtaIcon />,
+    color: 'blue',
   },
 ];
 

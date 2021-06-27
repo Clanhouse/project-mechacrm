@@ -40,11 +40,11 @@ const TableHeaderCell = ({
 TableHeaderCell.propTypes = {
   icon: PropTypes.element.isRequired,
   label: PropTypes.string.isRequired,
-  color: PropTypes.oneOf(['primary', 'secondary', 'success', 'info', 'warning', 'danger']),
+  color: PropTypes.oneOf(['blue']),
 };
 
 TableHeaderCell.defaultProps = {
-  color: 'primary',
+  color: 'blue',
 };
 
 export default TableHeaderCell;
