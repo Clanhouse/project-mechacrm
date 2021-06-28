@@ -23,3 +23,5 @@ services:
       [ "8000:8000" ]
     depends_on:
       - flyway
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/crm"
