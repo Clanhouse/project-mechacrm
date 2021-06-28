@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
   flyway:
     image: flyway/flyway
@@ -17,8 +17,8 @@ services:
       POSTGRES_DB: "crm"
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: local-deployment/Dockerfile
     ports:
       [ "8000:8000" ]
     depends_on:
