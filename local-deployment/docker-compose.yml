@@ -20,8 +20,9 @@ services:
       context: ../
       dockerfile: local-deployment/Dockerfile
     ports:
-      [ "8000:8000" ]
+      [ "9301:8085" ]
     depends_on:
       - flyway
     environment:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/crm"
+      SERVER_PORT: 8085
