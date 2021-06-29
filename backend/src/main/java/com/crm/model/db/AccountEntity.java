@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "accounts")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -1,9 +1,10 @@
 package com.crm.dto.request;
 
 import com.crm.exception.ErrorDict;
-import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.Min;
 
 @Getter
 @Setter

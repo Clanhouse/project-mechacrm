@@ -1,6 +1,5 @@
-package com.crm.dto;
+package com.crm.dto.mapper;
 
-import com.crm.dto.mapper.CustomerMapper;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.model.db.CustomerEntity;
 import org.junit.Before;
