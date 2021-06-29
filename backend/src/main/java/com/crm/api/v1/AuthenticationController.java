@@ -2,9 +2,10 @@ package com.crm.api.v1;
 
 import com.crm.config.JwtTokenUtils;
 import com.crm.dto.request.AccountRequest;
+import com.crm.dto.request.NewAccountRequest;
+import com.crm.dto.response.AccountResponse;
 import com.crm.dto.response.JwtResponse;
 import com.crm.service.AccountService;
-import com.crm.service.AccountServiceImpl;
 import com.crm.service.JwtUserDetailsService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
@@ -40,9 +41,9 @@ public class AuthenticationController {
 
     @ApiOperation(value = "Create and save new Account in database")
     @PostMapping("/newAccount")
-    public ResponseEntity<?> createNewAccount(@RequestBody @Valid AccountRequest accountRequest) {
-        accountService.save(accountRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> createNewAccount(@RequestBody @Valid final NewAccountRequest newAccountRequest) {
+        final AccountResponse save = accountService.save(newAccountRequest);
+        return ResponseEntity.ok(save);
     }
 
 

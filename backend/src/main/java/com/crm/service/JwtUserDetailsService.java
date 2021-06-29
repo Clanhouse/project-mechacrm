@@ -1,7 +1,7 @@
 package com.crm.service;
 
 
-import com.crm.config.UserPrincipal;
+import com.crm.model.db.AccountDetailsAdapter;
 import com.crm.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +17,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String userName) throws UsernameNotFoundException {
-        return new UserPrincipal(accountRepository.findByLogin(userName).orElseThrow(() -> new UsernameNotFoundException(userName)));
+        return new AccountDetailsAdapter(accountRepository.findByLogin(userName).orElseThrow(() -> new UsernameNotFoundException(userName)));
     }
 }

@@ -1,16 +1,20 @@
 package com.crm.dto.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountRequest {
+@Getter
+public class NewAccountRequest {
 
     @NotNull(message = "Nazwa użytkownika nie może być pusta")
     @NotBlank(message = "nazwa użytkownika nie może być pusta")
@@ -20,6 +24,16 @@ public class AccountRequest {
     @NotBlank(message = "Hasło nie może być puste")
     @Size(min = 8, max = 30, message = "Hasło powinno zawierać się w przedziale od 8 do 15 znaków")
     private String password;
+    @Email(message = "Zły format e-maila")
+    @NotNull
+    private String email;
+
+    private final Timestamp registrationDate = Timestamp.valueOf(LocalDateTime.now());
+
+
+    public void setEmail(String email) {
+        this.email = email.trim();
+    }
 
     public void setLogin(String login) {
         this.login = login.trim();
@@ -29,3 +43,4 @@ public class AccountRequest {
         this.password = password.trim();
     }
 }
+

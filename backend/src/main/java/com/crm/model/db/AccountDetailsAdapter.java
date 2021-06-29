@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -15,6 +16,9 @@ public class AccountDetailsAdapter implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (accountEntity.getRole()==null){
+            return Collections.emptyList();
+        } else
         return List.of(new SimpleGrantedAuthority(accountEntity.getRole().getName()));
     }
 

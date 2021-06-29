@@ -2,6 +2,7 @@ package com.crm.service;
 
 import com.crm.dto.mapper.AccountMapper;
 import com.crm.dto.request.AccountRequest;
+import com.crm.dto.request.NewAccountRequest;
 import com.crm.dto.response.AccountResponse;
 import com.crm.model.db.AccountDetailsAdapter;
 import com.crm.model.db.AccountEntity;
@@ -23,8 +24,8 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     private final AccountMapper accountMapper;
 
     @Override
-    public AccountResponse save(final AccountRequest accountRequest) {
-        AccountEntity accountEntity = accountMapper.convertToEntity(accountRequest);
+    public AccountResponse save(final NewAccountRequest newAccountRequest) {
+        AccountEntity accountEntity = accountMapper.convertToEntity(newAccountRequest);
         AccountEntity save = accountRepository.save(accountEntity);
         return accountMapper.convertToDto(save);
     }

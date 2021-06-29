@@ -1,5 +1,7 @@
 package com.crm.model.db;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +19,8 @@ import java.sql.Timestamp;
 @Table(name = "accounts")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AccountEntity {
 
     @Id
