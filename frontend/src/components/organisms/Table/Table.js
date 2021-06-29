@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Header from '../../atoms/Header/Header';
-import TableRow from '../../molecules/TableRow/TableRow';
-import TableHeader from '../../molecules/TableHeader/TableHeader';
-import TableCell from '../../atoms/TableCell/TableCell';
+import Header from 'components/atoms/Header/Header';
+import TableRow from 'components/molecules/TableRow/TableRow';
+import TableHeader from 'components/molecules/TableHeader/TableHeader';
+import TableCell from 'components/atoms/TableCell/TableCell';
 
 const TableContainer = styled.table`
   width: 100%;
