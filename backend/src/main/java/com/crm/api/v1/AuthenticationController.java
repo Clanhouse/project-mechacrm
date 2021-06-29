@@ -7,8 +7,8 @@ import com.crm.dto.response.AccountResponse;
 import com.crm.dto.response.JwtResponse;
 import com.crm.service.AccountService;
 import com.crm.service.JwtUserDetailsService;
+import com.crm.service.LoginService;
 import io.swagger.annotations.ApiOperation;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class AuthenticationController {
@@ -28,6 +30,7 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtUserDetailsService userDetailsService;
     private final AccountService accountService;
+    private final LoginService loginService;
 
 
     @PostMapping("/auth")
@@ -50,9 +53,11 @@ public class AuthenticationController {
     private void authenticate(final String username, final String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            loginService.resetAttemptsCounter(username);
         } catch (final DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (final BadCredentialsException e) {
+            loginService.increaseAttemptsCounter(username);
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
