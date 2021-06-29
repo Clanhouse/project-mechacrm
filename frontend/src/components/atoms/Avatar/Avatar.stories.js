@@ -1,6 +1,6 @@
 import React from 'react';
+import imageLink from 'assets/images/flower.jpg';
 import Avatar from './Avatar';
-import imageLink from '../../../assets/images/flower.jpg';
 
 export default {
   title: 'Atoms/Avatar',
