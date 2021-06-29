@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
   flyway:
     image: flyway/flyway
@@ -15,3 +15,14 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "crm"
+  backend:
+    build:
+      context: ../
+      dockerfile: local-deployment/Dockerfile
+    ports:
+      [ "9301:8085" ]
+    depends_on:
+      - flyway
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://db:5432/crm"
+      SERVER_PORT: 8085
