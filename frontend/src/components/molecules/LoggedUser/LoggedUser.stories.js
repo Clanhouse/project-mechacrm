@@ -3,7 +3,7 @@ import avatarImage from 'assets/images/flower.jpg';
 import LoggedUser from './LoggedUser';
 
 export default {
-  title: 'Organisms/LoggerUser',
+  title: 'Molecules/LoggerUser',
   component: LoggedUser,
   argTypes: {
     username: {
