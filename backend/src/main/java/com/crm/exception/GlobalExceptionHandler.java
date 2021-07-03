@@ -27,8 +27,8 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CustomerNotFoundException.class)
     public ErrorResponse handleCustomerNotFoundException(final CustomerNotFoundException e, final HttpServletRequest request) {
-        final List<String> errorMessages = List.of(e.getMessage());
-        return new ErrorResponse(HttpStatus.NOT_FOUND, getSource(request), errorMessages);
+        final String errorMessage = e.getMessage();
+        return new ErrorResponse(HttpStatus.NOT_FOUND, getSource(request), List.of(errorMessage));
     }
 
     private String getSource(final HttpServletRequest request) {

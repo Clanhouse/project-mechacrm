@@ -3,6 +3,7 @@ package com.crm.service.impl;
 import com.crm.dto.mapper.CustomerMapper;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.exception.CustomerNotFoundException;
+import com.crm.exception.ErrorDict;
 import com.crm.model.db.CustomerEntity;
 import com.crm.repository.CustomerRepository;
 import com.crm.service.CustomerService;
@@ -39,6 +40,6 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponse getCustomerById(final Long id) {
         return repository.findById(id)
                 .map(mapper::convertToDto)
-                .orElseThrow(() -> new CustomerNotFoundException("Customer with given ID does not exist"));
+                .orElseThrow(() -> new CustomerNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
     }
 }
