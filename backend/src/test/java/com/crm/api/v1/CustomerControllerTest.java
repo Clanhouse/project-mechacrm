@@ -2,7 +2,7 @@ package com.crm.api.v1;
 
 import com.crm.dto.response.CustomerResponse;
 import com.crm.service.impl.CustomerServiceImpl;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,10 +26,10 @@ public class CustomerControllerTest {
     @InjectMocks
     private CustomerController customerController;
 
-    private CustomerResponse customerResponse;
+    private static CustomerResponse customerResponse;
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         customerResponse = CustomerResponse.builder()
                 .id(ID)
                 .name(NAME)

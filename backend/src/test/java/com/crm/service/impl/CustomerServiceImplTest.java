@@ -6,20 +6,18 @@ import com.crm.exception.CustomerNotFoundException;
 import com.crm.exception.ErrorDict;
 import com.crm.model.db.CustomerEntity;
 import com.crm.repository.CustomerRepository;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
 import static io.jsonwebtoken.lang.Assert.notNull;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerServiceImplTest {
 
@@ -38,10 +36,10 @@ public class CustomerServiceImplTest {
     @InjectMocks
     private CustomerServiceImpl customerService;
 
-    private CustomerEntity customerEntity;
+    private static CustomerEntity customerEntity;
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         customerEntity = CustomerEntity.builder()
                 .id(ID)
                 .name(NAME)
@@ -63,7 +61,7 @@ public class CustomerServiceImplTest {
     }
 
     @Test(expected = CustomerNotFoundException.class)
-    public void shouldThrowCustomerNotFoundException() {
+    public void shouldThrowCustomerNotFoundExceptionOnWrongCustomerId() {
         when(customerRepository.findById(ID)).thenThrow(new CustomerNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
 
         customerService.getCustomerById(ID);
