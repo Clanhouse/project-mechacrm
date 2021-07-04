@@ -9,7 +9,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -54,6 +54,6 @@ public class CarControllerIntegrationTest {
     @Test
     public void shouldReturnBadResponseStatusWhenCallingCarWithNonExistingId() throws Exception {
         mvc.perform(get("/cars/1000"))
-                .andExpect(status().is(BAD_REQUEST.value()));
+                .andExpect(status().is(NOT_FOUND.value()));
     }
 }

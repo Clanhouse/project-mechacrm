@@ -39,7 +39,6 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarResponse getCarById(final Long id) {
-        var carEntity = carRepository.findById(id).orElseThrow(() -> new CarNotFoundException(ErrorDict.CAR_NOT_FOUND));
-        return carMapper.convertToDto(carEntity);
+        return carMapper.convertToDto(carRepository.findById(id).orElseThrow(() -> new CarNotFoundException(ErrorDict.CAR_NOT_FOUND)));
     }
 }

@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(getSource(request), errorMessages);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CarNotFoundException.class)
     public ErrorResponse handleCarNotFoundException(final CarNotFoundException e, final HttpServletRequest request) {
         final String errorMessage = e.getMessage();

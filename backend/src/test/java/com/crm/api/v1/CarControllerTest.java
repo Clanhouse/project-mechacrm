@@ -6,26 +6,29 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class CarControllerTest {
 
-    private final Long ID = 1L;
-    private final String VIN = "JT3Z123KBW1589043";
-    private final String REGISTRATION_NUMBER = "KR12PR";
-    private final String BRAND = "Toyota";
-    private final String MODEL = "Avensis";
-    private final int PRODUCTION_YEAR = 2014;
-    private final int MILEAGE = 123;
-    private final String DESCRIPTION = "Test description";
+    private final static Long ID = 1L;
+    private final static String VIN = "JT3Z123KBW1589043";
+    private final static String REGISTRATION_NUMBER = "KR12PR";
+    private final static String BRAND = "Toyota";
+    private final static String MODEL = "Avensis";
+    private final static int PRODUCTION_YEAR = 2014;
+    private final static int MILEAGE = 123;
+    private final static String DESCRIPTION = "Test description";
 
-    CarServiceImpl carService = mock(CarServiceImpl.class);
+    @Mock
+    private CarServiceImpl carService;
 
     @InjectMocks
     private CarController carController;
