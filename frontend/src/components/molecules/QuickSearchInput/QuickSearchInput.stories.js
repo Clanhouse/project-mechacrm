@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
-import theme from '../../../theme/MainTheme';
+import theme from 'theme/MainTheme';
 import QuickSearchInput from './QuickSearchInput';
 
 export default {

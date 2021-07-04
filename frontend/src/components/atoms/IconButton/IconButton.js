@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import theme from '../../../theme/MainTheme';
-// TODO in CRM-36
+import theme from 'theme/MainTheme';
+
 const Container = styled.button`
   background-color: ${({
     color,

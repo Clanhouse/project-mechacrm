@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import getColor from '../../../utils/utils';
+import getColor from 'utils/utils';
 
 const Container = styled.div`
   margin: 0 8px;
