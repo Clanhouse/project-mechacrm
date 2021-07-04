@@ -42,7 +42,9 @@ public class CustomerControllerTest {
     @Test
     public void shouldGetCustomerById() {
         when(customerService.getCustomerById(ID)).thenReturn(customerResponse);
+
         customerController.getCustomerById(ID);
+
         verify(customerService, times(1)).getCustomerById(ID);
     }
 }

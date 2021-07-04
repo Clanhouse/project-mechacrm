@@ -1,11 +1,11 @@
 package com.crm.service.impl;
 
 import com.crm.dto.mapper.CustomerMapper;
+import com.crm.dto.response.CustomerResponse;
 import com.crm.exception.CustomerNotFoundException;
 import com.crm.exception.ErrorDict;
 import com.crm.model.db.CustomerEntity;
 import com.crm.repository.CustomerRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
+import static io.jsonwebtoken.lang.Assert.notNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -53,16 +54,21 @@ public class CustomerServiceImplTest {
     @Test
     public void shouldGetCustomerById() {
         when(customerRepository.findById(ID)).thenReturn(Optional.of(customerEntity));
-        customerRepository.findById(ID).map(mapper::convertToDto);
+        when(mapper.convertToDto(customerEntity)).thenReturn(new CustomerResponse());
+
+        final CustomerResponse response = customerService.getCustomerById(ID);
+
         verify(customerRepository, times(1)).findById(ID);
+        notNull(response);
     }
 
-    @Test
+    @Test(expected = CustomerNotFoundException.class)
     public void shouldThrowCustomerNotFoundException() {
         when(customerRepository.findById(ID)).thenThrow(new CustomerNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
 
-        Assertions.assertThatThrownBy(() -> customerService.getCustomerById(ID))
-                .isInstanceOf(CustomerNotFoundException.class)
-                .hasMessage("Customer with provided id doesn't exist");
+        customerService.getCustomerById(ID);
+
+        verify(customerRepository, times(1)).findById(ID);
+        verify(mapper, times(0)).convertToDto(any());
     }
 }
