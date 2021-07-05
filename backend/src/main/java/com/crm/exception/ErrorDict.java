@@ -31,4 +31,8 @@ public class ErrorDict {
     public static final String PHONE_NUMBER_FORMAT_INVALID = "Numer telefonu powinien być w formacie np. 600700800";
     public static final String CUSTOMER_ADDRESS_INVALID = "Adres klienta nie może być pusty";
     public static final String ADDRESS_LENGTH_MUST_BETWEEN = "Adres powinien zawierać się w przedziale od 5 do 50 znaków";
+
+    public static final String VIN_ILLEGAL_CHARACTERS = "VIN can not contain letters O(o), I(i) and Q(q)";
+    public static final String VIN_NOT_FOUND = "Provided VIN number does not exist";
+    public static final String VIN_INVALID_LENGTH = "Invalid VIN number length, 17 characters are required";
 }

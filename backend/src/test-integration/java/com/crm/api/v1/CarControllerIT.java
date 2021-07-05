@@ -2,6 +2,10 @@ package com.crm.api.v1;
 
 import com.crm.App;
 import com.crm.BaseIntegrationTest;
+import com.crm.dto.response.CarResponse;
+import com.crm.exception.ErrorResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,12 +13,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,6 +34,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     void shouldReturnCorrectResponseStatusWhenCallingCarsEndpoint() throws Exception {
@@ -133,5 +144,81 @@ class CarControllerIT extends BaseIntegrationTest {
     void shouldReturnBadResponseStatusWhenCallingCarWithBlankRegistrationNumber() throws Exception {
         mvc.perform(get("/cars/search?license-plate="))
                 .andExpect(status().is(NOT_FOUND.value()));
+    }
+
+    @SneakyThrows
+    public void shouldResponseWith_NotFound_WhenVinIsInvalid() {
+        //given
+        String expectedMessages = "Invalid VIN number length, 17 characters are required";
+
+        //when
+        MvcResult mvcResult = mvc.perform(get("/cars/?vin=vvvvv"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        //then
+        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+
+        assertTrue(errorResponse.getMessage().contains(expectedMessages));
+        assertEquals(1, errorResponse.getMessage().size());
+    }
+
+    @Test
+    @SneakyThrows
+    public void shouldResponseWith_NotFound_WhenVinHasInvalidCharacters() {
+        //given
+        String expectedMessage = "VIN can not contain letters O(o), I(i) and Q(q)";
+        String vinWithInvalidCharacters = "vavaaav123456781q";
+
+        //when
+        MvcResult mvcResult = mvc.perform(get("/cars/?vin=" + vinWithInvalidCharacters))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        //then
+        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+
+        assertTrue(errorResponse.getMessage().contains(expectedMessage));
+        assertEquals(1, errorResponse.getMessage().size());
+    }
+
+    @Test
+    @SneakyThrows
+    public void shouldResponseWith_NotFound_WhenVinDoesNotExists() {
+        //given
+        String expectedMessage = "Provided VIN number does not exist";
+        String vinDoesNotExists = "a1w2e3r4t5y6u7g8b";
+
+        //when
+        MvcResult mvcResult = mvc.perform(get("/cars/?vin=" + vinDoesNotExists))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        //then
+        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+
+        assertTrue(errorResponse.getMessage().contains(expectedMessage));
+        assertEquals(1, errorResponse.getMessage().size());
+    }
+
+    @Test
+    @SneakyThrows
+    public void shouldResponseOk_WhenVinExists() {
+        //given
+        String vinDoesExists = "TMB67890123456452";
+
+        //when
+        MvcResult mvcResult = mvc.perform(get("/cars/?vin=" + vinDoesExists))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        //then
+        CarResponse carResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), CarResponse.class);
+
+        assertEquals(carResponse.getVin(), vinDoesExists);
     }
 }

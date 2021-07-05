@@ -41,4 +41,10 @@ public class CarController {
     public ResponseEntity<CarResponse> getCarByRegistrationNumber(@RequestParam(name = "license-plate") final String registrationNumber) {
         return ResponseEntity.ok(carService.getCarByRegistrationNumber(registrationNumber));
     }
+
+    @GetMapping(params = "vin")
+    @ApiOperation(value = "Finds car by VIN")
+    public ResponseEntity<CarResponse> getCarByVIN(@RequestParam final String vin) {
+        return ResponseEntity.ok(carService.getCarByVIN(vin));
+    }
 }

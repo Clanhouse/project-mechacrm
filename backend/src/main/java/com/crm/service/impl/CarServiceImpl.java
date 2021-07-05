@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
 
+    private final int VIN_LENGTH = 17;
+
     private final CarRepository carRepository;
     private final CarMapper carMapper;
 
@@ -48,5 +50,21 @@ public class CarServiceImpl implements CarService {
         return carRepository.findByRegistrationNumberIgnoreCase(registrationNumber)
                 .map(carMapper::convertToDto)
                 .orElseThrow(() -> new CarNotFoundException(ErrorDict.REGISTRATION_NUMBER_NOT_FOUND));
+    }
+
+    public CarResponse getCarByVIN(String vin) {
+        if (vin.length() != VIN_LENGTH)
+            throw new CarNotFoundException(ErrorDict.VIN_INVALID_LENGTH);
+
+        if (hasVinIllegalCharacters(vin))
+            throw new CarNotFoundException(ErrorDict.VIN_ILLEGAL_CHARACTERS);
+
+        return carRepository.findCarEntityByVinIgnoreCase(vin)
+                .map(carMapper::convertToDto)
+                .orElseThrow(() -> new CarNotFoundException(ErrorDict.VIN_NOT_FOUND));
+    }
+
+    private boolean hasVinIllegalCharacters(String vinNumber) {
+        return vinNumber.toLowerCase().contains("o") || vinNumber.toLowerCase().contains("i") || vinNumber.toLowerCase().contains("q");
     }
 }
