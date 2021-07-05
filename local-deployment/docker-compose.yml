@@ -20,7 +20,7 @@ services:
       context: ../
       dockerfile: local-deployment/Dockerfile
     ports:
-      [ "9301:8085" ]
+      [ "8085:8085" ]
     depends_on:
       - flyway
     environment:

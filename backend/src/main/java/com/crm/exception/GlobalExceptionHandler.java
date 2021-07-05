@@ -31,6 +31,13 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(getSource(request), List.of(errorMessage));
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)  
+    @ExceptionHandler(CarNotFoundException.class)
+    public ErrorResponse handleCarNotFoundException(final CarNotFoundException e, final HttpServletRequest request) {
+        final String errorMessage = e.getMessage();
+        return new ErrorResponse(getSource(request), List.of(errorMessage));
+    }
+
     private String getSource(final HttpServletRequest request) {
         try {
             return request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString();
