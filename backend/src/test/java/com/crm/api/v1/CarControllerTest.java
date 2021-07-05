@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -49,22 +48,11 @@ public class CarControllerTest {
 
     @Test
     public void getCarById() {
+        when(carService.getCarById(ID)).thenReturn(carResponse);
+
         carController.getCarById(ID);
+
         verify(carService, times(1)).getCarById(ID);
-    }
-
-    @Test
-    public void shouldReturnVinEqualToGiven() {
-        when(carService.getCarById(ID)).thenReturn(carResponse);
-        String vin = carService.getCarById(1L).getVin();
-        assertThat(vin).isNotNull();
-    }
-
-    @Test
-    public void shouldReturnCarResponseEqualToNull() {
-        when(carService.getCarById(ID)).thenReturn(carResponse);
-        var car = carService.getCarById(2L);
-        assertThat(car).isNull();
     }
 
 }
