@@ -5,7 +5,7 @@ import PortraitIcon from '@material-ui/icons/Portrait';
 import PhoneIcon from '@material-ui/icons/Phone';
 import HomeIcon from '@material-ui/icons/Home';
 import DriveEtaIcon from '@material-ui/icons/DriveEta';
-import theme from '../../../theme/MainTheme';
+import theme from 'theme/MainTheme';
 import TableHeaderCell from './TableHeaderCell';
 
 const icons = [
