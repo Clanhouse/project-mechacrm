@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import LogoImage from '../../../assets/logo.png';
-import IconButton from '../../atoms/IconButton/IconButton';
-import { ReactComponent as IconAlarm } from '../../../assets/svgs/alarm-light.svg';
+import LogoImage from 'assets/logo.png';
+import IconButton from 'components/atoms/IconButton/IconButton';
+import { ReactComponent as IconAlarm } from 'assets/svgs/alarm-light.svg';
 
 const MenuWrapper = styled.div`
   display: grid;

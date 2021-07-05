@@ -1,7 +1,7 @@
 import React from 'react';
+import { ReactComponent as IconAlarm } from 'assets/svgs/alarm-light.svg';
+import { ReactComponent as IconCalendar } from 'assets/svgs/calendar-range.svg';
 import IconButton from './IconButton';
-import { ReactComponent as IconAlarm } from '../../../assets/svgs/alarm-light.svg';
-import { ReactComponent as IconCalendar } from '../../../assets/svgs/calendar-range.svg';
 
 export default {
   title: 'Atoms/IconButton',

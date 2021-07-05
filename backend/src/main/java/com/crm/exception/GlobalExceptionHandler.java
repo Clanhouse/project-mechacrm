@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     public ErrorResponse handleTypeMismatchException(final BindException e, final HttpServletRequest request) {
         final List<String> errorMessages = e.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-        return new ErrorResponse(HttpStatus.BAD_REQUEST, getSource(request), errorMessages);
+        return new ErrorResponse(getSource(request), errorMessages);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

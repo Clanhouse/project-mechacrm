@@ -3,7 +3,7 @@ import StoryRouter from 'storybook-react-router';
 import SidebarComponent from './Sidebar';
 
 export default {
-  title: 'Components/Sidebar',
+  title: 'Organisms/Sidebar',
   component: SidebarComponent,
   decorators: [StoryRouter()],
 };
