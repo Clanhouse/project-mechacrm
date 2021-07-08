@@ -1,10 +1,12 @@
 package com.crm.dto.request;
 
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -31,6 +33,8 @@ public class NewAccountRequest {
     @NotNull
     private String email;
 
+    @ReadOnlyProperty
+    @ApiModelProperty(hidden = true)
     private final Timestamp registrationDate = Timestamp.valueOf(LocalDateTime.now());
 
 

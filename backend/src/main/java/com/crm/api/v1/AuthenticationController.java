@@ -5,6 +5,9 @@ import com.crm.dto.request.AccountRequest;
 import com.crm.dto.request.NewAccountRequest;
 import com.crm.dto.response.AccountResponse;
 import com.crm.dto.response.JwtResponse;
+import com.crm.exception.ErrorDict;
+import com.crm.exception.InvalidCredentialsException;
+import com.crm.exception.UserDisabledException;
 import com.crm.service.AccountService;
 import com.crm.service.JwtUserDetailsService;
 import com.crm.service.LoginService;
@@ -55,10 +58,10 @@ public class AuthenticationController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             loginService.resetAttemptsCounter(username);
         } catch (final DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new UserDisabledException(String.format(ErrorDict.USER_DISABLED, e));
         } catch (final BadCredentialsException e) {
             loginService.increaseAttemptsCounter(username);
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new InvalidCredentialsException(String.format(ErrorDict.INVALID_CREDENTIALS, e));
         }
     }
 }
