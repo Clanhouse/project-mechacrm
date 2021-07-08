@@ -1,5 +1,6 @@
 package com.crm.service.impl;
 
+import com.crm.exception.user.NoSuchUserException;
 import com.crm.model.db.AccountEntity;
 import com.crm.repository.AccountRepository;
 import com.crm.service.LoginService;
@@ -19,7 +20,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public void increaseAttemptsCounter(String login) {
         AccountEntity accountEntity = accountRepository.findByLogin(login).orElseThrow(
-                () -> new NoSuchElementException("Użytkownik taki nie istnieje"));
+                () -> new NoSuchUserException("Użytkownik taki nie istnieje"));
         accountEntity.setLoginAttempts(accountEntity.getLoginAttempts() + 1);
         accountEntity.setLastFailedLogin(Timestamp.valueOf(LocalDateTime.now()));
         accountRepository.save(accountEntity);
@@ -28,7 +29,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public void resetAttemptsCounter(String login) {
         AccountEntity accountEntity = accountRepository.findByLogin(login).orElseThrow(
-                () -> new NoSuchElementException("Użytkownik taki nie istnieje"));
+                () -> new NoSuchUserException("Użytkownik taki nie istnieje"));
         accountEntity.setLoginAttempts(0);
         accountEntity.setLastSuccessfulLogin(Timestamp.valueOf(LocalDateTime.now()));
         accountRepository.save(accountEntity);

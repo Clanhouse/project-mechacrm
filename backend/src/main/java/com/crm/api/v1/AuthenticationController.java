@@ -6,8 +6,8 @@ import com.crm.dto.request.NewAccountRequest;
 import com.crm.dto.response.AccountResponse;
 import com.crm.dto.response.JwtResponse;
 import com.crm.exception.ErrorDict;
-import com.crm.exception.InvalidCredentialsException;
 import com.crm.exception.UserDisabledException;
+import com.crm.exception.user.InvalidCredentialsException;
 import com.crm.service.AccountService;
 import com.crm.service.JwtUserDetailsService;
 import com.crm.service.LoginService;
@@ -53,7 +53,7 @@ public class AuthenticationController {
     }
 
 
-    private void authenticate(final String username, final String password) throws Exception {
+    private void authenticate(final String username, final String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             loginService.resetAttemptsCounter(username);

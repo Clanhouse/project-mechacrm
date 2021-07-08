@@ -1,7 +1,7 @@
 package com.crm.config.filter;
 
 import com.crm.config.JwtTokenUtils;
-import com.crm.exception.UnauthorizedException;
+import com.crm.exception.user.UnauthorizedException;
 import com.crm.service.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;

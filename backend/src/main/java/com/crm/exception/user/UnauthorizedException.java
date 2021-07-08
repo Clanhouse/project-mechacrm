@@ -1,4 +1,4 @@
-package com.crm.exception;
+package com.crm.exception.user;
 
 public class UnauthorizedException extends RuntimeException {
 
