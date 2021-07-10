@@ -1,16 +1,26 @@
 package com.crm.dto.request;
 
-import com.crm.exception.ErrorDict;
-import lombok.Getter;
+import com.crm.exception.validator.ValidParam;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
+import static com.crm.exception.ErrorDict.PAGINATED_EMPTY_PAGE;
+import static com.crm.exception.ErrorDict.PAGINATED_EMPTY_SIZE;
+import static com.crm.exception.ErrorDict.PAGINATED_INVALID_PAGE;
+import static com.crm.exception.ErrorDict.PAGINATED_INVALID_SIZE;
 
-@Getter
 @Setter
 public class PageRequest {
-    @Min(value = 0, message = ErrorDict.PAGINATED_INVALID_PAGE)
-    private Integer page = 0;
-    @Min(value = 1, message = ErrorDict.PAGINATED_INVALID_SIZE)
-    private Integer size = 20;
+
+    @ValidParam(emptyParamMessage = PAGINATED_EMPTY_PAGE, invalidParamMessage = PAGINATED_INVALID_PAGE)
+    private String page = "0";
+    @ValidParam(emptyParamMessage = PAGINATED_EMPTY_SIZE, invalidParamMessage = PAGINATED_INVALID_SIZE)
+    private String size = "20";
+
+    public int getPage() {
+        return Integer.parseInt(page);
+    }
+
+    public int getSize() {
+        return Integer.parseInt(size);
+    }
 }
