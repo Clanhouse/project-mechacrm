@@ -32,6 +32,7 @@ public class AccountMapper {
                 .registrationDate(newAccountRequest.getRegistrationDate())
                 .role((repository.findById(2L)).orElseThrow(NoSuchElementException::new))
                 .loginAttempts(0)
+                .isActivated(false)
                 .build();
     }
 }

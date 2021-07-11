@@ -35,7 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             // -- other
             "/auth**",
             "/newAccount",
-            "/account**"
+            "/account**",
+            "/activate/**"
     };
 
     @Override

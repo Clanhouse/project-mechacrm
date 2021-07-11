@@ -10,4 +10,6 @@ public interface AccountService {
     AccountEntity findById(final Long id);
 
     AccountEntity findByLogin(final String login);
+
+    AccountResponse activateNewAccount(final Long id);
 }

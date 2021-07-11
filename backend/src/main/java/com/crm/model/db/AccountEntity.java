@@ -39,6 +39,7 @@ public class AccountEntity {
     private Timestamp registrationDate;
     private Timestamp lastSuccessfulLogin;
     private Timestamp lastFailedLogin;
+    private Boolean isActivated;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")

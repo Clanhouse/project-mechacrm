@@ -9,4 +9,6 @@ public class ErrorDict {
     public static final String PAGINATED_INVALID_SIZE = "Size has to be greater or equal to 1";
     public static final String USER_DISABLED = "USER DISABLED";
     public static final String INVALID_CREDENTIALS = "INVALID CREDENTIALS";
+    public static final String ACCOUNT_IS_ACTIVE = "ACCOUNT IS ACTIVE";
+    public static final String ACCOUNT_ALREADY_EXIST = "ACCOUNT ALREADY EXIST";
 }

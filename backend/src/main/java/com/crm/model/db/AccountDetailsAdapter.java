@@ -34,21 +34,21 @@ public class AccountDetailsAdapter implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return accountEntity.getIsActivated();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return accountEntity.getIsActivated();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return accountEntity.getIsActivated();
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return accountEntity.getIsActivated();
     }
 }

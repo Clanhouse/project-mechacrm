@@ -19,11 +19,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,7 +39,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/auth")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody final AccountRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody final AccountRequest authenticationRequest) {
         authenticate(authenticationRequest.getLogin(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getLogin());
@@ -52,16 +54,22 @@ public class AuthenticationController {
         return ResponseEntity.ok(save);
     }
 
+    @ApiOperation(value = "Activate new Account")
+    @PostMapping("/activate/{id}")
+    public ResponseEntity<AccountResponse> activateAccountWithGivenId(@PathVariable @Min(0) final Long id) {
+        return ResponseEntity.ok(accountService.activateNewAccount(id));
+    }
+
 
     private void authenticate(final String username, final String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             loginService.resetAttemptsCounter(username);
         } catch (final DisabledException e) {
-            throw new UserDisabledException(String.format(ErrorDict.USER_DISABLED, e));
+            throw new UserDisabledException(String.format(ErrorDict.USER_DISABLED + "{}", e));
         } catch (final BadCredentialsException e) {
             loginService.increaseAttemptsCounter(username);
-            throw new InvalidCredentialsException(String.format(ErrorDict.INVALID_CREDENTIALS, e));
+            throw new InvalidCredentialsException(String.format(ErrorDict.INVALID_CREDENTIALS + "{}", e));
         }
     }
 }
