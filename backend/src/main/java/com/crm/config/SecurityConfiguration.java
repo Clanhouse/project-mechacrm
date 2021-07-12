@@ -33,10 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/swagger-ui.html",
             "/webjars/**",
             // -- other
-            "/auth**",
-            "/newAccount",
-            "/account**",
-            "/activate/**"
+            "/auth/**",
     };
 
     @Override

@@ -16,10 +16,10 @@ public class AccountDetailsAdapter implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (accountEntity.getRole()==null){
+        if (accountEntity.getRole() == null) {
             return Collections.emptyList();
         } else
-        return List.of(new SimpleGrantedAuthority(accountEntity.getRole().getName()));
+            return List.of(new SimpleGrantedAuthority(accountEntity.getRole().getName()));
     }
 
     @Override

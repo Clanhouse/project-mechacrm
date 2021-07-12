@@ -27,7 +27,7 @@ public class AuthenticationControllerTest {
 
     @Test
     public void shouldReturnCorrectResponseStatusWhenCallingAuthEndpoint() throws Exception {
-        mvc.perform(post("/newAccount")
+        mvc.perform(post("/auth/register")
                 .content("{\n" +
                         "  \"email\": \"TEST@gmail.com\",\n" +
                         "  \"login\": \"TEST123\",\n" +

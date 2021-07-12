@@ -5,7 +5,6 @@ import com.crm.dto.request.AccountRequest;
 import com.crm.dto.request.NewAccountRequest;
 import com.crm.dto.response.AccountResponse;
 import com.crm.dto.response.JwtResponse;
-import com.crm.exception.ErrorDict;
 import com.crm.exception.UserDisabledException;
 import com.crm.exception.user.InvalidCredentialsException;
 import com.crm.service.AccountService;
@@ -19,16 +18,22 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
+import static com.crm.exception.ErrorDict.INVALID_CREDENTIALS;
+import static com.crm.exception.ErrorDict.USER_DISABLED;
+
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 public class AuthenticationController {
 
     private final JwtTokenUtils jwtTokenUtils;
@@ -38,20 +43,17 @@ public class AuthenticationController {
     private final LoginService loginService;
 
 
-    @PostMapping("/auth")
+    @PostMapping()
     public ResponseEntity<?> createAuthenticationToken(@RequestBody final AccountRequest authenticationRequest) {
         authenticate(authenticationRequest.getLogin(), authenticationRequest.getPassword());
-
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getLogin());
-
         return ResponseEntity.ok(new JwtResponse(jwtTokenUtils.generateToken(userDetails), jwtTokenUtils.generateRefreshToken(userDetails)));
     }
 
     @ApiOperation(value = "Create and save new Account in database")
-    @PostMapping("/newAccount")
+    @PostMapping("/register")
     public ResponseEntity<?> createNewAccount(@RequestBody @Valid final NewAccountRequest newAccountRequest) {
-        final AccountResponse save = accountService.save(newAccountRequest);
-        return ResponseEntity.ok(save);
+        return ResponseEntity.ok(accountService.save(newAccountRequest));
     }
 
     @ApiOperation(value = "Activate new Account")
@@ -60,16 +62,15 @@ public class AuthenticationController {
         return ResponseEntity.ok(accountService.activateNewAccount(id));
     }
 
-
     private void authenticate(final String username, final String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             loginService.resetAttemptsCounter(username);
         } catch (final DisabledException e) {
-            throw new UserDisabledException(String.format(ErrorDict.USER_DISABLED + "{}", e));
+            throw new UserDisabledException(USER_DISABLED);
         } catch (final BadCredentialsException e) {
             loginService.increaseAttemptsCounter(username);
-            throw new InvalidCredentialsException(String.format(ErrorDict.INVALID_CREDENTIALS + "{}", e));
+            throw new InvalidCredentialsException(INVALID_CREDENTIALS);
         }
     }
 }
