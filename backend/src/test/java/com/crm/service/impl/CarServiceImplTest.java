@@ -1,11 +1,10 @@
-package com.crm.service.iml;
+package com.crm.service.impl;
 
 import com.crm.dto.mapper.CarMapper;
 import com.crm.dto.response.CarResponse;
 import com.crm.exception.CarNotFoundException;
 import com.crm.model.db.CarEntity;
 import com.crm.repository.CarRepository;
-import com.crm.service.impl.CarServiceImpl;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

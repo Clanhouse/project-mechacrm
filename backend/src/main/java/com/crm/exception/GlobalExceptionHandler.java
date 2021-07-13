@@ -27,15 +27,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CustomerNotFoundException.class)
     public ErrorResponse handleCustomerNotFoundException(final CustomerNotFoundException e, final HttpServletRequest request) {
-        final String errorMessage = e.getMessage();
-        return new ErrorResponse(getSource(request), List.of(errorMessage));
+        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)  
     @ExceptionHandler(CarNotFoundException.class)
     public ErrorResponse handleCarNotFoundException(final CarNotFoundException e, final HttpServletRequest request) {
-        final String errorMessage = e.getMessage();
-        return new ErrorResponse(getSource(request), List.of(errorMessage));
+        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
     }
 
     private String getSource(final HttpServletRequest request) {

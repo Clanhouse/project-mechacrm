@@ -24,7 +24,7 @@ public class CustomerController {
     @GetMapping
     @ApiOperation(value = "Finds all customers paginated", notes = "Add param \"page\" and/or \"size\""
             + " to specify page no. and size of each page.")
-    public ResponseEntity<Page<CustomerResponse>> getCustomersPaginated(@Valid PageRequest pageRequest) {
+    public ResponseEntity<Page<CustomerResponse>> getCustomersPaginated(@Valid final PageRequest pageRequest) {
         return ResponseEntity.ok(customerService.getCustomersPaginated(pageRequest.getPage(), pageRequest.getSize()));
     }
 
