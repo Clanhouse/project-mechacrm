@@ -12,7 +12,7 @@ public class CarMapper {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CarMapper(final ModelMapper modelMapper) {
+    public CarMapper(final  ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
