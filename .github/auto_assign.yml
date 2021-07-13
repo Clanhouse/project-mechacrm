@@ -1,6 +1,6 @@
 addReviewers: true
 
-addAssignees: true
+addAssignees: false
 
 reviewers:
   - Fellway
@@ -10,3 +10,5 @@ reviewers:
   - ell96p
   - daniel250592
   - aliwocha
+
+numberOfReviewers: 0
