@@ -16,7 +16,7 @@ public class CarMapper {
         this.modelMapper = modelMapper;
     }
 
-    public CarResponse convertToDto(final CarEntity carEntity) {
+    public CarResponse convertToDto(final   CarEntity carEntity) {
         return modelMapper.map(carEntity, CarResponse.class);
     }
 
