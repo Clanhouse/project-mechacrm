@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,13 @@ public class CustomerController {
     @GetMapping
     @ApiOperation(value = "Finds all customers paginated", notes = "Add param \"page\" and/or \"size\""
             + " to specify page no. and size of each page.")
-    public ResponseEntity<Page<CustomerResponse>> getCustomersPaginated(@Valid PageRequest pageRequest) {
+    public ResponseEntity<Page<CustomerResponse>> getCustomersPaginated(@Valid final PageRequest pageRequest) {
         return ResponseEntity.ok(customerService.getCustomersPaginated(pageRequest.getPage(), pageRequest.getSize()));
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Finds customer by id")
+    public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable final Long id) {
+        return ResponseEntity.ok(customerService.getCustomerById(id));
     }
 }
