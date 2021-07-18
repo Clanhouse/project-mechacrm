@@ -8,4 +8,5 @@ public class ErrorDict {
     public static final String PAGINATED_EMPTY_PAGE = "Page can't be empty";
     public static final String PAGINATED_EMPTY_SIZE = "Size can't be empty";
     public static final String CUSTOMER_NOT_FOUND = "Customer with provided id doesn't exist";
+    public static final String REGISTRATION_NUMBER_NOT_FOUND = "Provided registration number doesn't exist";
 }

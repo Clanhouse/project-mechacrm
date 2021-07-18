@@ -22,8 +22,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static io.jsonwebtoken.lang.Assert.notNull;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerServiceImplTest {
@@ -73,7 +76,7 @@ public class CustomerServiceImplTest {
 
         verify(customerRepository, times(1)).findById(ID);
         verify(customerMapper, times(1)).convertToDto(customerEntity);
-        notNull(response);
+        assertNotNull(response);
     }
 
     @Test(expected = CustomerNotFoundException.class)
@@ -97,6 +100,6 @@ public class CustomerServiceImplTest {
 
         verify(customerRepository, times(1)).findAll(pageable);
         verify(customerMapper, times(1)).convertToDto(customerEntity);
-        notNull(response);
+        assertNotNull(response);
     }
 }

@@ -17,5 +17,5 @@ Please include a summary of the change and which issue is fixed. Please also inc
 - [ ] My changes generate no new warnings
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
-- [ ] Commits are suqashed
+- [ ] Commits are squashed
 - [ ] PR and commit messages follow the style guidelines
