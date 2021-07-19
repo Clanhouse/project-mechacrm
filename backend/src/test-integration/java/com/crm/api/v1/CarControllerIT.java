@@ -18,19 +18,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = App.class)
 @AutoConfigureMockMvc
 @WithMockUser
-class CarControllerIntegrationTest {
+public class CarControllerIT {
 
     @Autowired
     private MockMvc mvc;
 
     @Test
-    void shouldReturnCorrectResponseStatusWhenCallingCarsEndpoint() throws Exception {
+    public void shouldReturnCorrectResponseStatusWhenCallingCarsEndpoint() throws Exception {
         mvc.perform(get("/cars"))
                 .andExpect(status().is(OK.value()));
     }
 
     @Test
-    void shouldResponseEntityHasPageNumberEqualTo2WhenParamSizeEqualTo1() throws Exception {
+    public void shouldResponseEntityHasPageNumberEqualTo2WhenParamSizeEqualTo1() throws Exception {
         mvc.perform(get("/cars?page=1&size=1"))
                 .andExpect(status().is(OK.value()))
                 .andExpect(jsonPath("$.pageable.pageNumber", is(1)))
@@ -38,7 +38,7 @@ class CarControllerIntegrationTest {
     }
 
     @Test
-    void shouldResponseWithDefaultValues() throws Exception {
+    public void shouldResponseWithDefaultValues() throws Exception {
         mvc.perform(get("/cars"))
                 .andExpect(status().is(OK.value()))
                 .andExpect(jsonPath("$.pageable.pageNumber", is(0)))
