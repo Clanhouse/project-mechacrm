@@ -23,7 +23,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static io.jsonwebtoken.lang.Assert.notNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerServiceImplTest {

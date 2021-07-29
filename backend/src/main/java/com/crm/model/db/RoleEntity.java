@@ -1,7 +1,9 @@
 package com.crm.model.db;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,12 +15,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "roles")
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
+@EqualsAndHashCode
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "roles")
 public class RoleEntity {
 
     @Id
