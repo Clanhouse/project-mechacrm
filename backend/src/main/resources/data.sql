@@ -292,20 +292,24 @@ VALUES ('admin'),
        ('user');
 
 --Test data for account table
-INSERT INTO accounts(login, password, email, login_attempts, registration_date, last_successful_login,
+INSERT INTO accounts(login, password, email,is_activated, login_attempts, registration_date, last_successful_login,
                      last_failed_login, role_id) OVERRIDING SYSTEM VALUE (SELECT 'admin',
                                                                                  '$2y$12$v97WyUOPeTyHw55h4Pm3WeiRyCRfVne8LnFhq7Vg7bRR6b2uWCUoa',
-                                                                                 'admin@mail.com', 6,
+                                                                                 'admin@mail.com',
+                                                                                 true,
+                                                                                 6,
                                                                                  '2021-05-24 16:00:00',
                                                                                  '2021-05-26 16:00:00',
                                                                                  '2021-05-25 16:00:00', id
                                                                           FROM roles
                                                                           WHERE name = 'admin');
 
-INSERT INTO accounts(login, password, email, login_attempts, registration_date, last_successful_login,
+INSERT INTO accounts(login, password, email,is_activated, login_attempts, registration_date, last_successful_login,
                      last_failed_login, role_id) OVERRIDING SYSTEM VALUE (SELECT 'user',
                                                                                  '$2y$12$/EGOACr4sihV98Pl6mfjTeFZMI1O6bE1bDpa7UudeKdQIeVFmlQFe',
-                                                                                 'user@mail.com', 5,
+                                                                                 'user@mail.com',
+                                                                                 true,
+                                                                                 5,
                                                                                  '2021-05-24 14:00:00',
                                                                                  '2021-05-26 14:00:00',
                                                                                  '2021-05-25 14:00:00', id

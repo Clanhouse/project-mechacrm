@@ -10,7 +10,6 @@ import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -27,16 +26,15 @@ import static com.crm.exception.ErrorDict.PASSWORD_LENGTH_MUST_BETWEEN;
 @Getter
 public class NewAccountRequest {
 
-    @NotNull(message = LOGIN_CAN_NOT_BE_EMPTY)
     @NotBlank(message = LOGIN_CAN_NOT_BE_EMPTY)
     @Size(max = 50, message = LOGIN_LENGTH_CAN_NOT_BE_GREATER_THAN)
     private String login;
-    @NotNull(message = PASSWORD_CAN_NOT_BE_EMPTY)
+
     @NotBlank(message = PASSWORD_CAN_NOT_BE_EMPTY)
     @Size(min = 8, max = 30, message = PASSWORD_LENGTH_MUST_BETWEEN)
     private String password;
+
     @Email(message = EMAIL_FORMAT_INVALID)
-    @NotNull
     private String email;
 
     @ReadOnlyProperty

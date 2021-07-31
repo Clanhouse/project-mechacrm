@@ -1,4 +1,4 @@
-package com.crm.service;
+package com.crm.service.impl;
 
 import com.crm.dto.mapper.AccountMapper;
 import com.crm.dto.request.NewAccountRequest;
@@ -11,6 +11,7 @@ import com.crm.model.db.AccountDetailsAdapter;
 import com.crm.model.db.AccountEntity;
 import com.crm.repository.AccountRepository;
 import com.crm.repository.RoleRepository;
+import com.crm.service.AccountService;
 import com.crm.tools.emails.EmailGenerator;
 import com.crm.tools.emails.EmailSender;
 import lombok.RequiredArgsConstructor;
