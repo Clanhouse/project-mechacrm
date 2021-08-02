@@ -71,14 +71,13 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
 
     @Override
     public AccountEntity findById(final Long id) {
-        Optional<AccountEntity> account = accountRepository.findById(id);
-        return account.orElseThrow(() -> new NoSuchAccountException(ACCOUNT_DOES_NOT_EXIST));
+        return accountRepository.findById(id).orElseThrow(() -> new NoSuchAccountException(ACCOUNT_DOES_NOT_EXIST));
+
     }
 
     @Override
     public AccountEntity findByLogin(final String login) {
-        Optional<AccountEntity> account = accountRepository.findByLogin(login);
-        return account.orElseThrow(() -> new NoSuchAccountException(ACCOUNT_DOES_NOT_EXIST));
+        return accountRepository.findByLogin(login).orElseThrow(() -> new NoSuchAccountException(ACCOUNT_DOES_NOT_EXIST));
     }
 
     @Override
