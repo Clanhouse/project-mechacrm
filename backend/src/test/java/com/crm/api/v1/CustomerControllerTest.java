@@ -1,5 +1,6 @@
 package com.crm.api.v1;
 
+import com.crm.dto.request.PageRequest;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.service.impl.CustomerServiceImpl;
 import org.junit.BeforeClass;
@@ -8,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
 
 import static org.mockito.Mockito.*;
 
@@ -22,6 +24,9 @@ public class CustomerControllerTest {
 
     @Mock
     private CustomerServiceImpl customerService;
+
+    @Mock
+    private PageRequest pageRequest;
 
     @InjectMocks
     private CustomerController customerController;
@@ -46,5 +51,16 @@ public class CustomerControllerTest {
         customerController.getCustomerById(ID);
 
         verify(customerService, times(1)).getCustomerById(ID);
+    }
+
+    @Test
+    public void shouldGetCustomersPaginated() {
+        when(customerService.getCustomersPaginated(anyInt(), anyInt())).thenReturn(Page.empty());
+
+        customerController.getCustomersPaginated(pageRequest);
+
+        verify(customerService, times(1)).getCustomersPaginated(anyInt(), anyInt());
+        verify(pageRequest, times(1)).getPage();
+        verify(pageRequest, times(1)).getSize();
     }
 }
