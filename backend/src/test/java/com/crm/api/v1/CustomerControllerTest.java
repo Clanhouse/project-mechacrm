@@ -1,5 +1,6 @@
 package com.crm.api.v1;
 
+import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.request.PageRequest;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.service.impl.CustomerServiceImpl;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 
@@ -32,11 +34,19 @@ public class CustomerControllerTest {
     private CustomerController customerController;
 
     private static CustomerResponse customerResponse;
+    private static CustomerRequest customerRequest;
 
     @BeforeClass
     public static void setUp() {
         customerResponse = CustomerResponse.builder()
                 .id(ID)
+                .name(NAME)
+                .surname(SURNAME)
+                .phone(PHONE)
+                .address(ADDRESS)
+                .build();
+
+        customerRequest = CustomerRequest.builder()
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
@@ -62,5 +72,12 @@ public class CustomerControllerTest {
         verify(customerService, times(1)).getCustomersPaginated(anyInt(), anyInt());
         verify(pageRequest, times(1)).getPage();
         verify(pageRequest, times(1)).getSize();
+    }
+
+    @Test
+    public void createCustomer() {
+        Mockito.doNothing().when(customerService).addCustomer(customerRequest);
+        customerController.addCustomer(customerRequest);
+        verify(customerService, times(1)).addCustomer(customerRequest);
     }
 }
