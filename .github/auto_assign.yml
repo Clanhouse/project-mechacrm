@@ -1,0 +1,14 @@
+addReviewers: true
+
+addAssignees: true
+
+reviewers:
+  - Fellway
+  - magikabdul
+  - SteelWro
+  - darkFlame666
+  - ell96p
+  - daniel250592
+  - aliwocha
+
+numberOfReviewers: 0

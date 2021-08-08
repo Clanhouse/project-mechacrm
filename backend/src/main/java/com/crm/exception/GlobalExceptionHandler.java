@@ -24,9 +24,15 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(getSource(request), errorMessages);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CustomerException.class)
-    public ErrorResponse handleCustomerException(final CustomerException e, final HttpServletRequest request) {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ErrorResponse handleCustomerNotFoundException(final CustomerNotFoundException e, final HttpServletRequest request) {
+        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(CarNotFoundException.class)
+    public ErrorResponse handleCarNotFoundException(final CarNotFoundException e, final HttpServletRequest request) {
         return new ErrorResponse(getSource(request), List.of(e.getMessage()));
     }
 

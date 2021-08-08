@@ -1,6 +1,6 @@
 import React from 'react';
+import theme from 'theme/MainTheme';
 import Header from './Header';
-import theme from '../../../theme/MainTheme';
 
 export default {
   title: 'Atoms/Header',

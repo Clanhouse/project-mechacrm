@@ -1,38 +1,42 @@
 package com.crm.api.v1;
 
-import com.crm.dto.request.CustomerRequest;
+import com.crm.dto.request.PageRequest;
+import com.crm.dto.response.CustomerResponse;
 import com.crm.service.impl.CustomerServiceImpl;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 import static org.mockito.Mockito.*;
 
-
-@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerControllerTest {
 
-    private final String NAME = "John";
-    private final String SURNAME = "Doe";
-    private final String PHONE = "+48 948302394";
-    private final String ADDRESS = "Test City";
+    private static final Long ID = 1L;
+    private static final String NAME = "Jan";
+    private static final String SURNAME = "Kowalski";
+    private static final String PHONE = "665456987";
+    private static final String ADDRESS = "Kaliska 12, Bełchatów";
 
-    CustomerServiceImpl customerService = mock(CustomerServiceImpl.class);
+    @Mock
+    private CustomerServiceImpl customerService;
+
+    @Mock
+    private PageRequest pageRequest;
 
     @InjectMocks
     private CustomerController customerController;
 
-    private CustomerRequest customerRequest;
+    private static CustomerResponse customerResponse;
 
-
-    @Before
-    public void setUp() {
-        customerRequest = CustomerRequest.builder()
+    @BeforeClass
+    public static void setUp() {
+        customerResponse = CustomerResponse.builder()
+                .id(ID)
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
@@ -41,10 +45,22 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void createCustomer() {
-        Mockito.doNothing().when(customerService).addCustomer(customerRequest);
-        customerController.addCustomer(customerRequest);
-        verify(customerService, times(1)).addCustomer(customerRequest);
+    public void shouldGetCustomerById() {
+        when(customerService.getCustomerById(ID)).thenReturn(customerResponse);
 
+        customerController.getCustomerById(ID);
+
+        verify(customerService, times(1)).getCustomerById(ID);
+    }
+
+    @Test
+    public void shouldGetCustomersPaginated() {
+        when(customerService.getCustomersPaginated(anyInt(), anyInt())).thenReturn(Page.empty());
+
+        customerController.getCustomersPaginated(pageRequest);
+
+        verify(customerService, times(1)).getCustomersPaginated(anyInt(), anyInt());
+        verify(pageRequest, times(1)).getPage();
+        verify(pageRequest, times(1)).getSize();
     }
 }
