@@ -1,6 +1,7 @@
 package com.crm.api.v1;
 
 import com.crm.App;
+import com.crm.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = App.class)
 @AutoConfigureMockMvc
 @WithMockUser
-class CustomerControllerIT {
+class CustomerControllerIT extends BaseIntegrationTest {
 
     @Autowired
     private MockMvc mvc;

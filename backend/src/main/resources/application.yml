@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/crm
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    url: jdbc:postgresql://localhost:5432/crm
+    user: postgres
+    password: postgres
+
+server:
+  servlet:
+    context-path: /api
+
+jwt:
+  secret: "tempToken"
+  expiration:
+    token:
+      time: 1000
+    refreshToken:
+      time: 600
