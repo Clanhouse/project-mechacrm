@@ -4,7 +4,7 @@ services:
     image: flyway/flyway
     command: -url=jdbc:postgresql://db:5432/crm -schemas=public -user=postgres -password=postgres -connectRetries=60 migrate
     volumes:
-      - ../db-migration/src/main/resources/db/migration:/flyway/sql
+      - ../backend/src/main/resources/db/migration:/flyway/sql
     depends_on:
       - db
   db:
