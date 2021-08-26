@@ -8,6 +8,7 @@ import com.crm.model.db.CarEntity;
 import com.crm.repository.CarRepository;
 import com.crm.service.CarService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +22,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
 
-    private final int VIN_LENGTH = 17;
+    @Value("${crm.properties.vin.length}")
+    private int VIN_LENGTH;
 
     private final CarRepository carRepository;
     private final CarMapper carMapper;
@@ -54,17 +56,17 @@ public class CarServiceImpl implements CarService {
 
     public CarResponse getCarByVIN(String vin) {
         if (vin.length() != VIN_LENGTH)
-            throw new CarNotFoundException(ErrorDict.VIN_INVALID_LENGTH);
+            throw new CarNotFoundException(ErrorDict.VIN_LENGTH_INVALID);
 
         if (hasVinIllegalCharacters(vin))
-            throw new CarNotFoundException(ErrorDict.VIN_ILLEGAL_CHARACTERS);
+            throw new CarNotFoundException(ErrorDict.VIN_FORMAT_INVALID);
 
-        return carRepository.findCarEntityByVinIgnoreCase(vin)
+        return carRepository.findByVinIgnoreCase(vin)
                 .map(carMapper::convertToDto)
                 .orElseThrow(() -> new CarNotFoundException(ErrorDict.VIN_NOT_FOUND));
     }
 
-    private boolean hasVinIllegalCharacters(String vinNumber) {
-        return vinNumber.toLowerCase().contains("o") || vinNumber.toLowerCase().contains("i") || vinNumber.toLowerCase().contains("q");
+    private boolean hasVinIllegalCharacters(String vin) {
+        return vin.toLowerCase().contains("o") || vin.toLowerCase().contains("i") || vin.toLowerCase().contains("q");
     }
 }

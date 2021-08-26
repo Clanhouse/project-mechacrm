@@ -13,11 +13,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -30,6 +30,7 @@ public class CarServiceImplTest {
 
     private static final Long ONE = 1L;
     private static final String REGISTRATION_NUMBER = "ABC123";
+    private static final String VIN = "VWVWVW12345678901";
 
     @Mock
     private CarRepository carRepository;
@@ -76,11 +77,10 @@ public class CarServiceImplTest {
         when(carRepository.findByRegistrationNumberIgnoreCase(REGISTRATION_NUMBER)).thenReturn(Optional.of(carEntity));
         when(carMapper.convertToDto(carEntity)).thenReturn(carResponse);
 
-        final CarResponse response = carService.getCarByRegistrationNumber(REGISTRATION_NUMBER);
+        assertEquals(carResponse, carService.getCarByRegistrationNumber(REGISTRATION_NUMBER));
 
         verify(carRepository, times(1)).findByRegistrationNumberIgnoreCase(REGISTRATION_NUMBER);
         verify(carMapper, times(1)).convertToDto(any());
-        assertNotNull(response);
     }
 
     @Test(expected = CarNotFoundException.class)
@@ -95,71 +95,73 @@ public class CarServiceImplTest {
 
     @Test
     public void shouldThrowCarNotFoundForVinLengthLessThenSeventeenCharacters() {
-        //given
-        String VIN_TOO_SHORT = "V455";
+        final String vinTooShort = "V455";
 
-        //then
-        assertThatThrownBy(() -> carService.getCarByVIN(VIN_TOO_SHORT))
+        assertThatThrownBy(() -> carService.getCarByVIN(vinTooShort))
                 .isInstanceOf(CarNotFoundException.class)
-                .hasMessage(ErrorDict.VIN_INVALID_LENGTH);
+                .hasMessage(ErrorDict.VIN_LENGTH_INVALID);
+
+        verify(carRepository, times(0)).findByVinIgnoreCase(vinTooShort);
     }
 
     @Test
     public void shouldThrowCarNotFoundForVinLengthMoreThenSeventeenCharacters() {
-        //given
-        String VIN_TOO_LONG = "V455467475455845FDLKPRTFGG";
+        final String vinTooLong = "V455467475455845FDLKPRTFGG";
 
-        //then
-        assertThatThrownBy(() -> carService.getCarByVIN(VIN_TOO_LONG))
+        assertThatThrownBy(() -> carService.getCarByVIN(vinTooLong))
                 .isInstanceOf(CarNotFoundException.class)
-                .hasMessage(ErrorDict.VIN_INVALID_LENGTH);
+                .hasMessage(ErrorDict.VIN_LENGTH_INVALID);
+
+        verify(carRepository, times(0)).findByVinIgnoreCase(vinTooLong);
     }
 
     @Test
     public void shouldThrowCarNotFoundForVinContainCharacter_O() {
-        //given
-        String VIN_WITH_CHAR_O = "VIN4003876543920O";
+        ReflectionTestUtils.setField(carService, "VIN_LENGTH", 17);
+        final String vinWithCharO = "VIN4003876543920O";
 
-        //when
-        assertThatThrownBy(() -> carService.getCarByVIN(VIN_WITH_CHAR_O))
+        assertThatThrownBy(() -> carService.getCarByVIN(vinWithCharO))
                 .isInstanceOf(CarNotFoundException.class)
-                .hasMessage(ErrorDict.VIN_ILLEGAL_CHARACTERS);
+                .hasMessage(ErrorDict.VIN_FORMAT_INVALID);
+
+        verify(carRepository, times(0)).findByVinIgnoreCase(vinWithCharO);
     }
 
     @Test
     public void shouldThrowCarNotFoundForVinContainCharacter_I() {
-        //given
-        String VIN_WITH_CHAR_O = "VIN4003876543920i";
+        ReflectionTestUtils.setField(carService, "VIN_LENGTH", 17);
+        final String vinWithCharI = "VIN4003876543920i";
 
-        //when
-        assertThatThrownBy(() -> carService.getCarByVIN(VIN_WITH_CHAR_O))
+        assertThatThrownBy(() -> carService.getCarByVIN(vinWithCharI))
                 .isInstanceOf(CarNotFoundException.class)
-                .hasMessage(ErrorDict.VIN_ILLEGAL_CHARACTERS);
+                .hasMessage(ErrorDict.VIN_FORMAT_INVALID);
+
+        verify(carRepository, times(0)).findByVinIgnoreCase(vinWithCharI);
     }
 
     @Test
     public void shouldThrowCarNotFoundForVinContainCharacter_Q() {
-        //given
-        String VIN_WITH_CHAR_O = "VINq4003876543920";
+        ReflectionTestUtils.setField(carService, "VIN_LENGTH", 17);
+        final String vinWithCharQ = "VINq4003876543920";
 
-        //when
-        assertThatThrownBy(() -> carService.getCarByVIN(VIN_WITH_CHAR_O))
+        assertThatThrownBy(() -> carService.getCarByVIN(vinWithCharQ))
                 .isInstanceOf(CarNotFoundException.class)
-                .hasMessage(ErrorDict.VIN_ILLEGAL_CHARACTERS);
+                .hasMessage(ErrorDict.VIN_FORMAT_INVALID);
+
+        verify(carRepository, times(0)).findByVinIgnoreCase(vinWithCharQ);
     }
 
 
     @Test
     public void shouldGetCarByVin() {
-        //given
-        String vin = "VWVWVW12345678901";
+        ReflectionTestUtils.setField(carService, "VIN_LENGTH", 17);
 
-        //when
-        when(carRepository.findCarEntityByVinIgnoreCase(vin)).thenReturn(Optional.of(carEntity));
+        when(carRepository.findByVinIgnoreCase(VIN)).thenReturn(Optional.of(carEntity));
         when(carMapper.convertToDto(carEntity)).thenReturn(carResponse);
-        when(carService.getCarByVIN(vin)).thenReturn(carResponse);
 
-        //then
-        assertEquals(carResponse, carService.getCarByVIN(vin));
+        assertEquals(carResponse, carService.getCarByVIN(VIN));
+
+        verify(carRepository, times(1)).findByVinIgnoreCase(VIN);
+        verify(carMapper, times(1)).convertToDto(carEntity);
     }
 }

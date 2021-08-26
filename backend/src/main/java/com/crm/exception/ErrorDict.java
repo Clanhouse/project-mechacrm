@@ -10,6 +10,8 @@ public class ErrorDict {
     public static final String CAR_NOT_FOUND = "Nie znaleziono samochodu o podanym ID";
     public static final String CAR_VIN_INVALID = "Niepoprawny numer VIN";
     public static final String VIN_FORMAT_INVALID = "Niedozwolone znaki w numerze VIN";
+    public static final String VIN_NOT_FOUND = "Podany numer VIN nie istnieje";
+    public static final String VIN_LENGTH_INVALID = "Błędna długość numeru VIN, wymagane jest 17 znaków";
     public static final String REGISTRATION_NUMBER_NOT_FOUND = "Nie znaleziono samochodu o podanym numerze rejestracyjnym";
     public static final String REGISTRATION_NUMBER_FORMAT_INVALID = "Niedozwolone znaki w numerze rejestracyjnym";
     public static final String REGISTRATION_NUMBER_LENGTH_MUST_BETWEEN = "Numer rejestracyjny powinien zawierać się w przedziale od 3 do 10 znaków";
@@ -32,7 +34,4 @@ public class ErrorDict {
     public static final String CUSTOMER_ADDRESS_INVALID = "Adres klienta nie może być pusty";
     public static final String ADDRESS_LENGTH_MUST_BETWEEN = "Adres powinien zawierać się w przedziale od 5 do 50 znaków";
 
-    public static final String VIN_ILLEGAL_CHARACTERS = "VIN can not contain letters O(o), I(i) and Q(q)";
-    public static final String VIN_NOT_FOUND = "Provided VIN number does not exist";
-    public static final String VIN_INVALID_LENGTH = "Invalid VIN number length, 17 characters are required";
 }
