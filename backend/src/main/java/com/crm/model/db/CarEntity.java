@@ -38,5 +38,5 @@ public class CarEntity {
     private CarTypeEntity carTypeEntity;
 
     @ManyToMany(mappedBy = "cars")
-    private final Set<CustomerEntity> cars = new HashSet<>();
+    private final Set<CustomerEntity> customers = new HashSet<>();
 }
