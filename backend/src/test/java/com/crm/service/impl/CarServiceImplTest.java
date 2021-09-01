@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.times;
 public class CarServiceImplTest {
 
     private static final Long ONE = 1L;
+    private static final String REGISTRATION_NUMBER = "ABC123";
 
     @Mock
     private CarRepository carRepository;
@@ -39,7 +41,7 @@ public class CarServiceImplTest {
     private static CarResponse carResponse;
 
     @BeforeClass
-    public static void setup() {
+    public static void setUp() {
         carEntity = new CarEntity();
         carResponse = new CarResponse();
     }
@@ -63,6 +65,28 @@ public class CarServiceImplTest {
         carService.getCarById(ONE);
 
         verify(carRepository, times(1)).findById(ONE);
+        verify(carMapper, times(0)).convertToDto(any());
+    }
+
+    @Test
+    public void getCarByRegistrationNumberShouldReturnCorrectResponse() {
+        when(carRepository.findByRegistrationNumberIgnoreCase(REGISTRATION_NUMBER)).thenReturn(Optional.of(carEntity));
+        when(carMapper.convertToDto(carEntity)).thenReturn(carResponse);
+
+        final CarResponse response = carService.getCarByRegistrationNumber(REGISTRATION_NUMBER);
+
+        verify(carRepository, times(1)).findByRegistrationNumberIgnoreCase(REGISTRATION_NUMBER);
+        verify(carMapper, times(1)).convertToDto(any());
+        assertNotNull(response);
+    }
+
+    @Test(expected = CarNotFoundException.class)
+    public void getCarByRegistrationNumberShouldThrowExceptionForInvalidRegistrationNumber() {
+        when(carRepository.findByRegistrationNumberIgnoreCase(REGISTRATION_NUMBER)).thenReturn(Optional.empty());
+
+        carService.getCarByRegistrationNumber(REGISTRATION_NUMBER);
+
+        verify(carRepository, times(1)).findByRegistrationNumberIgnoreCase(REGISTRATION_NUMBER);
         verify(carMapper, times(0)).convertToDto(any());
     }
 }

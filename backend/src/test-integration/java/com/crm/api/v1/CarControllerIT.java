@@ -105,4 +105,33 @@ class CarControllerIT extends BaseIntegrationTest {
         mvc.perform(get("/cars/1000"))
                 .andExpect(status().is(NOT_FOUND.value()));
     }
+
+    @Test
+    void shouldReturnCorrectResponseStatusWhenCallingCarWithValidRegistrationNumber() throws Exception {
+        mvc.perform(get("/cars/search?license-plate=kR12pr"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.vin", is("JT3Z123KBW1589043")))
+                .andExpect(jsonPath("$.registrationNumber", is("KR12PR")))
+                .andExpect(jsonPath("$.brand", is("Toyota")))
+                .andExpect(jsonPath("$.model", is("Avensis")))
+                .andExpect(jsonPath("$.productionYear", is(2014)))
+                .andExpect(jsonPath("$.mileage", is(123456)))
+                .andExpect(jsonPath("$.description", is("Some description")))
+                .andExpect(jsonPath("$.carTypeEntity.id", is(3)))
+                .andExpect(jsonPath("$.carTypeEntity.name", is("Combi")))
+                .andExpect(status().is(OK.value()));
+    }
+
+    @Test
+    void shouldReturnBadResponseStatusWhenCallingCarWithInvalidRegistrationNumber() throws Exception {
+        mvc.perform(get("/cars/search?license-plate=KR"))
+                .andExpect(status().is(NOT_FOUND.value()));
+    }
+
+    @Test
+    void shouldReturnBadResponseStatusWhenCallingCarWithBlankRegistrationNumber() throws Exception {
+        mvc.perform(get("/cars/search?license-plate="))
+                .andExpect(status().is(NOT_FOUND.value()));
+    }
 }

@@ -10,6 +10,7 @@ public class ErrorDict {
     public static final String CAR_NOT_FOUND = "Nie znaleziono samochodu o podanym ID";
     public static final String CAR_VIN_INVALID = "Niepoprawny numer VIN";
     public static final String VIN_FORMAT_INVALID = "Niedozwolone znaki w numerze VIN";
+    public static final String REGISTRATION_NUMBER_NOT_FOUND = "Nie znaleziono samochodu o podanym numerze rejestracyjnym";
     public static final String REGISTRATION_NUMBER_FORMAT_INVALID = "Niedozwolone znaki w numerze rejestracyjnym";
     public static final String REGISTRATION_NUMBER_LENGTH_MUST_BETWEEN = "Numer rejestracyjny powinien zawierać się w przedziale od 3 do 10 znaków";
     public static final String CAR_BRAND_INVALID = "Nazwa marki samochodu nie może być pusta";

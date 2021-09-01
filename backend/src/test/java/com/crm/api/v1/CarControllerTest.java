@@ -49,12 +49,21 @@ public class CarControllerTest {
     }
 
     @Test
-    public void getCarById() {
+    public void shouldGetCarById() {
         when(carService.getCarById(ID)).thenReturn(carResponse);
 
         carController.getCarById(ID);
 
         verify(carService, times(1)).getCarById(ID);
+    }
+
+    @Test
+    public void shouldGetCarByRegistrationNumber() {
+        when(carService.getCarByRegistrationNumber(REGISTRATION_NUMBER)).thenReturn(carResponse);
+
+        carController.getCarByRegistrationNumber(REGISTRATION_NUMBER);
+
+        verify(carService, times(1)).getCarByRegistrationNumber(REGISTRATION_NUMBER);
     }
 
 }
