@@ -1,6 +1,6 @@
 package com.crm.model.db;
 
-import com.sun.istack.NotNull;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -22,7 +22,7 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -34,16 +34,9 @@ public class CustomerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private String name;
-
-    @NotNull
     private String surname;
-
-    @NotNull
     private String phone;
-
-    @NotNull
     private String address;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -54,5 +47,4 @@ public class CustomerEntity {
             inverseJoinColumns = @JoinColumn(name = "car_id")
     )
     private Set<CarEntity> cars = new HashSet<>();
-
 }

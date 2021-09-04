@@ -1,7 +1,12 @@
 package com.crm.model.db;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,9 +21,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "cars")
-@Getter
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
+@Setter
+@EqualsAndHashCode
+@Builder
+@Table(name = "cars")
 public class CarEntity {
 
     @Id
@@ -38,5 +47,6 @@ public class CarEntity {
     private CarTypeEntity carTypeEntity;
 
     @ManyToMany(mappedBy = "cars")
-    private final Set<CustomerEntity> customers = new HashSet<>();
+    @EqualsAndHashCode.Exclude
+    private Set<CustomerEntity> customers = new HashSet<>();
 }
