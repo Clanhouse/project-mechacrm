@@ -1,7 +1,9 @@
 package com.crm.api.v1;
 
+import com.crm.dto.request.CarRequest;
 import com.crm.dto.request.PageRequest;
 import com.crm.dto.response.CarResponse;
+import com.crm.model.db.CarEntity;
 import com.crm.service.impl.CarServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 
@@ -47,5 +52,18 @@ public class CarController {
     @ApiOperation(value = "Finds car by VIN", notes = "Add param \"vin\" to specify which car should be returned by VIN")
     public ResponseEntity<CarResponse> getCarByVIN(@RequestParam(name = "vin") final String vin) {
         return ResponseEntity.ok(carService.getCarByVIN(vin));
+    }
+
+    @PostMapping
+    @ApiOperation(value = "Add new car", notes = "Add body \"CarRequest\" to add new car to database")
+    public ResponseEntity<?> addCar(@Valid @RequestBody final CarRequest carRequest) {
+        CarEntity car = carService.addCar(carRequest);
+
+        return ResponseEntity.created(ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("/" + car.getId().toString())
+                        .build()
+                        .toUri())
+                .build();
     }
 }

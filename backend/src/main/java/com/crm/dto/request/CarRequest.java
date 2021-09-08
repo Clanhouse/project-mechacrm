@@ -27,10 +27,10 @@ import javax.validation.constraints.Size;
 public class CarRequest {
 
     // Allowing only numbers, CAPITAL and small letters without O(o), I(i) and Q(q)
-    private static final String VIN_PATTERN = "[A-HJ-NPR-Za-hj-npr-z0-9]";
+    private final String VIN_PATTERN = "[A-HJ-NPR-Za-hj-npr-z0-9]*";
 
     // Allowing only numbers, CAPITAL and small letters
-    private static final String REGISTRATION_NUMBER_PATTERN = "[A-Za-z0-9]";
+    private final String REGISTRATION_NUMBER_PATTERN = "[A-Za-z0-9]*";
 
     private Long id;
 
@@ -53,7 +53,6 @@ public class CarRequest {
 
     @NotNull(message = ErrorDict.CAR_PRODUCTION_YEAR_INVALID)
     @Min(value = 1950, message = ErrorDict.CAR_PRODUCTION_YEAR_INVALID)
-    @Size(min = 4, max = 4, message = ErrorDict.CAR_PRODUCTION_YEAR_INVALID)
     private Integer productionYear;
 
     @NotNull(message = ErrorDict.CAR_MILEAGE_INVALID)

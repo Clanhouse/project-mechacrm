@@ -3,6 +3,7 @@ package com.crm.exception;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,9 +31,15 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(getSource(request), List.of(e.getMessage()));
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)  
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CarNotFoundException.class)
     public ErrorResponse handleCarNotFoundException(final CarNotFoundException e, final HttpServletRequest request) {
+        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(CarHandlingException.class)
+    public ErrorResponse handleCarHandlingException(final CarHandlingException e, final HttpServletRequest request) {
         return new ErrorResponse(getSource(request), List.of(e.getMessage()));
     }
 

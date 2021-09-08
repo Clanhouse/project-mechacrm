@@ -1,11 +1,15 @@
 package com.crm.service.impl;
 
 import com.crm.dto.mapper.CarMapper;
+import com.crm.dto.request.CarRequest;
 import com.crm.dto.response.CarResponse;
+import com.crm.exception.CarHandlingException;
 import com.crm.exception.CarNotFoundException;
 import com.crm.exception.ErrorDict;
 import com.crm.model.db.CarEntity;
+import com.crm.model.db.CarTypeEntity;
 import com.crm.repository.CarRepository;
+import com.crm.repository.CarTypeRepository;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +22,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,6 +40,9 @@ public class CarServiceImplTest {
     private CarRepository carRepository;
 
     @Mock
+    private CarTypeRepository carTypeRepository;
+
+    @Mock
     private CarMapper carMapper;
 
     @InjectMocks
@@ -43,11 +50,13 @@ public class CarServiceImplTest {
 
     private static CarEntity carEntity;
     private static CarResponse carResponse;
+    private static CarRequest carRequest;
 
     @BeforeClass
     public static void setUp() {
         carEntity = new CarEntity();
         carResponse = new CarResponse();
+        carRequest = new CarRequest();
     }
 
     @Test
@@ -163,5 +172,90 @@ public class CarServiceImplTest {
 
         verify(carRepository, times(1)).findByVinIgnoreCase(VIN);
         verify(carMapper, times(1)).convertToDto(carEntity);
+    }
+
+    @Test
+    public void shouldThrowConflictWhenVinExists() {
+        final String existingVin = "VWVWVW12345678901";
+        carRequest = CarRequest.builder()
+                .vin(existingVin)
+                .carTypeEntity(CarTypeEntity.builder().name("").build())
+                .build();
+
+        carEntity = CarEntity.builder().vin(existingVin).build();
+
+        when(carRepository.findByVinIgnoreCase(existingVin)).thenReturn(Optional.of(carEntity));
+
+        assertThatThrownBy(() -> carService.addCar(carRequest))
+                .isInstanceOf(CarHandlingException.class)
+                .hasMessage(ErrorDict.CAR_CREATE_VIN_EXISTS);
+
+        verify(carRepository, times(1)).findByVinIgnoreCase(existingVin);
+    }
+
+    @Test
+    public void shouldThrowConflictWhenRegistrationNumberExists() {
+        final String existingRegistrationNumber = "KR12345";
+        carRequest = CarRequest.builder()
+                .registrationNumber(existingRegistrationNumber)
+                .carTypeEntity(CarTypeEntity.builder().name("").build())
+                .build();
+
+        carEntity = CarEntity.builder().registrationNumber(existingRegistrationNumber).build();
+
+        when(carRepository.findByRegistrationNumberIgnoreCase(existingRegistrationNumber))
+                .thenReturn(Optional.of(carEntity));
+
+        assertThatThrownBy(() -> carService.addCar(carRequest))
+                .isInstanceOf(CarHandlingException.class)
+                .hasMessage(ErrorDict.CAR_CREATE_REGISTRATION_NUMBER_EXISTS);
+
+        verify(carRepository, times(1)).findByRegistrationNumberIgnoreCase(existingRegistrationNumber);
+    }
+
+    @Test
+    public void shouldAddCarWithTypeOtherWhenCarTypeNotProvided() {
+        carRequest = CarRequest.builder()
+                .carTypeEntity(CarTypeEntity.builder().name("").build())
+                .build();
+
+        when(carTypeRepository.findByNameIgnoreCase("Other"))
+                .thenReturn(Optional.of(CarTypeEntity.builder().name("Other").build()));
+
+        when(carMapper.convertToEntity(carRequest)).thenReturn(carEntity);
+
+        when(carRepository.save(carEntity)).thenReturn(carEntity);
+
+        CarEntity addedCar = carService.addCar(carRequest);
+
+        assertEquals("Other", addedCar.getCarTypeEntity().getName());
+
+        verify(carTypeRepository, times(1)).findByNameIgnoreCase("Other");
+        verify(carMapper, times(1)).convertToEntity(carRequest);
+        verify(carRepository, times(1)).save(carEntity);
+    }
+
+    @Test
+    public void shouldAddCarWhenCarTypeProvided() {
+        final String carTypeName = "Sedan";
+
+        carRequest = CarRequest.builder()
+                .carTypeEntity(CarTypeEntity.builder().name(carTypeName).build())
+                .build();
+
+        when(carTypeRepository.findByNameIgnoreCase(carTypeName))
+                .thenReturn(Optional.of(CarTypeEntity.builder().name(carTypeName).build()));
+
+        when(carMapper.convertToEntity(carRequest)).thenReturn(carEntity);
+
+        when(carRepository.save(carEntity)).thenReturn(carEntity);
+
+        CarEntity addedCar = carService.addCar(carRequest);
+
+        assertEquals(carTypeName, addedCar.getCarTypeEntity().getName());
+
+        verify(carTypeRepository, times(1)).findByNameIgnoreCase(carTypeName);
+        verify(carMapper, times(1)).convertToEntity(carRequest);
+        verify(carRepository, times(1)).save(carEntity);
     }
 }
