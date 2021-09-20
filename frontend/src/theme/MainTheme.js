@@ -1,5 +1,11 @@
 const theme = {
   color: {
+    background: {
+      yellow: '#ffb400',
+    },
+    text: {
+      primary: '#04294F',
+    },
     primary: '#007bff',
     secondary: '#6c757d',
     info: '#17a2b8',
@@ -22,6 +28,8 @@ const theme = {
     s: '12px',
     m: '18px',
     l: '24px',
+    xl: '32px',
+    xxl: '48px',
   },
 
   fontWeight: {
