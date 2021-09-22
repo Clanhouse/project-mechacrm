@@ -6,6 +6,7 @@ const theme = {
     text: {
       primary: '#04294F',
     },
+    primary: '#007bff',
     secondary: '#6c757d',
     info: '#17a2b8',
     success: '#28a745',
