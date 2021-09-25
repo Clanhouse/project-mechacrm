@@ -14,7 +14,7 @@ const Title = styled.div`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: ${({ theme }) => theme.fontSize.l};
   color: ${({ theme }) => theme.color.primary};
-  
+
   box-shadow: rgba(0, 0, 0, 0.2) 5px 6px 6px;
 `;
 
