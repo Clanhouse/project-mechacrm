@@ -2,7 +2,7 @@ package com.crm.api.v1;
 
 import com.crm.dto.response.CarResponse;
 import com.crm.service.impl.CarServiceImpl;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -33,10 +33,10 @@ public class CarControllerTest {
     @InjectMocks
     private CarController carController;
 
-    private CarResponse carResponse;
+    private static CarResponse carResponse;
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         carResponse = CarResponse.builder()
                 .vin(VIN)
                 .registrationNumber(REGISTRATION_NUMBER)

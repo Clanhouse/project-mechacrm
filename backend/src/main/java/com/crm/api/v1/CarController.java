@@ -3,7 +3,6 @@ package com.crm.api.v1;
 import com.crm.dto.request.CarRequest;
 import com.crm.dto.request.PageRequest;
 import com.crm.dto.response.CarResponse;
-import com.crm.model.db.CarEntity;
 import com.crm.service.impl.CarServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-
 
 @RestController
 @RequestMapping("/cars")
@@ -65,6 +63,5 @@ public class CarController {
                         .build()
                         .toUri())
                 .body(carResponse);
-//                .build();
     }
 }

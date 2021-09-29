@@ -4,11 +4,10 @@ import com.crm.dto.request.CarRequest;
 import com.crm.dto.response.CarResponse;
 import com.crm.model.db.CarEntity;
 import com.crm.model.db.CarTypeEntity;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
@@ -28,14 +27,12 @@ public class CarMapperTest {
     @Spy
     private ModelMapper modelMapper;
 
-    @Mock
-    private CarTypeEntity carTypeEntity;
-
     @InjectMocks
     private CarMapper carMapper;
 
-    private CarRequest carRequest;
-    private CarEntity carEntity;
+    private static CarRequest carRequest;
+    private static CarEntity carEntity;
+    private static CarTypeEntity carTypeEntity;
 
     private static final Long ID = 1L;
     private static final String VIN = "test";
@@ -46,8 +43,13 @@ public class CarMapperTest {
     private static final Integer MILEAGE = 123456;
     private static final String DESCRIPTION = "test";
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
+        carTypeEntity = CarTypeEntity.builder()
+                .id(ID)
+                .name("type")
+                .build();
+
         carRequest = CarRequest.builder()
                 .id(ID)
                 .vin(VIN)

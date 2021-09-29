@@ -23,9 +23,7 @@ import javax.validation.constraints.Size;
 public class CustomerRequest {
 
     // Allowing polish numbers only without prefixes, dashes or white spaces
-    private static final String PHONE_PATTERN = "^(45|5[0,1,3,7]|6[0,6,9]|7[2,3,8,9]|88)[0-9]{7}";
-
-    private Long id;
+    private static final String PHONE_PATTERN = "^(45|5[0,1,3,7]|6[0,6,9]|7[2,3,8,9]|88)[0-9]{7}$";
 
     @NotBlank(message = ErrorDict.CUSTOMER_NAME_INVALID)
     @Size(min = 3, max = 30, message = ErrorDict.NAME_LENGTH_MUST_BETWEEN)

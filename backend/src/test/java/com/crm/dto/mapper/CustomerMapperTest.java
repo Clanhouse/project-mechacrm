@@ -3,7 +3,7 @@ package com.crm.dto.mapper;
 import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.model.db.CustomerEntity;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -29,8 +29,8 @@ public class CustomerMapperTest {
     @InjectMocks
     private CustomerMapper customerMapper;
 
-    private CustomerRequest customerRequest;
-    private CustomerEntity customerEntity;
+    private static CustomerRequest customerRequest;
+    private static CustomerEntity customerEntity;
 
     private static final Long ID = 1L;
     private static final String NAME = "test";
@@ -38,10 +38,9 @@ public class CustomerMapperTest {
     private static final String PHONE = "+48 111111111";
     private static final String ADDRESS = "test";
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         customerRequest = CustomerRequest.builder()
-                .id(ID)
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
@@ -78,7 +77,6 @@ public class CustomerMapperTest {
         final CustomerEntity customerEntity = customerMapper.convertToEntity(customerRequest);
 
         assertAll(
-                () -> assertEquals(ID, customerEntity.getId()),
                 () -> assertEquals(NAME, customerEntity.getName()),
                 () -> assertEquals(SURNAME, customerEntity.getSurname()),
                 () -> assertEquals(PHONE, customerEntity.getPhone()),

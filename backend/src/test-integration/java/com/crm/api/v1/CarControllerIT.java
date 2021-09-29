@@ -64,13 +64,13 @@ class CarControllerIT extends BaseIntegrationTest {
     }
 
     @Test
-    void shouldReturnCorrectResponseStatusWhenCallingCarsEndpoint() throws Exception {
+    void shouldResponseWith_OK_WhenCallingCarsEndpoint() throws Exception {
         mvc.perform(get("/cars"))
                 .andExpect(status().is(OK.value()));
     }
 
     @Test
-    void shouldResponseEntityHasPageNumberEqualTo2WhenParamSizeEqualTo1() throws Exception {
+    void shouldResponseEntityHasPageNumberEqualTo1AndParamSizeEqualTo1() throws Exception {
         mvc.perform(get("/cars?page=1&size=1"))
                 .andExpect(status().is(OK.value()))
                 .andExpect(jsonPath("$.pageable.pageNumber", is(1)))
@@ -78,7 +78,7 @@ class CarControllerIT extends BaseIntegrationTest {
     }
 
     @Test
-    void shouldResponseWithDefaultValues() throws Exception {
+    void shouldResponseWithDefaultValuesWhenCallingCarsEndpoint() throws Exception {
         mvc.perform(get("/cars"))
                 .andExpect(status().is(OK.value()))
                 .andExpect(jsonPath("$.pageable.pageNumber", is(0)))
@@ -86,7 +86,7 @@ class CarControllerIT extends BaseIntegrationTest {
     }
 
     @Test
-    void shouldReturnCorrectResponseStatusWhenCallingCarWithExistingId_WhenDescriptionNotBlank() throws Exception {
+    void shouldResponseWith_OK_WhenCallingCarWithExistingId_WhenDescriptionNotBlank() throws Exception {
         mvc.perform(get("/cars/1"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
@@ -103,7 +103,7 @@ class CarControllerIT extends BaseIntegrationTest {
     }
 
     @Test
-    void shouldReturnCorrectResponseStatusWhenCallingCarWithExistingId_WhenDescriptionIsBlank() throws Exception {
+    void shouldResponseWith_OK_WhenCallingCarWithExistingId_WhenDescriptionIsBlank() throws Exception {
         mvc.perform(get("/cars/4"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(4)))
@@ -120,7 +120,7 @@ class CarControllerIT extends BaseIntegrationTest {
     }
 
     @Test
-    void shouldReturnCorrectResponseStatusWhenCallingCarWithExistingId_WhenDescriptionIsNull() throws Exception {
+    void shouldResponseWith_OK_WhenCallingCarWithExistingId_WhenDescriptionIsNull() throws Exception {
         mvc.perform(get("/cars/6"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(6)))
@@ -137,13 +137,23 @@ class CarControllerIT extends BaseIntegrationTest {
     }
 
     @Test
-    void shouldReturnBadResponseStatusWhenCallingCarWithNonExistingId() throws Exception {
-        mvc.perform(get("/cars/1000"))
-                .andExpect(status().is(NOT_FOUND.value()));
+    void shouldResponseWith_NotFound_WhenCallingCarWithNonExistingId() throws Exception {
+        final String expectedMessage = ErrorDict.CAR_NOT_FOUND;
+
+        MvcResult mvcResult = mvc.perform(get("/cars/1000"))
+                .andDo(print())
+                .andExpect(status().is(NOT_FOUND.value()))
+                .andReturn();
+
+        ErrorResponse errorResponse = objectMapper.readValue(mvcResult
+                .getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+
+        assertTrue(errorResponse.getMessage().contains(expectedMessage));
+        assertEquals(1, errorResponse.getMessage().size());
     }
 
     @Test
-    void shouldReturnCorrectResponseStatusWhenCallingCarWithValidRegistrationNumber() throws Exception {
+    void shouldResponseWith_OK_WhenCallingCarWithValidRegistrationNumber() throws Exception {
         mvc.perform(get("/cars/search?license-plate=kR12pr"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
@@ -160,21 +170,41 @@ class CarControllerIT extends BaseIntegrationTest {
     }
 
     @Test
-    void shouldReturnBadResponseStatusWhenCallingCarWithInvalidRegistrationNumber() throws Exception {
-        mvc.perform(get("/cars/search?license-plate=KR"))
-                .andExpect(status().is(NOT_FOUND.value()));
+    void shouldResponseWith_NotFound_WhenCallingCarWithInvalidRegistrationNumber() throws Exception {
+        final String expectedMessage = ErrorDict.REGISTRATION_NUMBER_NOT_FOUND;
+
+        MvcResult mvcResult = mvc.perform(get("/cars/search?license-plate=KR"))
+                .andDo(print())
+                .andExpect(status().is(NOT_FOUND.value()))
+                .andReturn();
+
+        ErrorResponse errorResponse = objectMapper.readValue(mvcResult
+                .getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+
+        assertTrue(errorResponse.getMessage().contains(expectedMessage));
+        assertEquals(1, errorResponse.getMessage().size());
     }
 
     @Test
-    void shouldReturnBadResponseStatusWhenCallingCarWithBlankRegistrationNumber() throws Exception {
-        mvc.perform(get("/cars/search?license-plate="))
-                .andExpect(status().is(NOT_FOUND.value()));
+    void shouldResponseWith_NotFound_WhenCallingCarWithBlankRegistrationNumber() throws Exception {
+        final String expectedMessage = ErrorDict.REGISTRATION_NUMBER_NOT_FOUND;
+
+        MvcResult mvcResult = mvc.perform(get("/cars/search?license-plate="))
+                .andDo(print())
+                .andExpect(status().is(NOT_FOUND.value()))
+                .andReturn();
+
+        ErrorResponse errorResponse = objectMapper.readValue(mvcResult
+                .getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+
+        assertTrue(errorResponse.getMessage().contains(expectedMessage));
+        assertEquals(1, errorResponse.getMessage().size());
     }
 
     @SneakyThrows
     @Test
     void shouldResponseWith_NotFound_WhenVinIsInvalid() {
-        final String expectedMessages = ErrorDict.VIN_LENGTH_INVALID;
+        final String expectedMessage = ErrorDict.VIN_LENGTH_INVALID;
 
         MvcResult mvcResult = mvc.perform(get("/cars/search?vin=vvvvv"))
                 .andDo(print())
@@ -184,7 +214,7 @@ class CarControllerIT extends BaseIntegrationTest {
         ErrorResponse errorResponse = objectMapper.readValue(mvcResult
                 .getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
 
-        assertTrue(errorResponse.getMessage().contains(expectedMessages));
+        assertTrue(errorResponse.getMessage().contains(expectedMessage));
         assertEquals(1, errorResponse.getMessage().size());
     }
 

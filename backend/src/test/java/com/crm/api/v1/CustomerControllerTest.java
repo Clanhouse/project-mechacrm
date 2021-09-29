@@ -1,5 +1,6 @@
 package com.crm.api.v1;
 
+import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.request.PageRequest;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.service.impl.CustomerServiceImpl;
@@ -10,6 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -35,9 +41,20 @@ public class CustomerControllerTest {
     private CustomerController customerController;
 
     private static CustomerResponse customerResponse;
+    private static CustomerRequest customerRequest;
 
     @BeforeClass
     public static void setUp() {
+        HttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        customerRequest = CustomerRequest.builder()
+                .name(NAME)
+                .surname(SURNAME)
+                .phone(PHONE)
+                .address(ADDRESS)
+                .build();
+
         customerResponse = CustomerResponse.builder()
                 .id(ID)
                 .name(NAME)
@@ -65,5 +82,14 @@ public class CustomerControllerTest {
         verify(customerService, times(1)).getCustomersPaginated(anyInt(), anyInt());
         verify(pageRequest, times(1)).getPage();
         verify(pageRequest, times(1)).getSize();
+    }
+
+    @Test
+    public void shouldAddCustomer() {
+        when(customerService.addCustomer(customerRequest)).thenReturn(customerResponse);
+
+        customerController.addCustomer(customerRequest);
+
+        verify(customerService, times(1)).addCustomer(customerRequest);
     }
 }

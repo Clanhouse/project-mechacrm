@@ -138,7 +138,7 @@ INSERT INTO cars(vin, registration_number, brand, model, production_year, mileag
                            WHERE name = 'Coupe');
 
 --Test data for customers table
-INSERT INTO customers( name, surname, phone, address)
+INSERT INTO customers(name, surname, phone, address)
 VALUES ('Jan', 'Kowalski', '665456987', 'Kaliska 12, Bełchatów'),
        ('Maciej', 'Zalewski', '126434567', 'Warszawska 15, Kraków'),
        ('Aneta', 'Korczyńska', '789456123', 'Miodowa 23, Nysa'),
