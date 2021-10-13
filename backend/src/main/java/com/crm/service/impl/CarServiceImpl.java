@@ -54,7 +54,7 @@ public class CarServiceImpl implements CarService {
                 .orElseThrow(() -> new CarNotFoundException(ErrorDict.REGISTRATION_NUMBER_NOT_FOUND));
     }
 
-    public CarResponse getCarByVIN(String vin) {
+    public CarResponse getCarByVIN(final String vin) {
         if (vin.length() != VIN_LENGTH)
             throw new CarNotFoundException(ErrorDict.VIN_LENGTH_INVALID);
 
@@ -66,7 +66,7 @@ public class CarServiceImpl implements CarService {
                 .orElseThrow(() -> new CarNotFoundException(ErrorDict.VIN_NOT_FOUND));
     }
 
-    private boolean hasVinIllegalCharacters(String vin) {
+    private boolean hasVinIllegalCharacters(final String vin) {
         return vin.toLowerCase().contains("o") || vin.toLowerCase().contains("i") || vin.toLowerCase().contains("q");
     }
 }
