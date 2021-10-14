@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface CarRepository extends JpaRepository<CarEntity, Long> {
 
     Optional<CarEntity> findByRegistrationNumberIgnoreCase(final String registrationNumber);
+
+    Optional<CarEntity> findByVinIgnoreCase(String vin);
 }

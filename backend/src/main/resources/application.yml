@@ -22,3 +22,8 @@ jwt:
       time: 1000
     refreshToken:
       time: 600
+
+crm:
+  properties:
+    vin:
+      length: 17

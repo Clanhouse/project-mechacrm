@@ -10,4 +10,6 @@ public interface CarService {
     CarResponse getCarById(final Long id);
 
     CarResponse getCarByRegistrationNumber(final String registrationNumber);
+
+    CarResponse getCarByVIN(final String vin);
 }

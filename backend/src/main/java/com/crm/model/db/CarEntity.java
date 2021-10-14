@@ -21,13 +21,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "cars")
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
-@EqualsAndHashCode
 @Builder
-@Table(name = "cars")
 public class CarEntity {
 
     @Id
@@ -50,3 +49,4 @@ public class CarEntity {
     @EqualsAndHashCode.Exclude
     private Set<CustomerEntity> customers = new HashSet<>();
 }
+
