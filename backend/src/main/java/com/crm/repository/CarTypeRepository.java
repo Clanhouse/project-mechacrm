@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface CarTypeRepository extends JpaRepository<CarTypeEntity, Long> {
 
-    Optional<CarTypeEntity> findByNameIgnoreCase(String name);
+    Optional<CarTypeEntity> findByNameIgnoreCase(final String name);
 }

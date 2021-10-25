@@ -56,14 +56,15 @@ public class CarController {
 
     @PostMapping
     @ApiOperation(value = "Add new car", notes = "Add body \"CarRequest\" to add new car to database")
-    public ResponseEntity<?> addCar(@Valid @RequestBody final CarRequest carRequest) {
-        CarEntity car = carService.addCar(carRequest);
+    public ResponseEntity<CarResponse> addCar(@Valid @RequestBody final CarRequest carRequest) {
+        CarResponse carResponse = carService.addCar(carRequest);
 
         return ResponseEntity.created(ServletUriComponentsBuilder
                         .fromCurrentRequest()
-                        .path("/" + car.getId().toString())
+                        .path("/" + carResponse.getId().toString())
                         .build()
                         .toUri())
-                .build();
+                .body(carResponse);
+//                .build();
     }
 }

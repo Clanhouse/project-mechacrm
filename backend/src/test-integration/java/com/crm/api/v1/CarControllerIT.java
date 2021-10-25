@@ -50,8 +50,6 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @BeforeEach
     public void setUp() {
-        carRequest = new CarRequest();
-
         carRequest = CarRequest.builder()
                 .id(30L)
                 .vin("azwsxedc123456789")
@@ -243,7 +241,7 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenBodyIsMissing() {
+    void shouldResponseWith_BadRequest_WhenBodyIsMissing() {
         mvc.perform(post("/cars"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
@@ -251,7 +249,7 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenBodyIsEmpty() {
+    void shouldResponseWith_BadRequest_WhenBodyIsEmpty() {
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
@@ -274,9 +272,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenVinIsBlank() {
+    void shouldResponseWith_BadRequest_WhenVinIsBlank() {
         carRequest.setVin("");
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -292,9 +290,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenVinDoesNotMatchToPattern() {
+    void shouldResponseWith_BadRequest_WhenVinDoesNotMatchToPattern() {
         carRequest.setVin("VFTOQ123456789654");
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -310,9 +308,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenVinLengthDoesNotMatch() {
+    void shouldResponseWith_BadRequest_WhenVinLengthDoesNotMatch() {
         carRequest.setVin("V6789654");
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -328,9 +326,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenRegistrationNumberIsShorterThenThreeChars() {
+    void shouldResponseWith_BadRequest_WhenRegistrationNumberIsShorterThenThreeChars() {
         carRequest.setRegistrationNumber("KR");
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -346,9 +344,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenRegistrationNumberIsLongerThenTenChars() {
+    void shouldResponseWith_BadRequest_WhenRegistrationNumberIsLongerThenTenChars() {
         carRequest.setRegistrationNumber("KR123456789");
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -366,7 +364,7 @@ class CarControllerIT extends BaseIntegrationTest {
     @SneakyThrows
     void shouldResponseWith_BedRequest_WhenRegistrationNumberDoesNotMatchToPattern() {
         carRequest.setRegistrationNumber("KR@1234");
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -382,9 +380,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenCarBrandIsBlank() {
+    void shouldResponseWith_BadRequest_WhenCarBrandIsBlank() {
         carRequest.setBrand("");
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -400,9 +398,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenCarBrandIsShorterThanThreeChars() {
+    void shouldResponseWith_BadRequest_WhenCarBrandIsShorterThanThreeChars() {
         carRequest.setBrand("Se");
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -418,9 +416,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenCarBrandIsLongerThanThirtyChars() {
+    void shouldResponseWith_BadRequest_WhenCarBrandIsLongerThanThirtyChars() {
         carRequest.setBrand("SedanSedanSedanSedanSedanSedanS");
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -436,9 +434,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenCarModelIsBlank() {
+    void shouldResponseWith_BadRequest_WhenCarModelIsBlank() {
         carRequest.setModel("");
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -454,9 +452,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenCarModelIsLongerThanThirtyChars() {
+    void shouldResponseWith_BadRequest_WhenCarModelIsLongerThanThirtyChars() {
         carRequest.setModel("AstraAstraAstraAstraAstraAstraA");
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -472,9 +470,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenProductionYearIsBlank() {
+    void shouldResponseWith_BadRequest_WhenProductionYearIsBlank() {
         carRequest.setProductionYear(null);
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -490,9 +488,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenProductionYearIsBefore1950() {
+    void shouldResponseWith_BadRequest_WhenProductionYearIsBefore1950() {
         carRequest.setProductionYear(1949);
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -508,9 +506,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenMileageIsBlank() {
+    void shouldResponseWith_BadRequest_WhenMileageIsBlank() {
         carRequest.setMileage(null);
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -526,9 +524,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenMileageIsNegative() {
+    void shouldResponseWith_BadRequest_WhenMileageIsNegative() {
         carRequest.setMileage(-1);
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -544,9 +542,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenDescriptionIsLongerThan250Chars() {
+    void shouldResponseWith_BadRequest_WhenDescriptionIsLongerThan250Chars() {
         carRequest.setDescription("a".repeat(251));
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -562,9 +560,9 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseWith_BedRequest_WhenCarTypeIsNull() {
+    void shouldResponseWith_BadRequest_WhenCarTypeIsNull() {
         carRequest.setCarTypeEntity(null);
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         MvcResult mvcResult = mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -581,7 +579,7 @@ class CarControllerIT extends BaseIntegrationTest {
     @Test
     @SneakyThrows
     void shouldResponseWith_Created_WhenAddedCar() {
-        String body = objectMapper.writeValueAsString(carRequest);
+        final String body = objectMapper.writeValueAsString(carRequest);
 
         mvc.perform(post("/cars")
                         .contentType(MediaType.APPLICATION_JSON)

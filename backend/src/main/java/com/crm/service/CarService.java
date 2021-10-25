@@ -15,5 +15,5 @@ public interface CarService {
 
     CarResponse getCarByVIN(final String vin);
 
-    CarEntity addCar(final CarRequest carRequest);
+    CarResponse addCar(final CarRequest carRequest);
 }

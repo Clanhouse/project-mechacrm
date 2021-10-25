@@ -11,5 +11,5 @@ public interface CarRepository extends JpaRepository<CarEntity, Long> {
 
     Optional<CarEntity> findByRegistrationNumberIgnoreCase(final String registrationNumber);
 
-    Optional<CarEntity> findByVinIgnoreCase(String vin);
+    Optional<CarEntity> findByVinIgnoreCase(final String vin);
 }
