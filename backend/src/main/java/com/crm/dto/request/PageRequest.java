@@ -13,6 +13,7 @@ public class PageRequest {
 
     @ValidParam(emptyParamMessage = PAGINATED_EMPTY_PAGE, invalidParamMessage = PAGINATED_INVALID_PAGE)
     private String page = "0";
+
     @ValidParam(emptyParamMessage = PAGINATED_EMPTY_SIZE, invalidParamMessage = PAGINATED_INVALID_SIZE)
     private String size = "20";
 

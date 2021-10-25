@@ -2,10 +2,10 @@ package com.crm.exception;
 
 public class ErrorDict {
 
-    public static final String PAGINATED_INVALID_PAGE = "Page has to be greater or equal to 0";
-    public static final String PAGINATED_INVALID_SIZE = "Size has to be greater or equal to 1";
-    public static final String PAGINATED_EMPTY_PAGE = "Page can't be empty";
-    public static final String PAGINATED_EMPTY_SIZE = "Size can't be empty";
+    public static final String PAGINATED_INVALID_PAGE = "Numer strony musi być większy bądź równy 0";
+    public static final String PAGINATED_INVALID_SIZE = "Rozmiar strony musi być większy bądź równy 1";
+    public static final String PAGINATED_EMPTY_PAGE = "Parametr numeru strony nie może być pusty";
+    public static final String PAGINATED_EMPTY_SIZE = "Parametr rozmiaru strony nie może być pusty";
 
     public static final String CAR_NOT_FOUND = "Nie znaleziono samochodu o podanym ID";
     public static final String CAR_VIN_INVALID = "Niepoprawny numer VIN";
@@ -35,4 +35,20 @@ public class ErrorDict {
     public static final String PHONE_NUMBER_FORMAT_INVALID = "Numer telefonu powinien być w formacie np. 600700800";
     public static final String CUSTOMER_DUPLICATE = "Użytkownik o podanych danych już istnieje w bazie";
     public static final String CUSTOMER_CREATE_PHONE_EXISTS = "Podany numer telefonu już istnieje w bazie i jest przypisany do innego użytkownika";
+
+    public static final String USER_DISABLED = "Użytkownik zablokowany";
+    public static final String LOGIN_FORMAT_INVALID = "Format nazwy użytkownika jest niepoprawny";
+    public static final String PASSWORD_FORMAT_INVALID = "Format hasła jest niepoprawny";
+    public static final String INVALID_CREDENTIALS = "Nazwa użytkownika bądź hasło jest niepoprawne";
+    public static final String ACCOUNT_IS_ACTIVE = "Konto jest aktywne";
+    public static final String ACCOUNT_DOES_NOT_EXIST = "Konto nie istnieje";
+    public static final String LOGIN_CAN_NOT_BE_EMPTY = "Nazwa użytkownika nie może być pusta";
+    public static final String PASSWORD_CAN_NOT_BE_EMPTY = "Hasło nie może być puste";
+    public static final String LOGIN_LENGTH_MUST_BETWEEN = "Nazwa użytkownika musi zawierać od 2 do 50 znaków";
+    public static final String PASSWORD_LENGTH_MUST_BETWEEN = "Hasło musi zawierać od 8 do 50 znaków";
+    public static final String EMAIL_FORMAT_INVALID = "Format adresu email jest niepoprawny";
+    public static final String ACCOUNT_ALREADY_EXIST_BY_LOGIN = "Konto o takiej nazwie użytkownika już istnieje";
+    public static final String ACCOUNT_ALREADY_EXIST_BY_EMAIL = "Konto o takim adresie email już istnieje";
+    public static final String TOKEN_EXPIRED = "Token wygasł";
+    public static final String ROLE_DOES_NOT_EXIST = "Rola nie istnieje";
 }

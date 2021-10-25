@@ -25,25 +25,18 @@ import java.sql.Timestamp;
 @Setter
 @EqualsAndHashCode
 @Builder
-@Table(name = "accounts")
-public class AccountEntity {
+@Table(name = "verification_tokens")
+public class VerificationTokenEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String login;
-    private String password;
-    private String email;
-    private Integer loginAttempts;
-    private Timestamp registrationDate;
-    private Timestamp lastSuccessfulLogin;
-    private Timestamp lastFailedLogin;
+    private String token;
 
-    @Builder.Default
-    private Boolean isActive = false;
+    @ManyToOne(targetEntity = AccountEntity.class, fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "account_id")
+    private AccountEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id")
-    private RoleEntity role;
+    private Timestamp expiryDate;
 }
