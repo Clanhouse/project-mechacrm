@@ -31,4 +31,19 @@ public class ErrorDict {
     public static final String PHONE_NUMBER_FORMAT_INVALID = "Numer telefonu powinien być w formacie np. 600700800";
     public static final String CUSTOMER_ADDRESS_INVALID = "Adres klienta nie może być pusty";
     public static final String ADDRESS_LENGTH_MUST_BETWEEN = "Adres powinien zawierać się w przedziale od 5 do 50 znaków";
+
+    public static final String USER_DISABLED = "USER DISABLED";
+    public static final String LOGIN_FORMAT_INVALID = "LOGIN FORMAT INVALID";
+    public static final String PASSWORD_FORMAT_INVALID = "PASSWORD FORMAT INVALID";
+    public static final String INVALID_CREDENTIALS = "INVALID CREDENTIALS";
+    public static final String ACCOUNT_IS_ACTIVE = "ACCOUNT IS ACTIVE";
+    public static final String ACCOUNT_ALREADY_EXIST_BY_LOGIN = "ACCOUNT ALREADY EXIST WITH THIS LOGIN";
+    public static final String ACCOUNT_DOES_NOT_EXIST = "ACCOUNT DOES NOT EXIST";
+    public static final String LOGIN_CAN_NOT_BE_EMPTY = "USERNAME CAN'T BE EMPTY";
+    public static final String PASSWORD_CAN_NOT_BE_EMPTY = "PASSWORD CAN'T BE EMPTY";
+    public static final String LOGIN_LENGTH_MUST_BETWEEN = "PASSWORD MUST BE BETWEEN 2 TO 50 CHARACTERS";
+    public static final String PASSWORD_LENGTH_MUST_BETWEEN = "PASSWORD MUS BE BETWEEN 8 TO 50 CHARACTERS";
+    public static final String EMAIL_FORMAT_INVALID = "EMAIL BAD FORMAT";
+    public static final String ACCOUNT_ALREADY_EXIST_BY_EMAIL = "ACCOUNT ALREADY EXIST WITH THIS EMAIL";
+    public static final String TOKEN_EXPIRED = "TOKEN IS EXPIRED";
 }

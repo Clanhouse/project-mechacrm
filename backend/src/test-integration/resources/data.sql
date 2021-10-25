@@ -293,22 +293,40 @@ VALUES ('admin'),
 
 --Test data for account table
 INSERT INTO accounts(login, password, email, login_attempts, registration_date, last_successful_login,
-                     last_failed_login, role_id) (SELECT 'admin',
+                     last_failed_login, role_id, is_activated) (SELECT 'admin',
                                                          '$2y$12$v97WyUOPeTyHw55h4Pm3WeiRyCRfVne8LnFhq7Vg7bRR6b2uWCUoa',
                                                          'admin@mail.com', 6,
                                                          '2021-05-24 16:00:00',
                                                          '2021-05-26 16:00:00',
-                                                         '2021-05-25 16:00:00', id
+                                                         '2021-05-25 16:00:00', id, true
                                                   FROM roles
                                                   WHERE name = 'admin');
 
 INSERT INTO accounts(login, password, email, login_attempts, registration_date, last_successful_login,
-                     last_failed_login, role_id) (SELECT 'user',
+                     last_failed_login, role_id, is_activated) (SELECT 'user',
                                                          '$2y$12$/EGOACr4sihV98Pl6mfjTeFZMI1O6bE1bDpa7UudeKdQIeVFmlQFe',
                                                          'user@mail.com', 5,
                                                          '2021-05-24 14:00:00',
                                                          '2021-05-26 14:00:00',
-                                                         '2021-05-25 14:00:00', id
+                                                         '2021-05-25 14:00:00', id, true
                                                   FROM roles
                                                   WHERE name = 'user');
+
+INSERT INTO accounts(id, login, password, email, login_attempts, registration_date, role_id, is_activated) (SELECT 91919191, 'user2',
+                                                                       '$2a$10$ZW1GDjwa/8nJP.FbhMr7vuh0L4tqU.PMaFAMnCOTVqpkUB9xlcuSu',
+                                                                       'user2@mail.com', 0,
+                                                                       '2021-05-24 14:00:00',
+                                                                        id, false
+                                                                FROM roles
+                                                                WHERE name = 'user');
+
+INSERT INTO accounts(login, password, email, login_attempts, registration_date, role_id, is_activated) (SELECT 'user3',
+                                                                                                               '$2a$10$/WyYH3xYwdfYC23Xucxx6O.Dqtw4yqoWQ/9bIWhax.d1wyVYge1oG',
+                                                                                                               'user3@mail.com', 0,
+                                                                                                               '2021-05-24 14:00:00',
+                                                                                                               id, false
+                                                                                                        FROM roles
+                                                                                                        WHERE name = 'user');
+
+INSERT INTO verification_tokens(token, account_id, expiry_date) values ('af1aca10-e04c-4ea5-a6ed-56a777c22d99', 91919191, '2050-10-10 23:58:59')
 

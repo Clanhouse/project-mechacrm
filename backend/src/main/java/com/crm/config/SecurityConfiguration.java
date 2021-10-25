@@ -34,7 +34,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/webjars/**",
             // -- other
             "/auth**",
-            "/account**"
+            "/sign-up**",
+            "/account**",
+            "/activate/**"
     };
 
     @Override

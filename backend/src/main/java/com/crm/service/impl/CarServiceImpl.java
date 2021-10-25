@@ -34,7 +34,7 @@ public class CarServiceImpl implements CarService {
                 .map(carMapper::convertToDto)
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(carResponseList, pageable, carsPage.getTotalPages());
+        return new PageImpl<>(carResponseList, pageable, carsPage.getTotalElements());
     }
 
     @Override

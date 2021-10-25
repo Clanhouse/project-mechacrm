@@ -8,8 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,23 +25,18 @@ import java.sql.Timestamp;
 @Setter
 @EqualsAndHashCode
 @Builder
-@Table(name = "accounts")
-public class AccountEntity {
+@Table(name = "verification_tokens")
+public class VerificationTokenEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String login;
-    private String password;
-    private String email;
-    private Integer loginAttempts;
-    private Timestamp registrationDate;
-    private Timestamp lastSuccessfulLogin;
-    private Timestamp lastFailedLogin;
-    private Boolean isActivated;
+    private String token;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id")
-    private RoleEntity role;
+    @OneToOne(targetEntity = AccountEntity.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "account_id")
+    private AccountEntity user;
+
+    private Timestamp expiryDate;
 }

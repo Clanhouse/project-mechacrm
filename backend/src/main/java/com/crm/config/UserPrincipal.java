@@ -2,9 +2,12 @@ package com.crm.config;
 
 import com.crm.model.db.AccountEntity;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UserPrincipal implements UserDetails {
 
@@ -16,8 +19,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //TODO
-        return null;
+        return new HashSet<GrantedAuthority>(Set.of(new SimpleGrantedAuthority("ROLE_" + accountEntity.getRole().getName())));
     }
 
     @Override
@@ -50,7 +52,6 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        //TODO
-        return true;
+        return accountEntity.getIsActivated();
     }
 }

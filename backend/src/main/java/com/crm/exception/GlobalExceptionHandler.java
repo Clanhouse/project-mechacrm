@@ -2,14 +2,18 @@ package com.crm.exception;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.HandlerMapping;
 
+import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -30,11 +34,54 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(getSource(request), List.of(e.getMessage()));
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)  
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CarNotFoundException.class)
     public ErrorResponse handleCarNotFoundException(final CarNotFoundException e, final HttpServletRequest request) {
         return new ErrorResponse(getSource(request), List.of(e.getMessage()));
     }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(ElementAlreadyExistException.class)
+    public ErrorResponse handleElementAlreadyExistsException(final ElementAlreadyExistException e, final HttpServletRequest request) {
+        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoSuchElementException.class)
+    public ErrorResponse handleNoSuchElementException(final NoSuchElementException e, final HttpServletRequest request) {
+        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
+    }
+
+    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    @ExceptionHandler(UserDisabledException.class)
+    public ErrorResponse handleUserDisabledException(final UserDisabledException e, final HttpServletRequest request) {
+        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
+    }
+
+    @ResponseStatus(code = HttpStatus.CONFLICT)
+    @ExceptionHandler(AccountIsActivatedException.class)
+    public ErrorResponse handleAccountIsActivatedException(final AccountIsActivatedException e, final HttpServletRequest request) {
+        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
+    }
+
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ErrorResponse handleInvalidCredentialException(final InvalidCredentialsException e, final HttpServletRequest request) {
+        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(TokenExpiredException.class)
+    public ErrorResponse handleTokenExpiredException(final TokenExpiredException e, final HttpServletRequest request) {
+        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ErrorResponse handleAnyException(final Exception e, final HttpServletRequest request) {
+        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
+    }
+
 
     private String getSource(final HttpServletRequest request) {
         try {

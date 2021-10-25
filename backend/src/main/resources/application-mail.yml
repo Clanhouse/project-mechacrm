@@ -1,0 +1,12 @@
+email:
+  user:
+    name: "ispeakapp@o2.pl"
+    password: "Ispeak2000!"
+  host:
+    name: "poczta.o2.pl"
+  smtp:
+    port: 465
+  ssl:
+    connect: true
+  endpoint:
+    path: "http://localhost:8080/api/activate/"
