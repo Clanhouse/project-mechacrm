@@ -37,7 +37,7 @@ const LoginPageTemplate = ({ slogan, loginSection }) => (
   <Container>
     <div>
       <Logo>
-        <img src={motomoLogo} alt="motomo logo" />
+        <img src={motomoLogo} alt="motomo logo - car workshops/service app" />
       </Logo>
       <SloganSection>{slogan}</SloganSection>
     </div>
