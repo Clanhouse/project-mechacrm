@@ -12,158 +12,158 @@ VALUES ('Sedan'),
        ('Other');
 
 --Test data for cars table
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 1, 'JT3Z123KBW1589043', 'KR12PR', 'Toyota', 'Avensis', 2014,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'JT3Z123KBW1589043', 'KR12PR', 'Toyota', 'Avensis', 2014,
                                   123456, 'Some description', id
                            FROM car_types
                            WHERE name = 'Combi');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 2, 'WVWZ321WBK1589044', 'EBEWM10', 'Volkswagen', 'Golf', 2013,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'WVWZ321WBK1589044', 'EBEWM10', 'Volkswagen', 'Golf', 2013,
                                   115000, 'Some description', id
                            FROM car_types
                            WHERE name = 'Hatchback');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 3, 'JHWZ4H795FGU84012', 'WR34OP', 'Honda', 'Accord', 2012,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'JHWZ4H795FGU84012', 'WR34OP', 'Honda', 'Accord', 2012,
                                   168546, 'Some description', id
                            FROM car_types
                            WHERE name = 'Sedan');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 4, 'WBA86H90021859321', 'ELAS23', 'BMW', 'M5', 2020, 22500, '', id
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'WBA86H90021859321', 'ELAS23', 'BMW', 'M5', 2020, 22500, '', id
                            FROM car_types
                            WHERE name = 'Sedan');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 5, 'WAU34891024573567', 'KR78L0', 'Audi', 'A4', 2018, 50123,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'WAU34891024573567', 'KR78L0', 'Audi', 'A4', 2018, 50123,
                                   'Some description', id
                            FROM car_types
                            WHERE name = 'Sedan');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 6, 'TMB1234FGH5678910', 'SK123F', 'Skoda', 'Octavia', 2010,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'TMB1234FGH5678910', 'SK123F', 'Skoda', 'Octavia', 2010,
                                   260000, NULL, id
                            FROM car_types
                            WHERE name = 'Sedan');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 7, 'JTR58904GH9480230', 'GWE002H', 'Toyota', 'Corolla', 2005,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'JTR58904GH9480230', 'GWE002H', 'Toyota', 'Corolla', 2005,
                                   282690, 'Some description', id
                            FROM car_types
                            WHERE name = 'Sedan');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 8, 'JTW2345O900039001', 'DW349W', 'Toyota', 'Avensis', 2007,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'JTW2345O900039001', 'DW349W', 'Toyota', 'Avensis', 2007,
                                   150990, 'Some description', id
                            FROM car_types
                            WHERE name = 'Combi');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 9, 'VF7Z5670999910000', 'LJA346J', 'Citroen', 'C3', 2011,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'VF7Z5670999910000', 'LJA346J', 'Citroen', 'C3', 2011,
                                   122000, 'Some description', id
                            FROM car_types
                            WHERE name = 'Hatchback');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 10, 'VF1F9H9HF3H989890', 'BS45PR', 'Renault', 'Kangoo', 2008,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'VF1F9H9HF3H989890', 'BS45PR', 'Renault', 'Kangoo', 2008,
                                   261459, 'Some description', id
                            FROM car_types
                            WHERE name = 'VAN');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 11, 'WVWFH749388504385', 'DLE21PL', 'Volkswagen', 'Passat', 1998,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'WVWFH749388504385', 'DLE21PL', 'Volkswagen', 'Passat', 1998,
                                   358600, 'Some description', id
                            FROM car_types
                            WHERE name = 'Combi');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 12, 'VF1F740000GK99303', 'EPA11XD', 'Renault', 'Traffic', 2020,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'VF1F740000GK99303', 'EPA11XD', 'Renault', 'Traffic', 2020,
                                   15000, 'Some description', id
                            FROM car_types
                            WHERE name = 'VAN');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 13, '5YJ3456JKFD900028', 'GD230P', 'Tesla', 'Model 3', 2019,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT '5YJ3456JKFD900028', 'GD230P', 'Tesla', 'Model 3', 2019,
                                   36900, NULL, id
                            FROM car_types
                            WHERE name = 'Sedan');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 14, 'W0LA2345670000123', 'ONY33PL', 'Opel', 'Astra', 2015, 88123,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'W0LA2345670000123', 'ONY33PL', 'Opel', 'Astra', 2015, 88123,
                                   'Some description', id
                            FROM car_types
                            WHERE name = 'Sedan');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 15, 'W0L0435993R034999', 'WW11JU', 'Opel', 'Zafira', 2014, 63500,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'W0L0435993R034999', 'WW11JU', 'Opel', 'Zafira', 2014, 63500,
                                   'Some description', id
                            FROM car_types
                            WHERE name = 'Minivan');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 16, 'TMBO0390000012345', 'SH35PR', 'Skoda', 'Superb', 2014,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'TMBO0390000012345', 'SH35PR', 'Skoda', 'Superb', 2014,
                                   45200, 'Some description', id
                            FROM car_types
                            WHERE name = 'Sedan');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 17, 'KNKOP569002920930', 'SK21RP', 'Kia', 'Ceed', 2012, 123123,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'KNKOP569002920930', 'SK21RP', 'Kia', 'Ceed', 2012, 123123,
                                   NULL, id
                            FROM car_types
                            WHERE name = 'Combi');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 18, 'TMB67890123456452', 'SC33FT', 'Skoda', 'Fabia', 2008,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'TMB67890123456452', 'SC33FT', 'Skoda', 'Fabia', 2008,
                                   231321, 'Some description', id
                            FROM car_types
                            WHERE name = 'Hatchback');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 19, 'WAU47959HDH900045', 'LJA21BL', 'Audi', 'A3', 2002, 290900,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'WAU47959HDH900045', 'LJA21BL', 'Audi', 'A3', 2002, 290900,
                                   'Some description', id
                            FROM car_types
                            WHERE name = 'Sedan');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 21, '1FBZ121200GHJK123', 'EBE14CC', 'Ford', 'Focus', 2004,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT '1FBZ121200GHJK123', 'EBE14CC', 'Ford', 'Focus', 2004,
                                   245630, 'Some description', id
                            FROM car_types
                            WHERE name = 'Hatchback');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 22, 'VSSZ12GD4830J9994', 'WL003R', 'Seat', 'Leon', 2005, 190637,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'VSSZ12GD4830J9994', 'WL003R', 'Seat', 'Leon', 2005, 190637,
                                   '', id
                            FROM car_types
                            WHERE name = 'Hatchback');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 23, 'SAL009123FGHHJ002', 'WW89EK', 'Land Rover', 'Range Rover',
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'SAL009123FGHHJ002', 'WW89EK', 'Land Rover', 'Range Rover',
                                   2014, 100000, 'Some description', id
                            FROM car_types
                            WHERE name = 'SUV');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 24, 'JNW12300KL8945029', 'WWGH00', 'Nissan', 'Navara', 2010,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'JNW12300KL8945029', 'WWGH00', 'Nissan', 'Navara', 2010,
                                   155000, 'Some description', id
                            FROM car_types
                            WHERE name = 'Pick-up');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 25, 'VF1Z123KRH408UH33', 'WS90WQ', 'Renault', 'Scenic', 2009,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'VF1Z123KRH408UH33', 'WS90WQ', 'Renault', 'Scenic', 2009,
                                   210000, 'Some description', id
                            FROM car_types
                            WHERE name = 'Minivan');
-INSERT INTO cars(id, vin, registration_number, brand, model, production_year, mileage, description,
-                 type_id) (SELECT 26, 'WP0122347650FH44F', 'KR22RT', 'Porsche', 'Carrera', 2006,
+INSERT INTO cars(vin, registration_number, brand, model, production_year, mileage, description,
+                 type_id) (SELECT 'WP0122347650FH44F', 'KR22RT', 'Porsche', 'Carrera', 2006,
                                   269350, 'Some description', id
                            FROM car_types
                            WHERE name = 'Coupe');
 
 --Test data for customers table
-INSERT INTO customers(id, name, surname, phone, address)
-VALUES (1, 'Jan', 'Kowalski', '665456987', 'Kaliska 12, Bełchatów'),
-       (2, 'Maciej', 'Zalewski', '126434567', 'Warszawska 15, Kraków'),
-       (3, 'Aneta', 'Korczyńska', '789456123', 'Miodowa 23, Nysa'),
-       (4, 'Rafał', 'Nowak', '654321987', 'Piłsudskiego 20, Warszawa'),
-       (5, 'Marta', 'Lewicka', '660369852', 'Antracytowa 56, Kraków'),
-       (6, 'Bartosz', 'Lewicki', '721435678', 'Antracytowa 56, Kraków'),
-       (7, 'Kamil', 'Kwiatkowski', '620908901', 'Wiśniowa 10, Siedlce'),
-       (8, 'Kamila', 'Baran', '567890121', 'Dębowa 10, Częstochowa'),
-       (9, 'Magda', 'Kwiatkowska', '500100890', 'Wojska Polskiego 19, Warszawa'),
-       (10, 'Jan', 'Kowalski', '882555444', 'Fabryczna 10, Piotrków Trybunalski'),
-       (11, 'Jan', 'Nowak', '666555444', 'Kolorowa 79, Łódź'),
-       (12, 'Mariusz', 'Drągowski', '789456000', 'Leśna 60, Wrocław'),
-       (13, 'Anna', 'Wolska', '802134678', 'Sienkiewicza 2, Bełchatów'),
-       (14, 'Aneta', 'Nowak', '620908900', 'Mickiewicza 50, Katowice'),
-       (15, 'Adrian', 'Stasiak', '777888999', 'Zielona 33, Janów Lubelski'),
-       (16, 'Agnieszka', 'Stasiak', '745966365', 'Topolowa 20, Rzeszów'),
-       (17, 'Marcin', 'Wolski', '555444333', 'Lipińskiego 45, Poznań'),
-       (18, 'Ireneusz', 'Krzemiński', '888777666', 'Cebulowa 7, Wejherowo'),
-       (19, 'Beata', 'Pawlak', '789454987', 'Boczna 120, Katowice'),
-       (20, 'Jerzy', 'Mazur', '521321457', 'Zamknięta 1, Suwałki'),
-       (21, 'Kacper', 'Lewandowski', '504264111', 'Złota 21, Legnica'),
-       (22, 'Bartosz', 'Izdebski', '741852963', 'Pomorska 17, Gdynia'),
-       (23, 'Adam', 'Grzanka', '600400900', 'Srebrna 40, Warszawa'),
-       (24, 'Anna', 'Kolanko', '852741963', 'Srebrna 40, Warszawa'),
-       (25, 'Jacek', 'Górnik', '636696000', 'Obozowa 25, Wrocław');
+INSERT INTO customers( name, surname, phone, address)
+VALUES ('Jan', 'Kowalski', '665456987', 'Kaliska 12, Bełchatów'),
+       ('Maciej', 'Zalewski', '126434567', 'Warszawska 15, Kraków'),
+       ('Aneta', 'Korczyńska', '789456123', 'Miodowa 23, Nysa'),
+       ('Rafał', 'Nowak', '654321987', 'Piłsudskiego 20, Warszawa'),
+       ('Marta', 'Lewicka', '660369852', 'Antracytowa 56, Kraków'),
+       ('Bartosz', 'Lewicki', '721435678', 'Antracytowa 56, Kraków'),
+       ('Kamil', 'Kwiatkowski', '620908901', 'Wiśniowa 10, Siedlce'),
+       ('Kamila', 'Baran', '567890121', 'Dębowa 10, Częstochowa'),
+       ('Magda', 'Kwiatkowska', '500100890', 'Wojska Polskiego 19, Warszawa'),
+       ('Jan', 'Kowalski', '882555444', 'Fabryczna 10, Piotrków Trybunalski'),
+       ('Jan', 'Nowak', '666555444', 'Kolorowa 79, Łódź'),
+       ('Mariusz', 'Drągowski', '789456000', 'Leśna 60, Wrocław'),
+       ('Anna', 'Wolska', '802134678', 'Sienkiewicza 2, Bełchatów'),
+       ('Aneta', 'Nowak', '620908900', 'Mickiewicza 50, Katowice'),
+       ('Adrian', 'Stasiak', '777888999', 'Zielona 33, Janów Lubelski'),
+       ('Agnieszka', 'Stasiak', '745966365', 'Topolowa 20, Rzeszów'),
+       ('Marcin', 'Wolski', '555444333', 'Lipińskiego 45, Poznań'),
+       ('Ireneusz', 'Krzemiński', '888777666', 'Cebulowa 7, Wejherowo'),
+       ('Beata', 'Pawlak', '789454987', 'Boczna 120, Katowice'),
+       ('Jerzy', 'Mazur', '521321457', 'Zamknięta 1, Suwałki'),
+       ('Kacper', 'Lewandowski', '504264111', 'Złota 21, Legnica'),
+       ('Bartosz', 'Izdebski', '741852963', 'Pomorska 17, Gdynia'),
+       ('Adam', 'Grzanka', '600400900', 'Srebrna 40, Warszawa'),
+       ('Anna', 'Kolanko', '852741963', 'Srebrna 40, Warszawa'),
+       ('Jacek', 'Górnik', '636696000', 'Obozowa 25, Wrocław');
 
 --Test data for customers_cars table
 INSERT INTO customers_cars(customers_id, car_id) (SELECT id, (SELECT id FROM cars WHERE vin = 'WVWZ321WBK1589044')
