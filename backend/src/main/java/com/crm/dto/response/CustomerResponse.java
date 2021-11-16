@@ -21,5 +21,4 @@ public class CustomerResponse {
     private String surname;
     private String phone;
     private String address;
-
 }

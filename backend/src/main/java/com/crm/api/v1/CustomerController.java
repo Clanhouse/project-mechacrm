@@ -1,5 +1,6 @@
 package com.crm.api.v1;
 
+import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.request.PageRequest;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.service.CustomerService;
@@ -9,8 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 
@@ -32,5 +36,18 @@ public class CustomerController {
     @ApiOperation(value = "Finds customer by id")
     public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable final Long id) {
         return ResponseEntity.ok(customerService.getCustomerById(id));
+    }
+
+    @PostMapping
+    @ApiOperation(value = "Adds new customer", notes = "Add body \"CustomerRequest\" to add new customer to database")
+    public ResponseEntity<CustomerResponse> addCustomer(@Valid @RequestBody final CustomerRequest customerRequest) {
+        CustomerResponse customerResponse = customerService.addCustomer(customerRequest);
+
+        return ResponseEntity.created(ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("/" + customerResponse.getId().toString())
+                        .build()
+                        .toUri())
+                .body(customerResponse);
     }
 }

@@ -1,7 +1,9 @@
 package com.crm.service.impl;
 
 import com.crm.dto.mapper.CustomerMapper;
+import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.response.CustomerResponse;
+import com.crm.exception.CustomerException;
 import com.crm.exception.CustomerNotFoundException;
 import com.crm.exception.ErrorDict;
 import com.crm.model.db.CustomerEntity;
@@ -22,6 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -47,6 +51,7 @@ public class CustomerServiceImplTest {
     private CustomerServiceImpl customerService;
 
     private static CustomerEntity customerEntity;
+    private static CustomerRequest customerRequest;
     private static CustomerResponse customerResponse;
     private static Pageable pageable;
 
@@ -63,6 +68,7 @@ public class CustomerServiceImplTest {
                 .address(ADDRESS)
                 .build();
 
+        customerRequest = new CustomerRequest();
         customerResponse = new CustomerResponse();
         pageable = PageRequest.of(PAGE, SIZE);
     }
@@ -101,5 +107,63 @@ public class CustomerServiceImplTest {
         verify(customerRepository, times(1)).findAll(pageable);
         verify(customerMapper, times(1)).convertToDto(customerEntity);
         assertNotNull(response);
+    }
+
+    @Test
+    public void shouldAddCustomerWhenPhoneIsNotDuplicated() {
+        customerRequest = CustomerRequest.builder()
+                .phone(PHONE)
+                .build();
+
+        when(customerRepository.findByPhone(customerRequest.getPhone())).thenReturn(Optional.empty());
+        when(customerMapper.convertToEntity(customerRequest)).thenReturn(customerEntity);
+        when(customerRepository.save(customerEntity)).thenReturn(customerEntity);
+        when(customerMapper.convertToDto(customerEntity)).thenReturn(customerResponse);
+
+        assertEquals(customerResponse, customerService.addCustomer(customerRequest));
+
+        verify(customerRepository, times(1)).findByPhone(customerRequest.getPhone());
+        verify(customerMapper, times(1)).convertToEntity(customerRequest);
+        verify(customerRepository, times(1)).save(customerEntity);
+        verify(customerMapper, times(1)).convertToDto(customerEntity);
+    }
+
+    @Test
+    public void shouldThrowConflictWhenCustomerIsDuplicated() {
+        customerRequest = CustomerRequest.builder()
+                .name(NAME)
+                .surname(SURNAME)
+                .phone(PHONE)
+                .address(ADDRESS)
+                .build();
+
+        when(customerRepository.findByPhone(customerRequest.getPhone())).thenReturn(Optional.of(customerEntity));
+
+        assertThatThrownBy(() -> customerService.addCustomer(customerRequest))
+                .isInstanceOf(CustomerException.class)
+                .hasMessage(ErrorDict.CUSTOMER_DUPLICATE);
+
+        verify(customerRepository, times(1)).findByPhone(customerRequest.getPhone());
+        verify(customerMapper, times(0)).convertToEntity(customerRequest);
+        verify(customerRepository, times(0)).save(customerEntity);
+        verify(customerMapper, times(0)).convertToDto(customerEntity);
+    }
+
+    @Test
+    public void shouldThrowConflictWhenPhoneExists() {
+        customerRequest = CustomerRequest.builder()
+                .phone(PHONE)
+                .build();
+
+        when(customerRepository.findByPhone(customerRequest.getPhone())).thenReturn(Optional.of(customerEntity));
+
+        assertThatThrownBy(() -> customerService.addCustomer(customerRequest))
+                .isInstanceOf(CustomerException.class)
+                .hasMessage(ErrorDict.CUSTOMER_CREATE_PHONE_EXISTS);
+
+        verify(customerRepository, times(1)).findByPhone(customerRequest.getPhone());
+        verify(customerMapper, times(0)).convertToEntity(customerRequest);
+        verify(customerRepository, times(0)).save(customerEntity);
+        verify(customerMapper, times(0)).convertToDto(customerEntity);
     }
 }
