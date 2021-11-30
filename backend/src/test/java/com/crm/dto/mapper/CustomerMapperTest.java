@@ -2,6 +2,7 @@ package com.crm.dto.mapper;
 
 import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.response.CustomerResponse;
+import com.crm.model.db.AddressEntity;
 import com.crm.model.db.CustomerEntity;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,20 +32,28 @@ public class CustomerMapperTest {
 
     private static CustomerRequest customerRequest;
     private static CustomerEntity customerEntity;
+    private static AddressEntity addressEntity;
 
     private static final Long ID = 1L;
     private static final String NAME = "test";
     private static final String SURNAME = "test";
     private static final String PHONE = "+48 111111111";
-    private static final String ADDRESS = "test";
 
     @BeforeClass
     public static void setUp() {
+        addressEntity = AddressEntity.builder()
+                .country("Poland")
+                .city("Bełchatów")
+                .postalCode("00-000")
+                .streetName("Kaliska")
+                .streetNumber("12")
+                .build();
+
         customerRequest = CustomerRequest.builder()
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
-                .address(ADDRESS)
+                .address(addressEntity)
                 .build();
 
         customerEntity = CustomerEntity.builder()
@@ -52,7 +61,7 @@ public class CustomerMapperTest {
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
-                .address(ADDRESS)
+                .address(addressEntity)
                 .cars(new HashSet<>())
                 .build();
     }
@@ -66,7 +75,7 @@ public class CustomerMapperTest {
                 () -> assertEquals(NAME, customerResponse.getName()),
                 () -> assertEquals(SURNAME, customerResponse.getSurname()),
                 () -> assertEquals(PHONE, customerResponse.getPhone()),
-                () -> assertEquals(ADDRESS, customerResponse.getAddress())
+                () -> assertEquals(addressEntity, customerResponse.getAddress())
         );
 
         verify(modelMapper, times(1)).map(customerEntity, CustomerResponse.class);
@@ -80,7 +89,7 @@ public class CustomerMapperTest {
                 () -> assertEquals(NAME, customerEntity.getName()),
                 () -> assertEquals(SURNAME, customerEntity.getSurname()),
                 () -> assertEquals(PHONE, customerEntity.getPhone()),
-                () -> assertEquals(ADDRESS, customerEntity.getAddress())
+                () -> assertEquals(addressEntity, customerEntity.getAddress())
         );
 
         verify(modelMapper, times(1)).map(customerRequest, CustomerEntity.class);

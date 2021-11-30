@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,9 +38,12 @@ public class CustomerEntity {
     private String name;
     private String surname;
     private String phone;
-    private String address;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "address_id")
+    private AddressEntity address;
+
+    @ManyToMany
     @EqualsAndHashCode.Exclude
     @JoinTable(
             name = "customers_cars",

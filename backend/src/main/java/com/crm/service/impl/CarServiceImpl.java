@@ -78,8 +78,6 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarResponse addCar(CarRequest carRequest) {
-
-        CarTypeEntity carTypeEntity;
         String nameOfCarTypeEntity = carRequest.getCarTypeEntity().getName();
 
         if (carRepository.findByRegistrationNumberIgnoreCase(carRequest.getRegistrationNumber()).isPresent()) {
@@ -90,17 +88,17 @@ public class CarServiceImpl implements CarService {
             throw new CarException(ErrorDict.CAR_CREATE_VIN_EXISTS);
         }
 
-        if (nameOfCarTypeEntity.isBlank()) {
-            carTypeEntity = carTypeRepository.findByNameIgnoreCase("Other")
-                    .orElseGet(() -> CarTypeEntity.builder().name("Other").build());
-        } else {
-            carTypeEntity = carTypeRepository.findByNameIgnoreCase(nameOfCarTypeEntity)
-                    .orElseGet(() -> CarTypeEntity.builder().name(nameOfCarTypeEntity).build());
-        }
+        CarTypeEntity carTypeEntity = carTypeRepository.findByNameIgnoreCase(nameOfCarTypeEntity)
+                .orElseGet(this::determineDefaultCarType);
 
         CarEntity newCar = carMapper.convertToEntity(carRequest);
         newCar.setCarTypeEntity(carTypeEntity);
 
         return carMapper.convertToDto(carRepository.save(newCar));
+    }
+
+    private CarTypeEntity determineDefaultCarType() {
+        return carTypeRepository.findByNameIgnoreCase("Other")
+                .orElseGet(() -> CarTypeEntity.builder().name("Other").build());
     }
 }

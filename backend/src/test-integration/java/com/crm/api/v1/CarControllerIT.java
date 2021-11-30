@@ -51,7 +51,6 @@ class CarControllerIT extends BaseIntegrationTest {
     @BeforeEach
     public void setUp() {
         carRequest = CarRequest.builder()
-                .id(30L)
                 .vin("azwsxedc123456789")
                 .registrationNumber("KR12345")
                 .brand("Opel")
@@ -256,7 +255,7 @@ class CarControllerIT extends BaseIntegrationTest {
 
     @Test
     @SneakyThrows
-    void shouldResponseOk_WhenVinExists() {
+    void shouldResponseWith_Ok_WhenVinExists() {
         final String vinDoesExists = "TMB67890123456452";
 
         MvcResult mvcResult = mvc.perform(get("/cars/search?vin=" + vinDoesExists))

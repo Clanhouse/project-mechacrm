@@ -2,6 +2,7 @@ package com.crm.dto.request;
 
 import com.crm.exception.ErrorDict;
 
+import com.crm.model.db.AddressEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -37,7 +39,6 @@ public class CustomerRequest {
     @Pattern(regexp = PHONE_PATTERN, message = ErrorDict.PHONE_NUMBER_FORMAT_INVALID)
     private String phone;
 
-    @NotBlank(message = ErrorDict.CUSTOMER_ADDRESS_INVALID)
-    @Size(min = 5, max = 50, message = ErrorDict.ADDRESS_LENGTH_MUST_BETWEEN)
-    private String address;
+    @Valid
+    private AddressEntity address;
 }

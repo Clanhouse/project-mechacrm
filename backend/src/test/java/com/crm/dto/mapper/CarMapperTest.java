@@ -13,8 +13,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.HashSet;
-
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
@@ -72,7 +70,6 @@ public class CarMapperTest {
                 .mileage(MILEAGE)
                 .description(DESCRIPTION)
                 .carTypeEntity(carTypeEntity)
-                .customers(new HashSet<>())
                 .build();
     }
 

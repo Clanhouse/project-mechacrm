@@ -33,8 +33,6 @@ public class ErrorDict {
     public static final String SURNAME_LENGTH_MUST_BETWEEN = "Nazwisko powinno zawierać się w przedziale od 3 do 30 znaków";
     public static final String CUSTOMER_PHONE_INVALID = "Numer telefonu klienta nie może być pusty";
     public static final String PHONE_NUMBER_FORMAT_INVALID = "Numer telefonu powinien być w formacie np. 600700800";
-    public static final String CUSTOMER_ADDRESS_INVALID = "Adres klienta nie może być pusty";
-    public static final String ADDRESS_LENGTH_MUST_BETWEEN = "Adres powinien zawierać się w przedziale od 5 do 50 znaków";
     public static final String CUSTOMER_DUPLICATE = "Użytkownik o podanych danych już istnieje w bazie";
     public static final String CUSTOMER_CREATE_PHONE_EXISTS = "Podany numer telefonu już istnieje w bazie i jest przypisany do innego użytkownika";
 }
