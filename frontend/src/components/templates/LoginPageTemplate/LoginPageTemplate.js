@@ -18,7 +18,7 @@ const Container = styled.div`
 `;
 
 const Logo = styled.div`
-  margin: 16px 80px;
+  margin: 54px 80px;
 `;
 
 const SloganSection = styled.div`

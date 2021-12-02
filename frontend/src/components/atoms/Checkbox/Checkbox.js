@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 const Container = styled.div`
   padding: 0;
   margin: auto 0;
-  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
