@@ -64,21 +64,21 @@ public class CustomerServiceImpl implements CustomerService {
         return customerMapper.convertToDto(customerRepository.save(newCustomer));
     }
 
-    private boolean isDuplicateCustomer(CustomerRequest customerRequest, CustomerEntity customerEntity) {
+    private boolean isDuplicateCustomer(final CustomerRequest customerRequest, final CustomerEntity customerEntity) {
         return customerNameEquals(customerRequest, customerEntity)
                 && customerSurnameEquals(customerRequest, customerEntity)
                 && customerAddressEquals(customerRequest,customerEntity);
     }
 
-    private boolean customerNameEquals(CustomerRequest customerRequest, CustomerEntity customerEntity) {
+    private boolean customerNameEquals(final CustomerRequest customerRequest, final CustomerEntity customerEntity) {
         return customerEntity.getName().equals(customerRequest.getName());
     }
 
-    private boolean customerSurnameEquals(CustomerRequest customerRequest, CustomerEntity customerEntity) {
+    private boolean customerSurnameEquals(final CustomerRequest customerRequest, final CustomerEntity customerEntity) {
         return customerEntity.getSurname().equals(customerRequest.getSurname());
     }
 
-    private boolean customerAddressEquals(CustomerRequest customerRequest, CustomerEntity customerEntity) {
+    private boolean customerAddressEquals(final CustomerRequest customerRequest, final CustomerEntity customerEntity) {
         if (customerEntity.getAddress() != null && customerRequest.getAddress() != null) {
             return customerEntity.getAddress().equals(customerRequest.getAddress());
         } else return customerEntity.getAddress() == null && customerRequest.getAddress() == null;

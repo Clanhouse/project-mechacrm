@@ -183,7 +183,6 @@ class CustomerControllerIT extends BaseIntegrationTest {
     }
 
     @Transactional
-    @Rollback
     @Test
     void shouldResponseWith_Created_WhenAddedCustomer() throws Exception {
         final String body = objectMapper.writeValueAsString(customerRequest);
@@ -196,7 +195,6 @@ class CustomerControllerIT extends BaseIntegrationTest {
     }
 
     @Transactional
-    @Rollback
     @Test
     void shouldResponseWith_Created_WhenAddedCustomerWithAddressNull() throws Exception {
         customerRequest.setAddress(null);

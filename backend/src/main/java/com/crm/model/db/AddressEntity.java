@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -36,7 +35,7 @@ public class AddressEntity {
     private String country;
 
     @NotBlank
-    @Size(max = 30)
+    @Size(max = 60)
     private String city;
 
     @NotBlank
@@ -44,7 +43,7 @@ public class AddressEntity {
     private String postalCode;
 
     @NotBlank
-    @Size(max = 30)
+    @Size(max = 60)
     private String streetName;
 
     @NotBlank
