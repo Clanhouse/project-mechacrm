@@ -6,6 +6,7 @@ import com.crm.dto.response.CustomerResponse;
 import com.crm.exception.CustomerException;
 import com.crm.exception.CustomerNotFoundException;
 import com.crm.exception.ErrorDict;
+import com.crm.model.db.AddressEntity;
 import com.crm.model.db.CustomerEntity;
 import com.crm.repository.CustomerRepository;
 import org.junit.BeforeClass;
@@ -39,7 +40,6 @@ public class CustomerServiceImplTest {
     private static final String NAME = "Jan";
     private static final String SURNAME = "Kowalski";
     private static final String PHONE = "665456987";
-    private static final String ADDRESS = "Kaliska 12, Bełchatów";
 
     @Mock
     private CustomerRepository customerRepository;
@@ -50,6 +50,7 @@ public class CustomerServiceImplTest {
     @InjectMocks
     private CustomerServiceImpl customerService;
 
+    private static AddressEntity addressEntity;
     private static CustomerEntity customerEntity;
     private static CustomerRequest customerRequest;
     private static CustomerResponse customerResponse;
@@ -60,12 +61,20 @@ public class CustomerServiceImplTest {
 
     @BeforeClass
     public static void setUp() {
+        addressEntity = AddressEntity.builder()
+                .country("Poland")
+                .city("Bełchatów")
+                .postalCode("00-000")
+                .streetName("Kaliska")
+                .streetNumber("12")
+                .build();
+
         customerEntity = CustomerEntity.builder()
                 .id(ID)
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
-                .address(ADDRESS)
+                .address(addressEntity)
                 .build();
 
         customerRequest = new CustomerRequest();
@@ -134,7 +143,7 @@ public class CustomerServiceImplTest {
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
-                .address(ADDRESS)
+                .address(addressEntity)
                 .build();
 
         when(customerRepository.findByPhone(customerRequest.getPhone())).thenReturn(Optional.of(customerEntity));

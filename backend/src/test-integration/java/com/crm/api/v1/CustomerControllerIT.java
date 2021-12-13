@@ -5,7 +5,9 @@ import com.crm.BaseIntegrationTest;
 import com.crm.dto.request.CustomerRequest;
 import com.crm.exception.ErrorDict;
 import com.crm.exception.ErrorResponse;
+import com.crm.model.db.AddressEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,8 +17,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -50,7 +54,6 @@ class CustomerControllerIT extends BaseIntegrationTest {
     private static final String NAME = "Janusz";
     private static final String SURNAME = "Nowak";
     private static final String PHONE = "600600600";
-    private static final String ADDRESS = "Warszawska 20, Warszawa";
 
     @Autowired
     private MockMvc mvc;
@@ -59,14 +62,26 @@ class CustomerControllerIT extends BaseIntegrationTest {
     private ObjectMapper objectMapper;
 
     private CustomerRequest customerRequest;
+    private static AddressEntity addressEntity;
+
+    @BeforeClass
+    public static void setUpOnce() {
+        addressEntity = AddressEntity.builder()
+                .country("Poland")
+                .city("Warszawa")
+                .postalCode("00-000")
+                .streetName("Warszawska")
+                .streetNumber("20")
+                .build();
+    }
 
     @BeforeEach
-    public void setUp() {
+    public void setUpBeforeEach() {
         customerRequest = CustomerRequest.builder()
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
-                .address(ADDRESS)
+                .address(addressEntity)
                 .build();
     }
 
@@ -167,8 +182,22 @@ class CustomerControllerIT extends BaseIntegrationTest {
                 .andExpect(jsonPath("$.message[0]", is(PAGINATED_INVALID_SIZE)));
     }
 
+    @Transactional
     @Test
     void shouldResponseWith_Created_WhenAddedCustomer() throws Exception {
+        final String body = objectMapper.writeValueAsString(customerRequest);
+
+        mvc.perform(post("/customers")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(body))
+                .andDo(print())
+                .andExpect(status().is(CREATED.value()));
+    }
+
+    @Transactional
+    @Test
+    void shouldResponseWith_Created_WhenAddedCustomerWithAddressNull() throws Exception {
+        customerRequest.setAddress(null);
         final String body = objectMapper.writeValueAsString(customerRequest);
 
         mvc.perform(post("/customers")
@@ -203,8 +232,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         assertAll(
                 () -> assertTrue(message.contains(ErrorDict.CUSTOMER_NAME_INVALID)),
                 () -> assertTrue(message.contains(ErrorDict.CUSTOMER_SURNAME_INVALID)),
-                () -> assertTrue(message.contains(ErrorDict.CUSTOMER_PHONE_INVALID)),
-                () -> assertTrue(message.contains(ErrorDict.CUSTOMER_ADDRESS_INVALID))
+                () -> assertTrue(message.contains(ErrorDict.CUSTOMER_PHONE_INVALID))
         );
     }
 
@@ -405,77 +433,5 @@ class CustomerControllerIT extends BaseIntegrationTest {
                 .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.PHONE_NUMBER_FORMAT_INVALID));
-    }
-
-    @Test
-    void shouldResponseWith_BadRequest_WhenAddressIsBlank() throws Exception {
-        customerRequest.setAddress("");
-        final String body = objectMapper.writeValueAsString(customerRequest);
-
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
-
-        assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_ADDRESS_INVALID));
-    }
-
-    @Test
-    void shouldResponseWith_BadRequest_WhenAddressIsNull() throws Exception {
-        customerRequest.setAddress(null);
-        final String body = objectMapper.writeValueAsString(customerRequest);
-
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
-
-        assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_ADDRESS_INVALID));
-    }
-
-    @Test
-    void shouldResponseWith_BadRequest_WhenAddressIsShorterThan5Chars() throws Exception {
-        customerRequest.setAddress("Abcd");
-        final String body = objectMapper.writeValueAsString(customerRequest);
-
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
-
-        assertTrue(errorResponse.getMessage().contains(ErrorDict.ADDRESS_LENGTH_MUST_BETWEEN));
-    }
-
-    @Test
-    void shouldResponseWith_BadRequest_WhenAddressIsLongerThan50Chars() throws Exception {
-        customerRequest.setAddress("a".repeat(51));
-        final String body = objectMapper.writeValueAsString(customerRequest);
-
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
-
-        assertTrue(errorResponse.getMessage().contains(ErrorDict.ADDRESS_LENGTH_MUST_BETWEEN));
     }
 }

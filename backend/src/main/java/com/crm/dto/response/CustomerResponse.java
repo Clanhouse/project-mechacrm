@@ -1,5 +1,6 @@
 package com.crm.dto.response;
 
+import com.crm.model.db.AddressEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +21,5 @@ public class CustomerResponse {
     private String name;
     private String surname;
     private String phone;
-    private String address;
+    private AddressEntity address;
 }

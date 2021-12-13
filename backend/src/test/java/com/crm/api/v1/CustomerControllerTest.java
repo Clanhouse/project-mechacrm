@@ -3,6 +3,7 @@ package com.crm.api.v1;
 import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.request.PageRequest;
 import com.crm.dto.response.CustomerResponse;
+import com.crm.model.db.AddressEntity;
 import com.crm.service.impl.CustomerServiceImpl;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,7 +30,6 @@ public class CustomerControllerTest {
     private static final String NAME = "Jan";
     private static final String SURNAME = "Kowalski";
     private static final String PHONE = "665456987";
-    private static final String ADDRESS = "Kaliska 12, Bełchatów";
 
     @Mock
     private CustomerServiceImpl customerService;
@@ -48,11 +48,19 @@ public class CustomerControllerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
+        AddressEntity addressEntity = AddressEntity.builder()
+                .country("Poland")
+                .city("Bełchatów")
+                .postalCode("00-000")
+                .streetName("Kaliska")
+                .streetNumber("12")
+                .build();
+
         customerRequest = CustomerRequest.builder()
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
-                .address(ADDRESS)
+                .address(addressEntity)
                 .build();
 
         customerResponse = CustomerResponse.builder()
@@ -60,7 +68,7 @@ public class CustomerControllerTest {
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
-                .address(ADDRESS)
+                .address(addressEntity)
                 .build();
     }
 
