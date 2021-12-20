@@ -27,3 +27,16 @@ crm:
   properties:
     vin:
       length: 17
+
+email:
+  user:
+    name: "motomo@o2.pl"
+    password: "MotoYYGvcpo96%"
+  host:
+    name: "poczta.o2.pl"
+  smtp:
+    port: 465
+  ssl:
+    connect: true
+  endpoint:
+    path: "http://localhost:8080/api/account/activate"
