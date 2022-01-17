@@ -64,6 +64,15 @@ public class CustomerServiceImpl implements CustomerService {
         return customerMapper.convertToDto(customerRepository.save(newCustomer));
     }
 
+    @Override
+    public void deleteCustomer(final Long id) {
+        if (!customerRepository.existsById(id)) {
+            throw new CustomerNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND);
+        }
+
+        customerRepository.deleteById(id);
+    }
+
     private boolean isDuplicateCustomer(final CustomerRequest customerRequest, final CustomerEntity customerEntity) {
         return customerNameEquals(customerRequest, customerEntity)
                 && customerSurnameEquals(customerRequest, customerEntity)
