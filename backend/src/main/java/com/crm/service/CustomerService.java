@@ -12,5 +12,7 @@ public interface CustomerService {
 
     CustomerResponse addCustomer(final CustomerRequest customerRequest);
 
+    CustomerResponse updateCustomer(final CustomerRequest customerRequest, final Long id);
+
     void deleteCustomer(final Long id);
 }

@@ -50,8 +50,25 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse addCustomer(final CustomerRequest customerRequest) {
-        Optional<CustomerEntity> customerByPhone = customerRepository.findByPhone(customerRequest.getPhone());
+        validateRequest(customerRequest);
+        CustomerEntity newCustomer = customerMapper.convertToEntity(customerRequest);
+        return customerMapper.convertToDto(customerRepository.save(newCustomer));
+    }
 
+    @Override
+    public CustomerResponse updateCustomer(final CustomerRequest customerRequest, final Long id) {
+        CustomerEntity customerEntity = customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
+
+        validateRequest(customerRequest);
+        customerEntity = customerMapper.updateProperties(customerEntity, customerRequest);
+        CustomerEntity updatedEntity = customerRepository.save(customerEntity);
+
+        return customerMapper.convertToDto(updatedEntity);
+    }
+
+    private void validateRequest(final CustomerRequest customerRequest) {
+        Optional<CustomerEntity> customerByPhone = customerRepository.findByPhone(customerRequest.getPhone());
         customerByPhone.ifPresent(c -> {
             if (isDuplicateCustomer(customerRequest, c)) {
                 throw new CustomerException(ErrorDict.CUSTOMER_DUPLICATE);
@@ -59,9 +76,6 @@ public class CustomerServiceImpl implements CustomerService {
                 throw new CustomerException(ErrorDict.CUSTOMER_CREATE_PHONE_EXISTS);
             }
         });
-
-        CustomerEntity newCustomer = customerMapper.convertToEntity(customerRequest);
-        return customerMapper.convertToDto(customerRepository.save(newCustomer));
     }
 
     @Override

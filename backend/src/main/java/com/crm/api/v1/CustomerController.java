@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +51,15 @@ public class CustomerController {
                         .build()
                         .toUri())
                 .body(customerResponse);
+    }
+
+    @PutMapping("/{id}")
+    @ApiOperation(value = "Updates existing customer", notes = "Add body \"CustomerRequest\" and path variable \"id\""
+            + " of existing customer to proceed the update")
+    public ResponseEntity<CustomerResponse> updateCustomer(@Valid @RequestBody final CustomerRequest customerRequest,
+                                                           @PathVariable final Long id) {
+        CustomerResponse customerResponse = customerService.updateCustomer(customerRequest, id);
+        return ResponseEntity.ok(customerResponse);
     }
 
     @DeleteMapping("/{id}")
