@@ -62,9 +62,9 @@ public class CustomerServiceImpl implements CustomerService {
 
         validateRequest(customerRequest);
         customerEntity = customerMapper.updateProperties(customerEntity, customerRequest);
-        CustomerEntity updatedEntity = customerRepository.save(customerEntity);
-
-        return customerMapper.convertToDto(updatedEntity);
+        CustomerEntity updatedCustomer = customerRepository.save(customerEntity);
+        
+        return customerMapper.convertToDto(updatedCustomer);
     }
 
     private void validateRequest(final CustomerRequest customerRequest) {
