@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@storybook/builder-webpack4": "^6.5.0-alpha.21",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
@@ -39,19 +40,22 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.2.8",
-    "@storybook/addon-essentials": "^6.3.1",
-    "@storybook/addon-links": "^6.2.8",
-    "@storybook/node-logger": "^6.2.8",
-    "@storybook/preset-create-react-app": "^3.1.7",
-    "@storybook/react": "^6.3.1",
+    "@storybook/addon-actions": "^6.5.0-alpha.21",
+    "@storybook/addon-essentials": "^6.5.0-alpha.21",
+    "@storybook/addon-links": "^6.5.0-alpha.21",
+    "@storybook/builder-webpack5": "^6.5.0-alpha.21",
+    "@storybook/manager-webpack5": "^6.5.0-alpha.21",
+    "@storybook/node-logger": "^6.5.0-alpha.21",
+    "@storybook/preset-create-react-app": "^4.0.0",
+    "@storybook/react": "^6.5.0-alpha.21",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.2.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "webpack": "^5.66.0"
   },
   "eslintConfig": {
     "overrides": [
