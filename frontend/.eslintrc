@@ -9,7 +9,8 @@
       "error",
       { "ImportDeclaration": { "multiline": true, "minProperties": 2 } }
     ],
-    "object-property-newline": "error"
+    "object-property-newline": "error",
+    "react/function-component-definition": [2, { "namedComponents": "arrow-function" }]
   },
   "env": {
     "browser": true,
