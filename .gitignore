@@ -10,3 +10,4 @@
 # FRONTEND
 frontend/package-lock.json
 frontend/node_modules
+frontend/build
