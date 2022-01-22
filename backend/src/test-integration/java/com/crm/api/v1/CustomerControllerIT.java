@@ -3,12 +3,13 @@ package com.crm.api.v1;
 import com.crm.App;
 import com.crm.BaseIntegrationTest;
 import com.crm.dto.request.CustomerRequest;
+import com.crm.dto.response.CustomerResponse;
 import com.crm.exception.ErrorDict;
 import com.crm.exception.ErrorResponse;
 import com.crm.model.db.AddressEntity;
+import com.crm.model.db.CustomerEntity;
 import com.crm.repository.CustomerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,6 +44,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -67,26 +69,14 @@ class CustomerControllerIT extends BaseIntegrationTest {
     private CustomerRepository customerRepository;
 
     private CustomerRequest customerRequest;
-    private static AddressEntity addressEntity;
-
-    @BeforeClass
-    public static void setUpOnce() {
-        addressEntity = AddressEntity.builder()
-                .country("Poland")
-                .city("Warszawa")
-                .postalCode("00-000")
-                .streetName("Warszawska")
-                .streetNumber("20")
-                .build();
-    }
 
     @BeforeEach
-    public void setUpBeforeEach() {
+    public void setUp() {
         customerRequest = CustomerRequest.builder()
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
-                .address(addressEntity)
+                .address(createAddressEntity())
                 .build();
     }
 
@@ -222,15 +212,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
 
     @Test
     void shouldResponseWith_BadRequest_WhenBodyIsEmpty() throws Exception {
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{}"))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam("{}");
 
         List<String> message = errorResponse.getMessage();
 
@@ -246,15 +228,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setName("");
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_NAME_INVALID));
     }
@@ -264,15 +238,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setName(null);
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_NAME_INVALID));
     }
@@ -282,15 +248,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setName("Ab");
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.NAME_LENGTH_MUST_BETWEEN));
     }
@@ -300,15 +258,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setName("a".repeat(31));
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.NAME_LENGTH_MUST_BETWEEN));
     }
@@ -318,15 +268,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setSurname("");
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_SURNAME_INVALID));
     }
@@ -336,15 +278,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setSurname(null);
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_SURNAME_INVALID));
     }
@@ -354,15 +288,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setSurname("Al");
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.SURNAME_LENGTH_MUST_BETWEEN));
     }
@@ -372,15 +298,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setSurname("a".repeat(31));
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.SURNAME_LENGTH_MUST_BETWEEN));
     }
@@ -390,15 +308,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setPhone("");
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_PHONE_INVALID));
     }
@@ -408,15 +318,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setPhone(null);
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_PHONE_INVALID));
     }
@@ -427,17 +329,46 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setPhone(phoneNumber);
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/customers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(body))
-                .andDo(print())
-                .andExpect(status().is(BAD_REQUEST.value()))
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
-                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.PHONE_NUMBER_FORMAT_INVALID));
+    }
+
+    @Test
+    @Transactional
+    void shouldResponseWith_Ok_WhenUpdatedCustomer() throws Exception {
+        var address = createAddressEntity();
+        givenCustomerEntityWasSaved(address);
+        var updateRequest = createCustomerRequest("500500500", address);
+        final String body = objectMapper.writeValueAsString(updateRequest);
+
+        CustomerResponse customerResponse = whenUpdateCustomer(body, 1L);
+
+        thenAssertAllPropertiesEquals(updateRequest, customerResponse);
+    }
+
+    @Test
+    void shouldResponseWith_NotFound_WhenUpdatedCustomerWithNonExistingId() throws Exception {
+        var address = createAddressEntity();
+        var updateRequest = createCustomerRequest("500500500", address);
+        final String body = objectMapper.writeValueAsString(updateRequest);
+
+        ErrorResponse errorResponse = whenUpdateCustomerWithNonExistingId(body, 999L);
+
+        assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_NOT_FOUND));
+    }
+
+    @Test
+    @Transactional
+    void shouldResponseWith_Conflict_WhenUpdatedCustomerAlreadyExists() throws Exception {
+        givenCustomerEntityWasSaved();
+        var address = createAddressEntity();
+        var updateRequest = createCustomerRequest("600700800", address);
+        final String body = objectMapper.writeValueAsString(updateRequest);
+
+        ErrorResponse errorResponse = whenUpdateCustomerIsDuplicated(body, 1L);
+
+        assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_PHONE_EXISTS));
     }
 
     @Test
@@ -461,5 +392,102 @@ class CustomerControllerIT extends BaseIntegrationTest {
                 .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_NOT_FOUND));
+    }
+
+    private ErrorResponse whenAddCustomerWithInvalidRequestParam(String body) throws Exception {
+        MvcResult mvcResult = mvc.perform(post("/customers")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(body))
+                .andDo(print())
+                .andExpect(status().is(BAD_REQUEST.value()))
+                .andReturn();
+
+        return objectMapper.readValue(mvcResult.getResponse()
+                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+    }
+
+    private CustomerResponse whenUpdateCustomer(final String body, final Long id) throws Exception {
+        MvcResult mvcResult = mvc.perform(put("/customers/{id}", id)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(body))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        return objectMapper.readValue(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+    }
+
+    private ErrorResponse whenUpdateCustomerWithNonExistingId(final String body, final Long id) throws Exception {
+        MvcResult mvcResult = mvc.perform(put("/customers/{id}", id)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(body))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        return objectMapper.readValue(mvcResult.getResponse()
+                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+    }
+
+    private ErrorResponse whenUpdateCustomerIsDuplicated(final String body, final Long id) throws Exception {
+        MvcResult mvcResult = mvc.perform(put("/customers/{id}", id)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(body))
+                .andDo(print())
+                .andExpect(status().isConflict())
+                .andReturn();
+
+        return objectMapper.readValue(mvcResult.getResponse()
+                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+    }
+
+    private void thenAssertAllPropertiesEquals(final CustomerRequest updateRequest,
+                                               final CustomerResponse customerResponse) {
+        assertAll(
+                () -> assertEquals(updateRequest.getName(), customerResponse.getName()),
+                () -> assertEquals(updateRequest.getSurname(), customerResponse.getSurname()),
+                () -> assertEquals(updateRequest.getPhone(), customerResponse.getPhone()),
+                () -> assertEquals(updateRequest.getAddress(), customerResponse.getAddress())
+        );
+    }
+
+    private void givenCustomerEntityWasSaved(AddressEntity address) {
+        CustomerEntity customer = CustomerEntity.builder()
+                .name(NAME)
+                .surname(SURNAME)
+                .phone(PHONE)
+                .address(address)
+                .build();
+
+        customerRepository.save(customer);
+    }
+
+    private void givenCustomerEntityWasSaved() {
+        CustomerEntity customer = CustomerEntity.builder()
+                .name("Maria")
+                .surname("Jacak")
+                .phone("600700800")
+                .build();
+
+        customerRepository.save(customer);
+    }
+
+    private AddressEntity createAddressEntity() {
+        return AddressEntity.builder()
+                .country("Poland")
+                .city("Warszawa")
+                .postalCode("00-000")
+                .streetName("Warszawska")
+                .streetNumber("20")
+                .build();
+    }
+
+    private CustomerRequest createCustomerRequest(String phone, AddressEntity address) {
+        return CustomerRequest.builder()
+                .name(NAME)
+                .surname(SURNAME)
+                .phone(phone)
+                .address(address)
+                .build();
     }
 }

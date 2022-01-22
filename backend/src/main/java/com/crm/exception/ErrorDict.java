@@ -34,7 +34,7 @@ public class ErrorDict {
     public static final String CUSTOMER_PHONE_INVALID = "Numer telefonu klienta nie może być pusty";
     public static final String PHONE_NUMBER_FORMAT_INVALID = "Numer telefonu powinien być w formacie np. 600700800";
     public static final String CUSTOMER_DUPLICATE = "Użytkownik o podanych danych już istnieje w bazie";
-    public static final String CUSTOMER_CREATE_PHONE_EXISTS = "Podany numer telefonu już istnieje w bazie i jest przypisany do innego użytkownika";
+    public static final String CUSTOMER_PHONE_EXISTS = "Podany numer telefonu już istnieje w bazie i jest przypisany do innego użytkownika";
 
     public static final String USER_DISABLED = "Użytkownik zablokowany";
     public static final String LOGIN_FORMAT_INVALID = "Format nazwy użytkownika jest niepoprawny";

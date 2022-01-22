@@ -48,28 +48,8 @@ public class CustomerControllerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        AddressEntity addressEntity = AddressEntity.builder()
-                .country("Poland")
-                .city("Bełchatów")
-                .postalCode("00-000")
-                .streetName("Kaliska")
-                .streetNumber("12")
-                .build();
-
-        customerRequest = CustomerRequest.builder()
-                .name(NAME)
-                .surname(SURNAME)
-                .phone(PHONE)
-                .address(addressEntity)
-                .build();
-
-        customerResponse = CustomerResponse.builder()
-                .id(ID)
-                .name(NAME)
-                .surname(SURNAME)
-                .phone(PHONE)
-                .address(addressEntity)
-                .build();
+        customerRequest = createCustomerRequest();
+        customerResponse = createCustomerResponse();
     }
 
     @Test
@@ -102,9 +82,47 @@ public class CustomerControllerTest {
     }
 
     @Test
+    public void shouldUpdateCustomer() {
+        when(customerService.updateCustomer(customerRequest, ID)).thenReturn(customerResponse);
+
+        customerController.updateCustomer(customerRequest, ID);
+
+        verify(customerService, times(1)).updateCustomer(customerRequest, ID);
+    }
+
+    @Test
     public void shouldDeleteCustomer() {
         customerController.deleteCustomer(ID);
 
         verify(customerService, times(1)).deleteCustomer(ID);
+    }
+
+    private static CustomerResponse createCustomerResponse() {
+        return CustomerResponse.builder()
+                .id(ID)
+                .name(NAME)
+                .surname(SURNAME)
+                .phone(PHONE)
+                .address(createAddressEntity())
+                .build();
+    }
+
+    private static CustomerRequest createCustomerRequest() {
+        return CustomerRequest.builder()
+                .name(NAME)
+                .surname(SURNAME)
+                .phone(PHONE)
+                .address(createAddressEntity())
+                .build();
+    }
+
+    private static AddressEntity createAddressEntity() {
+        return AddressEntity.builder()
+                .country("Poland")
+                .city("Bełchatów")
+                .postalCode("00-000")
+                .streetName("Kaliska")
+                .streetNumber("12")
+                .build();
     }
 }

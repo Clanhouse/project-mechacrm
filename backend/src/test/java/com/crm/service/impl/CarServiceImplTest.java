@@ -4,7 +4,7 @@ import com.crm.dto.mapper.CarMapper;
 import com.crm.dto.request.CarRequest;
 import com.crm.dto.response.CarResponse;
 import com.crm.exception.CarException;
-import com.crm.exception.CarNotFoundException;
+import com.crm.exception.ResourceNotFoundException;
 import com.crm.exception.ErrorDict;
 import com.crm.model.db.CarEntity;
 import com.crm.model.db.CarTypeEntity;
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class CarServiceImplTest {
 
-    private static final Long ONE = 1L;
+    private static final Long ID = 1L;
     private static final String REGISTRATION_NUMBER = "ABC123";
     private static final String VIN = "VWVWVW12345678901";
 
@@ -60,29 +60,29 @@ public class CarServiceImplTest {
     }
 
     @Test
-    public void getCarByIdShouldReturnCorrectResponse() {
+    public void shouldGetCarById() {
         final Optional<CarEntity> optionalCarEntity = Optional.of(CarServiceImplTest.carEntity);
-        when(carRepository.findById(ONE)).thenReturn(optionalCarEntity);
+        when(carRepository.findById(ID)).thenReturn(optionalCarEntity);
         when(carMapper.convertToDto(carEntity)).thenReturn(carResponse);
 
-        carService.getCarById(ONE);
+        carService.getCarById(ID);
 
-        verify(carRepository, times(1)).findById(ONE);
+        verify(carRepository, times(1)).findById(ID);
         verify(carMapper, times(1)).convertToDto(carEntity);
     }
 
-    @Test(expected = CarNotFoundException.class)
-    public void getCarByIdShouldThrowExceptionForNotExistingEntry() {
-        when(carRepository.findById(ONE)).thenReturn(Optional.empty());
+    @Test(expected = ResourceNotFoundException.class)
+    public void shouldThrowCarNotFoundOnWrongCarId() {
+        when(carRepository.findById(ID)).thenReturn(Optional.empty());
 
-        carService.getCarById(ONE);
+        carService.getCarById(ID);
 
-        verify(carRepository, times(1)).findById(ONE);
+        verify(carRepository, times(1)).findById(ID);
         verify(carMapper, times(0)).convertToDto(any());
     }
 
     @Test
-    public void getCarByRegistrationNumberShouldReturnCorrectResponse() {
+    public void shouldGetCarByRegistrationNumber() {
         when(carRepository.findByRegistrationNumberIgnoreCase(REGISTRATION_NUMBER)).thenReturn(Optional.of(carEntity));
         when(carMapper.convertToDto(carEntity)).thenReturn(carResponse);
 
@@ -92,8 +92,8 @@ public class CarServiceImplTest {
         verify(carMapper, times(1)).convertToDto(any());
     }
 
-    @Test(expected = CarNotFoundException.class)
-    public void getCarByRegistrationNumberShouldThrowExceptionForInvalidRegistrationNumber() {
+    @Test(expected = ResourceNotFoundException.class)
+    public void shouldThrowCarNotFoundForInvalidRegistrationNumber() {
         when(carRepository.findByRegistrationNumberIgnoreCase(REGISTRATION_NUMBER)).thenReturn(Optional.empty());
 
         carService.getCarByRegistrationNumber(REGISTRATION_NUMBER);
@@ -107,7 +107,7 @@ public class CarServiceImplTest {
         final String vinTooShort = "V455";
 
         assertThatThrownBy(() -> carService.getCarByVIN(vinTooShort))
-                .isInstanceOf(CarNotFoundException.class)
+                .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage(ErrorDict.VIN_LENGTH_INVALID);
 
         verify(carRepository, times(0)).findByVinIgnoreCase(vinTooShort);
@@ -118,7 +118,7 @@ public class CarServiceImplTest {
         final String vinTooLong = "V455467475455845FDLKPRTFGG";
 
         assertThatThrownBy(() -> carService.getCarByVIN(vinTooLong))
-                .isInstanceOf(CarNotFoundException.class)
+                .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage(ErrorDict.VIN_LENGTH_INVALID);
 
         verify(carRepository, times(0)).findByVinIgnoreCase(vinTooLong);
@@ -130,7 +130,7 @@ public class CarServiceImplTest {
         final String vinWithCharO = "VIN4003876543920O";
 
         assertThatThrownBy(() -> carService.getCarByVIN(vinWithCharO))
-                .isInstanceOf(CarNotFoundException.class)
+                .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage(ErrorDict.VIN_FORMAT_INVALID);
 
         verify(carRepository, times(0)).findByVinIgnoreCase(vinWithCharO);
@@ -142,7 +142,7 @@ public class CarServiceImplTest {
         final String vinWithCharI = "VIN4003876543920i";
 
         assertThatThrownBy(() -> carService.getCarByVIN(vinWithCharI))
-                .isInstanceOf(CarNotFoundException.class)
+                .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage(ErrorDict.VIN_FORMAT_INVALID);
 
         verify(carRepository, times(0)).findByVinIgnoreCase(vinWithCharI);
@@ -154,12 +154,11 @@ public class CarServiceImplTest {
         final String vinWithCharQ = "VINq4003876543920";
 
         assertThatThrownBy(() -> carService.getCarByVIN(vinWithCharQ))
-                .isInstanceOf(CarNotFoundException.class)
+                .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage(ErrorDict.VIN_FORMAT_INVALID);
 
         verify(carRepository, times(0)).findByVinIgnoreCase(vinWithCharQ);
     }
-
 
     @Test
     public void shouldGetCarByVin() {

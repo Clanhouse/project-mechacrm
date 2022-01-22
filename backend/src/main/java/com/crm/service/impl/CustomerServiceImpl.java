@@ -4,8 +4,8 @@ import com.crm.dto.mapper.CustomerMapper;
 import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.exception.CustomerException;
-import com.crm.exception.CustomerNotFoundException;
 import com.crm.exception.ErrorDict;
+import com.crm.exception.ResourceNotFoundException;
 import com.crm.model.db.CustomerEntity;
 import com.crm.repository.CustomerRepository;
 import com.crm.service.CustomerService;
@@ -45,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponse getCustomerById(final Long id) {
         return customerRepository.findById(id)
                 .map(customerMapper::convertToDto)
-                .orElseThrow(() -> new CustomerNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponse updateCustomer(final CustomerRequest customerRequest, final Long id) {
         CustomerEntity customerEntity = customerRepository.findById(id)
-                .orElseThrow(() -> new CustomerNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
 
         validateRequest(customerRequest);
         customerEntity = customerMapper.updateProperties(customerEntity, customerRequest);
@@ -73,7 +73,7 @@ public class CustomerServiceImpl implements CustomerService {
             if (isDuplicateCustomer(customerRequest, c)) {
                 throw new CustomerException(ErrorDict.CUSTOMER_DUPLICATE);
             } else {
-                throw new CustomerException(ErrorDict.CUSTOMER_CREATE_PHONE_EXISTS);
+                throw new CustomerException(ErrorDict.CUSTOMER_PHONE_EXISTS);
             }
         });
     }
@@ -81,7 +81,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(final Long id) {
         if (!customerRepository.existsById(id)) {
-            throw new CustomerNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND);
+            throw new ResourceNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND);
         }
 
         customerRepository.deleteById(id);

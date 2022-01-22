@@ -4,7 +4,7 @@ import com.crm.dto.mapper.CarMapper;
 import com.crm.dto.request.CarRequest;
 import com.crm.dto.response.CarResponse;
 import com.crm.exception.CarException;
-import com.crm.exception.CarNotFoundException;
+import com.crm.exception.ResourceNotFoundException;
 import com.crm.exception.ErrorDict;
 import com.crm.model.db.CarEntity;
 import com.crm.model.db.CarTypeEntity;
@@ -49,27 +49,27 @@ public class CarServiceImpl implements CarService {
     @Override
     public CarResponse getCarById(final Long id) {
         return carMapper.convertToDto(carRepository.findById(id)
-                .orElseThrow(() -> new CarNotFoundException(ErrorDict.CAR_NOT_FOUND)));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorDict.CAR_NOT_FOUND)));
     }
 
     @Override
     public CarResponse getCarByRegistrationNumber(final String registrationNumber) {
         return carRepository.findByRegistrationNumberIgnoreCase(registrationNumber)
                 .map(carMapper::convertToDto)
-                .orElseThrow(() -> new CarNotFoundException(ErrorDict.REGISTRATION_NUMBER_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorDict.REGISTRATION_NUMBER_NOT_FOUND));
     }
 
     @Override
     public CarResponse getCarByVIN(final String vin) {
         if (vin.length() != VIN_LENGTH)
-            throw new CarNotFoundException(ErrorDict.VIN_LENGTH_INVALID);
+            throw new ResourceNotFoundException(ErrorDict.VIN_LENGTH_INVALID);
 
         if (hasVinIllegalCharacters(vin))
-            throw new CarNotFoundException(ErrorDict.VIN_FORMAT_INVALID);
+            throw new ResourceNotFoundException(ErrorDict.VIN_FORMAT_INVALID);
 
         return carRepository.findByVinIgnoreCase(vin)
                 .map(carMapper::convertToDto)
-                .orElseThrow(() -> new CarNotFoundException(ErrorDict.VIN_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorDict.VIN_NOT_FOUND));
     }
 
     private boolean hasVinIllegalCharacters(final String vin) {
