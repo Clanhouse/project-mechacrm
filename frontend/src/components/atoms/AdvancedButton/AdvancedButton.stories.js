@@ -1,15 +1,16 @@
 import React from 'react';
-import { ReactComponent as GoogleIcon } from 'assets/svgs/google-brands.svg';
-import { ReactComponent as FacebookIcon } from 'assets/svgs/facebook-f-brands.svg';
 import { ThemeProvider } from 'styled-components';
 import theme from 'theme/MainTheme';
+import {
+  FaFacebookF, FaGoogle,
+} from 'react-icons/fa';
 import AdvancedButton from './AdvancedButton';
 
 export default {
   title: 'Atoms/AdvancedButton',
   component: AdvancedButton,
   argTypes: {
-    icon: {
+    Icon: {
       control: 'hidden',
     },
     fontSize: {
@@ -52,7 +53,7 @@ TextButton.args = {
 
 export const Google = Template.bind({});
 Google.args = {
-  icon: <GoogleIcon />,
+  Icon: FaGoogle,
   text: 'Zaloguj się przez Google',
   fullWidth: true,
   fontSize: '18px',
@@ -67,7 +68,7 @@ Google.args = {
 
 export const Facebook = Template.bind({});
 Facebook.args = {
-  icon: <FacebookIcon />,
+  Icon: FaFacebookF,
   text: 'Zaloguj się przez Facebook',
   fullWidth: false,
   fontSize: '18px',

@@ -60,7 +60,7 @@ const LabelBox = styled.div`
 `;
 
 const AdvancedButton = ({
-  icon,
+  Icon,
   text,
   fontSize,
   fullWidth,
@@ -79,13 +79,13 @@ const AdvancedButton = ({
     marginTop={mt}
     marginLeft={ml}
   >
-    {icon && <IconBox icon={icon} color={color}>{icon}</IconBox>}
-    <LabelBox fontSize={fontSize} color={color} icon={icon}>{text}</LabelBox>
+    {Icon && <IconBox color={color}><Icon size={24} /></IconBox>}
+    <LabelBox fontSize={fontSize} color={color} icon={Icon}>{text}</LabelBox>
   </Container>
 );
 
 AdvancedButton.propTypes = {
-  icon: PropTypes.element,
+  Icon: PropTypes.func,
   text: PropTypes.string.isRequired,
   fontSize: PropTypes.string,
   fullWidth: PropTypes.bool,
@@ -98,7 +98,7 @@ AdvancedButton.propTypes = {
 };
 
 AdvancedButton.defaultProps = {
-  icon: null,
+  Icon: null,
   fontSize: '18px',
   fullWidth: false,
   borderColor: '#000',
