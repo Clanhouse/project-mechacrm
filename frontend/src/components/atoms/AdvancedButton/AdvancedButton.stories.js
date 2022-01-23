@@ -46,6 +46,8 @@ TextButton.args = {
   background: '#fff',
   // eslint-disable-next-line no-console
   onClick: () => console.log('clicked text button'),
+  mt: 0,
+  ml: 0,
 };
 
 export const Google = Template.bind({});
@@ -59,6 +61,8 @@ Google.args = {
   background: '#fff',
   // eslint-disable-next-line no-console
   onClick: () => console.log('clicked google button'),
+  mt: 0,
+  ml: 0,
 };
 
 export const Facebook = Template.bind({});
@@ -72,4 +76,6 @@ Facebook.args = {
   background: '#fff',
   // eslint-disable-next-line no-console
   onClick: () => console.log('clicked facebook button'),
+  mt: 0,
+  ml: 0,
 };

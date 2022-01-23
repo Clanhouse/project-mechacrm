@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Container = styled.button`
+  margin-top: ${({ marginTop }) => `${marginTop}px`};
+  margin-left: ${({ marginLeft }) => `${marginLeft}px`};
+  
   padding: 0 16px;
   
   display: flex;
@@ -65,12 +68,16 @@ const AdvancedButton = ({
   background,
   color,
   onClick,
+  mt,
+  ml,
 }) => (
   <Container
     fullWidth={fullWidth}
     borderColor={borderColor}
     background={background}
     onClick={onClick}
+    marginTop={mt}
+    marginLeft={ml}
   >
     {icon && <IconBox icon={icon} color={color}>{icon}</IconBox>}
     <LabelBox fontSize={fontSize} color={color} icon={icon}>{text}</LabelBox>
@@ -86,6 +93,8 @@ AdvancedButton.propTypes = {
   background: PropTypes.string,
   color: PropTypes.string,
   onClick: PropTypes.func,
+  mt: PropTypes.number,
+  ml: PropTypes.number,
 };
 
 AdvancedButton.defaultProps = {
@@ -96,6 +105,8 @@ AdvancedButton.defaultProps = {
   color: '#04294F',
   background: '#FFF',
   onClick: undefined,
+  mt: 0,
+  ml: 0,
 };
 
 export default AdvancedButton;
