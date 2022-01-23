@@ -7,36 +7,23 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Label = styled.div`
-  margin: 8px 16px;
-
-  font-family: ${({ theme }) => theme.fontFamily};
-  font-size: ${({ fontSize }) => fontSize};
-  line-height: ${({ fontSize }) => `calc(${fontSize} + 2px)`};
+const Label = styled.label`
+  display: block;
+  margin: 2px 16px 4px;
   letter-spacing: 0.014em;
-
   color: ${({ color }) => color};
+  font-size: 14px;
 `;
 
 const Input = styled.input`
-  box-sizing: border-box;
-
   height: 54px;
   width: 100%;
-
-  font-family: ${({ theme }) => theme.fontFamily};
-  font-size: 18px;
   letter-spacing: 0.014em;
-
   padding: ${({ icon }) => (icon ? '0 48px 0 16px' : '0 16px')};
-  margin: 0;
-
   border-radius: 25px;
-  border: ${({ borderColor, isError, theme }) => (isError ? `1px solid ${theme.color.danger}` : `1px solid ${borderColor}`)};
+  border: ${({ borderColor, errorMessage, theme }) => (errorMessage.trim.length > 0 ? `1px solid ${theme.color.danger}` : `1px solid ${borderColor}`)};
   outline: none;
-  
   background-color: ${({ backgroundColor }) => backgroundColor};
-  
   transition: all 0.3s ease-in-out;
 
   &::placeholder {
@@ -44,39 +31,29 @@ const Input = styled.input`
   }
   
   &:focus {
-    border: ${({ isError, theme }) => (isError ? `1px solid ${theme.color.danger}` : `1px solid ${theme.color.primary}`)};
+    border: ${({ errorMessage, theme }) => (errorMessage.length > 0 ? `1px solid ${theme.color.danger}` : `1px solid ${theme.color.primary}`)};
   }
 `;
 
 const IconBox = styled.div`
   width: 24px;
   height: 24px;
-  
   position: absolute;
-
   right: 16px;
   top: calc(50% - 12px);
-
-  background-image: ${({ icon }) => `url(${icon})`};
-  background-repeat: no-repeat;
-
   cursor: ${({ variant }) => (variant === 'password' ? 'pointer' : 'text')};
 `;
 
 const Message = styled.div`
-  height: ${({ fontSize }) => `calc(${fontSize} + 2px)`};
-  
-  margin: 8px 16px;
-
-  font-family: ${({ theme }) => theme.fontFamily};
-  font-size: ${({ fontSize }) => fontSize};
-  line-height: ${({ fontSize }) => `calc(${fontSize} + 2px)`};
+  margin: 4px 16px 0;
+  white-space: pre-wrap;
+  font-size: 14px;
   letter-spacing: 0.014em;
-
   color: ${({ theme }) => theme.color.danger};
 `;
 
 const InputField = ({
+  name,
   variant,
   fontSize,
   color,
@@ -85,17 +62,19 @@ const InputField = ({
   label,
   placeholder,
   placeholderColor,
-  icon,
-  isError,
+  Icon,
   errorMessage,
   value,
   onChange,
+  onBlur,
 }) => {
   const [type, setType] = useState(variant);
   return (
     <Container>
-      <Label fontSize={fontSize}>{label}</Label>
+      <Label htmlFor={name}>{label}</Label>
       <Input
+        id={name}
+        name={name}
         type={type}
         fontSize={fontSize}
         color={color}
@@ -103,14 +82,14 @@ const InputField = ({
         borderColor={borderColor}
         placeholder={placeholder}
         placeholderColor={placeholderColor}
-        icon={icon}
-        isError={isError}
+        icon={Icon}
+        errorMessage={errorMessage}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
       />
-      {icon && (
+      {Icon && (
         <IconBox
-          icon={icon}
           variant={variant}
           onClick={() => {
             if (variant === 'password') {
@@ -118,15 +97,18 @@ const InputField = ({
             }
             return 0;
           }}
-        />
+        >
+          <Icon size={24} />
+        </IconBox>
       )}
-      <Message fontSize={fontSize}>{isError && errorMessage}</Message>
+      <Message fontSize={fontSize}>{errorMessage || ' '}</Message>
     </Container>
   );
 };
 
 InputField.propTypes = {
   variant: PropTypes.oneOf(['text', 'password']),
+  name: PropTypes.string.isRequired,
   fontSize: PropTypes.string,
   color: PropTypes.string,
   backgroundColor: PropTypes.string,
@@ -134,11 +116,11 @@ InputField.propTypes = {
   placeholder: PropTypes.string,
   borderColor: PropTypes.string,
   placeholderColor: PropTypes.string,
-  icon: PropTypes.string,
-  isError: PropTypes.bool,
+  Icon: PropTypes.func,
   errorMessage: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 InputField.defaultProps = {
@@ -147,14 +129,14 @@ InputField.defaultProps = {
   color: '#04294F',
   backgroundColor: '#fff',
   label: 'Label',
-  borderColor: '#3F3D56',
-  placeholderColor: '#979797',
+  borderColor: '#04294F',
+  placeholderColor: '#ccc7c7',
   placeholder: 'Input message',
-  icon: null,
-  isError: false,
-  errorMessage: 'Error message',
+  Icon: null,
+  errorMessage: '',
   value: '',
   onChange: undefined,
+  onBlur: undefined,
 };
 
 export default InputField;
