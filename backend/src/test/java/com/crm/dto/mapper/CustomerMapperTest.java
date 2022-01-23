@@ -24,11 +24,6 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerMapperTest {
 
-    private static final Long ID = 1L;
-    private static final String NAME = "test";
-    private static final String SURNAME = "test";
-    private static final String PHONE = "+48 111111111";
-
     @Spy
     private ModelMapper modelMapper;
 
@@ -38,6 +33,11 @@ public class CustomerMapperTest {
     private static CustomerRequest customerRequest;
     private static CustomerEntity customerEntity;
     private static AddressEntity addressEntity;
+
+    private static final Long ID = 1L;
+    private static final String NAME = "test";
+    private static final String SURNAME = "test";
+    private static final String PHONE = "+48 111111111";
 
     @BeforeClass
     public static void setUp() {
@@ -101,7 +101,7 @@ public class CustomerMapperTest {
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
-                .address(createAddressEntity())
+                .address(addressEntity)
                 .cars(new HashSet<>())
                 .build();
     }
@@ -111,7 +111,7 @@ public class CustomerMapperTest {
                 .name(NAME)
                 .surname(SURNAME)
                 .phone(PHONE)
-                .address(createAddressEntity())
+                .address(addressEntity)
                 .build();
     }
 

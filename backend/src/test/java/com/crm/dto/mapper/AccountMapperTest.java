@@ -1,6 +1,5 @@
 package com.crm.dto.mapper;
 
-import com.crm.dto.request.NewAccountRequest;
 import com.crm.dto.response.AccountResponse;
 import com.crm.model.db.AccountEntity;
 import com.crm.model.db.RoleEntity;
@@ -32,7 +31,6 @@ public class AccountMapperTest {
     private AccountMapper accountMapper;
 
     private static AccountEntity accountEntity;
-    private static NewAccountRequest newAccountRequest;
 
     private static final Long ID = 1L;
     private static final String LOGIN = "Test48";
@@ -58,12 +56,6 @@ public class AccountMapperTest {
                 .loginAttempts(LOGIN_ATTEMPTS)
                 .registrationDate(REGISTRATION_DATE)
                 .role(ROLE)
-                .build();
-
-        newAccountRequest = NewAccountRequest.builder()
-                .login(LOGIN)
-                .password(PASSWORD)
-                .email(EMAIL)
                 .build();
     }
 

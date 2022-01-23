@@ -6,7 +6,6 @@ import com.crm.dto.request.NewAccountRequest;
 import com.crm.exception.ElementAlreadyExistException;
 import com.crm.exception.TokenExpiredException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -18,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static com.crm.exception.ErrorDict.*;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -92,7 +91,7 @@ class AccountControllerIT extends BaseIntegrationTest {
                         .content(mapper.writeValueAsString(mailConflictAccount))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(CONFLICT.value()))
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof ElementAlreadyExistException))
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ElementAlreadyExistException))
                 .andExpect(jsonPath("$.message[0]", is(ACCOUNT_ALREADY_EXIST_BY_EMAIL)));
     }
 
@@ -102,7 +101,7 @@ class AccountControllerIT extends BaseIntegrationTest {
                         .content(mapper.writeValueAsString(loginConflictAccount))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(CONFLICT.value()))
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof ElementAlreadyExistException))
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ElementAlreadyExistException))
                 .andExpect(jsonPath("$.message[0]", is(ACCOUNT_ALREADY_EXIST_BY_LOGIN)));
     }
 

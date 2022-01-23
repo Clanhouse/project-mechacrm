@@ -40,7 +40,8 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 
     @Override
     public VerificationTokenEntity getVerificationToken(final String token){
-        VerificationTokenEntity verTokenEntity = verificationTokenRepository.findByToken(token).orElseThrow(() -> new TokenExpiredException(TOKEN_EXPIRED));
+        VerificationTokenEntity verTokenEntity = verificationTokenRepository.findByToken(token)
+                .orElseThrow(() -> new TokenExpiredException(TOKEN_EXPIRED));
         Timestamp tokenDate = verTokenEntity.getExpiryDate();
 
         if(tokenDate.before(Timestamp.from(Instant.now()))){

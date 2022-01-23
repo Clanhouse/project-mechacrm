@@ -69,15 +69,12 @@ public class AccountServiceImplTest {
     @InjectMocks
     private AccountServiceImpl accountService;
 
-    private static AccountEntity accountEntity;
     private static AccountEntity savedAccountEntity;
     private static AccountEntity activatedAccountEntity;
     private static AccountEntity notActivatedAccountEntity;
     private static AccountResponse accountResponse;
     private static NewAccountRequest newAccountRequest;
     private static VerificationTokenEntity neverExpiredVerificationToken;
-    private static VerificationTokenEntity expiredVerificationToken;
-
 
     private static final Long ID = 10L;
     private static final String LOGIN = "Test485";
@@ -91,88 +88,17 @@ public class AccountServiceImplTest {
     private static final int LOGIN_ATTEMPTS = 1;
     private static final RoleEntity ROLE = RoleEntity.builder().id(1L).name("admin").build();
     private static final String VERIFICATION_TOKEN = "tokenToken";
-    private static final LocalDateTime NEVER_EXPIRED_TOKEN = LocalDateTime.of(2050, 1, 1, 1, 1, 1);
-    private static final LocalDateTime EXPIRED_TOKEN = LocalDateTime.of(2010, 1, 1, 1, 1, 1);
+    private static final LocalDateTime TOKEN_EXPIRY_DATE = LocalDateTime.of(2050, 1, 1, 1, 1, 1);
     private static final String USER_ROLE = "ROLE_USER";
-
 
     @BeforeClass
     public static void setUp() {
-        savedAccountEntity = AccountEntity.builder()
-                .id(ID)
-                .login(LOGIN)
-                .email(EMAIL)
-                .password(PASSWORD)
-                .isActive(NOT_ACTIVATED)
-                .lastFailedLogin(LAST_FAILED_LOGIN)
-                .lastSuccessfulLogin(LAST_SUCCESSFUL_LOGIN)
-                .loginAttempts(LOGIN_ATTEMPTS)
-                .registrationDate(REGISTRATION_DATE)
-                .role(ROLE)
-                .build();
-
-        notActivatedAccountEntity = AccountEntity.builder()
-                .id(ID)
-                .login(LOGIN)
-                .email(EMAIL)
-                .password(PASSWORD)
-                .isActive(NOT_ACTIVATED)
-                .lastFailedLogin(LAST_FAILED_LOGIN)
-                .lastSuccessfulLogin(LAST_SUCCESSFUL_LOGIN)
-                .loginAttempts(LOGIN_ATTEMPTS)
-                .registrationDate(REGISTRATION_DATE)
-                .role(ROLE)
-                .build();
-
-        accountEntity = AccountEntity.builder()
-                .login(LOGIN)
-                .email(EMAIL)
-                .password(PASSWORD)
-                .isActive(NOT_ACTIVATED)
-                .lastFailedLogin(LAST_FAILED_LOGIN)
-                .lastSuccessfulLogin(LAST_SUCCESSFUL_LOGIN)
-                .loginAttempts(LOGIN_ATTEMPTS)
-                .registrationDate(REGISTRATION_DATE)
-                .role(ROLE)
-                .build();
-
-        activatedAccountEntity = AccountEntity.builder()
-                .id(ID)
-                .login(LOGIN)
-                .email(EMAIL)
-                .password(PASSWORD)
-                .isActive(ACTIVATED)
-                .lastFailedLogin(LAST_FAILED_LOGIN)
-                .lastSuccessfulLogin(LAST_SUCCESSFUL_LOGIN)
-                .loginAttempts(LOGIN_ATTEMPTS)
-                .registrationDate(REGISTRATION_DATE)
-                .role(ROLE)
-                .build();
-
-        accountResponse = AccountResponse.builder()
-                .login(LOGIN)
-                .email(EMAIL)
-                .build();
-
-        newAccountRequest = NewAccountRequest.builder()
-                .login(LOGIN)
-                .password(PASSWORD)
-                .email(EMAIL)
-                .build();
-
-        neverExpiredVerificationToken = VerificationTokenEntity.builder()
-                .id(ID)
-                .token(VERIFICATION_TOKEN)
-                .user(activatedAccountEntity)
-                .expiryDate(Timestamp.valueOf(NEVER_EXPIRED_TOKEN))
-                .build();
-
-        expiredVerificationToken = VerificationTokenEntity.builder()
-                .id(ID)
-                .token(VERIFICATION_TOKEN)
-                .user(accountEntity)
-                .expiryDate(Timestamp.valueOf(EXPIRED_TOKEN))
-                .build();
+        savedAccountEntity = createSavedAccountEntity();
+        notActivatedAccountEntity = createSavedAccountEntity();
+        activatedAccountEntity = createActivatedAccountEntity();
+        accountResponse = createAccountResponse();
+        newAccountRequest = createNewAccountRequest();
+        neverExpiredVerificationToken = createNotExpiredVerificationToken();
     }
 
     @Test
@@ -288,7 +214,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void shouldReturnTrueOnIsAccountExist() {
+    public void shouldReturnTrueOnExistsByLogin() {
         when(accountRepository.existsByLogin(LOGIN)).thenReturn(true);
 
         boolean result = accountService.accountExistsByLogin(LOGIN);
@@ -298,7 +224,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void shouldReturnFalseOnIsAccountExist() {
+    public void shouldReturnFalseOnExistsByLogin() {
         when(accountRepository.existsByLogin(LOGIN)).thenReturn(false);
 
         boolean result = accountService.accountExistsByLogin(LOGIN);
@@ -318,8 +244,8 @@ public class AccountServiceImplTest {
 
         AccountResponse accountResponse = accountService.activateAccount(VERIFICATION_TOKEN);
 
-        assertEquals(accountResponse.getEmail(), EMAIL);
-        assertEquals(accountResponse.getLogin(), LOGIN);
+        assertEquals(EMAIL, accountResponse.getEmail());
+        assertEquals(LOGIN, accountResponse.getLogin());
 
         verify(accountRepository, times(1)).findById(ID);
         verify(accountRepository, times(1)).save(notActivatedAccountEntity);
@@ -351,6 +277,60 @@ public class AccountServiceImplTest {
         verify(accountRepository, times(0)).findById(ID);
         verify(accountRepository, times(0)).save(any());
         verify(accountMapper, times(0)).convertToDto(any());
+    }
+
+    private static VerificationTokenEntity createNotExpiredVerificationToken() {
+        return VerificationTokenEntity.builder()
+                .id(ID)
+                .token(VERIFICATION_TOKEN)
+                .user(activatedAccountEntity)
+                .expiryDate(Timestamp.valueOf(TOKEN_EXPIRY_DATE))
+                .build();
+    }
+
+    private static NewAccountRequest createNewAccountRequest() {
+        return NewAccountRequest.builder()
+                .login(LOGIN)
+                .password(PASSWORD)
+                .email(EMAIL)
+                .build();
+    }
+
+    private static AccountResponse createAccountResponse() {
+        return AccountResponse.builder()
+                .login(LOGIN)
+                .email(EMAIL)
+                .build();
+    }
+
+    private static AccountEntity createActivatedAccountEntity() {
+        return AccountEntity.builder()
+                .id(ID)
+                .login(LOGIN)
+                .email(EMAIL)
+                .password(PASSWORD)
+                .isActive(ACTIVATED)
+                .lastFailedLogin(LAST_FAILED_LOGIN)
+                .lastSuccessfulLogin(LAST_SUCCESSFUL_LOGIN)
+                .loginAttempts(LOGIN_ATTEMPTS)
+                .registrationDate(REGISTRATION_DATE)
+                .role(ROLE)
+                .build();
+    }
+
+    private static AccountEntity createSavedAccountEntity() {
+        return AccountEntity.builder()
+                .id(ID)
+                .login(LOGIN)
+                .email(EMAIL)
+                .password(PASSWORD)
+                .isActive(NOT_ACTIVATED)
+                .lastFailedLogin(LAST_FAILED_LOGIN)
+                .lastSuccessfulLogin(LAST_SUCCESSFUL_LOGIN)
+                .loginAttempts(LOGIN_ATTEMPTS)
+                .registrationDate(REGISTRATION_DATE)
+                .role(ROLE)
+                .build();
     }
 
 }

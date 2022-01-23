@@ -212,7 +212,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
 
     @Test
     void shouldResponseWith_BadRequest_WhenBodyIsEmpty() throws Exception {
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam("{}");
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody("{}");
 
         List<String> message = errorResponse.getMessage();
 
@@ -228,7 +228,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setName("");
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_NAME_INVALID));
     }
@@ -238,7 +238,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setName(null);
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_NAME_INVALID));
     }
@@ -248,7 +248,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setName("Ab");
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.NAME_LENGTH_MUST_BETWEEN));
     }
@@ -258,7 +258,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setName("a".repeat(31));
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.NAME_LENGTH_MUST_BETWEEN));
     }
@@ -268,7 +268,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setSurname("");
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_SURNAME_INVALID));
     }
@@ -278,7 +278,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setSurname(null);
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_SURNAME_INVALID));
     }
@@ -288,7 +288,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setSurname("Al");
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.SURNAME_LENGTH_MUST_BETWEEN));
     }
@@ -298,7 +298,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setSurname("a".repeat(31));
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.SURNAME_LENGTH_MUST_BETWEEN));
     }
@@ -308,7 +308,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setPhone("");
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_PHONE_INVALID));
     }
@@ -318,7 +318,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setPhone(null);
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_PHONE_INVALID));
     }
@@ -329,7 +329,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRequest.setPhone(phoneNumber);
         final String body = objectMapper.writeValueAsString(customerRequest);
 
-        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestParam(body);
+        ErrorResponse errorResponse = whenAddCustomerWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.PHONE_NUMBER_FORMAT_INVALID));
     }
@@ -348,7 +348,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
     }
 
     @Test
-    void shouldResponseWith_NotFound_WhenUpdatedCustomerWithNonExistingId() throws Exception {
+    void shouldResponseWith_NotFound_WhenUpdateCustomerWithNonExistingId() throws Exception {
         var address = createAddressEntity();
         var updateRequest = createCustomerRequest("500500500", address);
         final String body = objectMapper.writeValueAsString(updateRequest);
@@ -394,7 +394,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_NOT_FOUND));
     }
 
-    private ErrorResponse whenAddCustomerWithInvalidRequestParam(String body) throws Exception {
+    private ErrorResponse whenAddCustomerWithInvalidRequestBody(String body) throws Exception {
         MvcResult mvcResult = mvc.perform(post("/customers")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(body))
@@ -472,7 +472,7 @@ class CustomerControllerIT extends BaseIntegrationTest {
         customerRepository.save(customer);
     }
 
-    private AddressEntity createAddressEntity() {
+    private static AddressEntity createAddressEntity() {
         return AddressEntity.builder()
                 .country("Poland")
                 .city("Warszawa")
