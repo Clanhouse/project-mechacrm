@@ -6,6 +6,7 @@ import com.crm.dto.request.CustomerRequest;
 import com.crm.exception.ErrorDict;
 import com.crm.exception.ErrorResponse;
 import com.crm.model.db.AddressEntity;
+import com.crm.repository.CustomerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +34,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -41,6 +42,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -60,6 +62,9 @@ class CustomerControllerIT extends BaseIntegrationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     private CustomerRequest customerRequest;
     private static AddressEntity addressEntity;
@@ -433,5 +438,28 @@ class CustomerControllerIT extends BaseIntegrationTest {
                 .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.PHONE_NUMBER_FORMAT_INVALID));
+    }
+
+    @Test
+    @Transactional
+    void shouldResponseWith_NoContent_WhenDeletedCustomer() throws Exception {
+        mvc.perform(delete("/customers/1"))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        assertFalse(customerRepository.existsById(1L));
+    }
+
+    @Test
+    void shouldResponseWith_NotFound_WhenDeleteCustomerWithNonExistingId() throws Exception {
+        MvcResult mvcResult = mvc.perform(delete("/customers/999"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse()
+                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+
+        assertTrue(errorResponse.getMessage().contains(ErrorDict.CUSTOMER_NOT_FOUND));
     }
 }
