@@ -39,7 +39,7 @@ const Template = (args) => (
 
 export const TextButton = Template.bind({});
 TextButton.args = {
-  text: 'Zaloguj się przez email',
+  children: 'Zaloguj się przez email',
   fullWidth: false,
   fontSize: '18px',
   borderColor: '#000',
@@ -54,7 +54,7 @@ TextButton.args = {
 export const Google = Template.bind({});
 Google.args = {
   Icon: FaGoogle,
-  text: 'Zaloguj się przez Google',
+  children: 'Zaloguj się przez Google',
   fullWidth: true,
   fontSize: '18px',
   borderColor: '#000',
@@ -69,7 +69,7 @@ Google.args = {
 export const Facebook = Template.bind({});
 Facebook.args = {
   Icon: FaFacebookF,
-  text: 'Zaloguj się przez Facebook',
+  children: 'Zaloguj się przez Facebook',
   fullWidth: false,
   fontSize: '18px',
   borderColor: '#000',

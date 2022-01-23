@@ -61,7 +61,6 @@ const LabelBox = styled.div`
 
 const AdvancedButton = ({
   Icon,
-  text,
   fontSize,
   fullWidth,
   borderColor,
@@ -70,6 +69,7 @@ const AdvancedButton = ({
   onClick,
   mt,
   ml,
+  ...props
 }) => (
   <Container
     fullWidth={fullWidth}
@@ -80,13 +80,13 @@ const AdvancedButton = ({
     marginLeft={ml}
   >
     {Icon && <IconBox color={color}><Icon size={24} /></IconBox>}
-    <LabelBox fontSize={fontSize} color={color} icon={Icon}>{text}</LabelBox>
+    <LabelBox fontSize={fontSize} color={color} icon={Icon}>{props.children}</LabelBox>
   </Container>
 );
 
 AdvancedButton.propTypes = {
   Icon: PropTypes.func,
-  text: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
   fontSize: PropTypes.string,
   fullWidth: PropTypes.bool,
   borderColor: PropTypes.string,
