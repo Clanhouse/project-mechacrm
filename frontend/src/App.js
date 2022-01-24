@@ -9,7 +9,6 @@ import NotFoundPage from 'pages/NotFoundPage';
 import GlobalStyles from 'theme/GlobalStyles';
 import theme from 'theme/MainTheme';
 import RegisterPage from 'pages/RegisterPage';
-import AccountCreatedPage from 'pages/AccountCreatedPage';
 
 const App = () => (
   <BrowserRouter>
@@ -18,9 +17,7 @@ const App = () => (
       <Routes>
         <Route path="/" exact element={<HomePage />} />
         <Route path="/login" exact element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />}>
-          <Route path="created" element={<AccountCreatedPage />} />
-        </Route>
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </ThemeProvider>

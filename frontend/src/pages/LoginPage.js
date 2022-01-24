@@ -16,12 +16,17 @@ const Divider = styled.div`
   margin-top: 20px;
   display: flex;
   align-items: center;
-`;
-
-const Line = styled.span`
-  width: 100%;
-  height: 1px;
-  background-color: #979797;
+  color: ${({ theme }) => theme.color.dark};
+  
+  & span {
+    height: 1px;
+    width: 100%;
+    background-color: ${({ theme }) => theme.color.dark};
+  }
+  
+  & p {
+    margin: 0 21px;
+  }
 `;
 
 const Form = styled.form`
@@ -83,19 +88,15 @@ const LoginPage = () => {
           <Typography mt={10}>Zaloguj się podając informacje poniżej</Typography>
 
           <Link to="/login-by-google">
-            <div style={{ margin: '52px 0 0 0' }}>
-              <AdvancedButton fullWidth Icon={FaGoogle}>
-                Zaloguj się przez Google
-              </AdvancedButton>
-            </div>
+            <AdvancedButton mt={52} fullWidth Icon={FaGoogle}>
+              Zaloguj się przez Google
+            </AdvancedButton>
           </Link>
 
           <Divider>
-            <Line />
-            <div style={{ margin: '0 21px' }}>
-              <Typography>lub</Typography>
-            </div>
-            <Line />
+            <span />
+            <p>lub</p>
+            <span />
           </Divider>
 
           <Formik
