@@ -3,22 +3,22 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Container = styled.button`
+  margin-top: ${({ marginTop }) => `${marginTop}px`};
+  margin-left: ${({ marginLeft }) => `${marginLeft}px`};
+  
   display: flex;
   justify-content: center;
   align-items: center;
-  
   width: ${({ fullWidth }) => fullWidth && '100%'};
   height: 72px;
-
   border-radius: 25px;
   border: none;
-
+  cursor: pointer;
   background: ${({ background }) => background};
-
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
 
   &:hover {
-    background: ${({ background }) => `linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), ${background}`};
+    background: ${({ color }) => color};
 
     & > span {
       color: white;
@@ -28,44 +28,46 @@ const Container = styled.button`
 
 const Label = styled.span`
   padding: 12px 16px;
-
-  font-family: ${({ theme }) => theme.fontFamily};
-  font-weight: ${({ theme }) => theme.fontWeight.regular};
   font-size: ${({ fontSize }) => fontSize};
-
   letter-spacing: 0.014em;
-
   color: ${({ color }) => color};
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
 `;
 
-const LargeButton = ({
-  text,
-  background,
-  color,
-  fontSize,
-  fullWidth,
-  onClick,
-}) => (
-  <Container background={background} fullWidth={fullWidth} onClick={onClick}>
-    <Label color={color} fontSize={fontSize}>{text}</Label>
+const LargeButton = ({ background, color, fontSize, fullWidth, mt, ml, onClick, ...props }) => (
+  <Container
+    type={props.type}
+    color={color}
+    background={background}
+    fullWidth={fullWidth}
+    onClick={onClick}
+    marginTop={mt}
+    marginLeft={ml}
+  >
+    <Label color={color} fontSize={fontSize} {...props} />
   </Container>
 );
 
 LargeButton.propTypes = {
-  text: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
   background: PropTypes.string,
   color: PropTypes.string,
   fontSize: PropTypes.string,
   fullWidth: PropTypes.bool,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
+  mt: PropTypes.number,
+  ml: PropTypes.number,
 };
 
 LargeButton.defaultProps = {
-  background: '#fff',
-  color: '#000',
+  type: 'button',
+  background: '#FFB400',
+  color: '#04294F',
   fullWidth: false,
   fontSize: '42px',
+  onClick: undefined,
+  mt: 0,
+  ml: 0,
 };
 
 export default LargeButton;
