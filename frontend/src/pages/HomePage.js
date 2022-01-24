@@ -71,7 +71,7 @@ const RegisterButton = styled.button`
 
 const MainSection = styled.div`
   max-width: 1400px;
-  height: 100vh;
+  height: calc(100vh - 80px - 100px);
   margin: 0 auto;
 
   display: flex;
@@ -116,7 +116,9 @@ const HomePage = () => (
       </Navbar>
     </Header>
     <MainSection>
-      <Typography variant="h1" text="MOTOMO" color="white" fontSize="100px" />
+      <Typography variant="h1" color="white" fontSize="100px">
+        MOTOMO
+      </Typography>
     </MainSection>
     <FooterSection>
       &#169; Copyright 2022 Clanhouse
