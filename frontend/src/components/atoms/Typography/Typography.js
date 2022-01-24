@@ -37,13 +37,10 @@ const Typography = ({ variant, color, fontSize, mt, ml, align, ...props }) => (
     marginLeft={ml}
     align={align}
     {...props}
-  >
-    {props.children}
-  </Component>
+  />
 );
 
 Typography.propTypes = {
-  children: PropTypes.string.isRequired,
   variant: PropTypes.oneOf(['text', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']),
   fontSize: PropTypes.string,
   color: PropTypes.string,
