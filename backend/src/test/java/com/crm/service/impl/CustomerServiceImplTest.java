@@ -177,4 +177,26 @@ public class CustomerServiceImplTest {
         verify(customerRepository, times(0)).save(customerEntity);
         verify(customerMapper, times(0)).convertToDto(customerEntity);
     }
+
+    @Test
+    public void shouldDeleteCustomerById() {
+        when(customerRepository.existsById(ID)).thenReturn(true);
+
+        customerService.deleteCustomer(ID);
+
+        verify(customerRepository, times(1)).existsById(ID);
+        verify(customerRepository, times(1)).deleteById(ID);
+    }
+
+    @Test
+    public void shouldThrowCustomerNotFoundWhenDeleteCustomerWithWrongId() {
+        when(customerRepository.existsById(ID)).thenReturn(false);
+
+        assertThatThrownBy(() -> customerService.deleteCustomer(ID))
+                .isInstanceOf(CustomerNotFoundException.class)
+                .hasMessage(ErrorDict.CUSTOMER_NOT_FOUND);
+
+        verify(customerRepository, times(1)).existsById(ID);
+        verify(customerRepository, times(0)).deleteById(ID);
+    }
 }

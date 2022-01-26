@@ -100,4 +100,11 @@ public class CustomerControllerTest {
 
         verify(customerService, times(1)).addCustomer(customerRequest);
     }
+
+    @Test
+    public void shouldDeleteCustomer() {
+        customerController.deleteCustomer(ID);
+
+        verify(customerService, times(1)).deleteCustomer(ID);
+    }
 }

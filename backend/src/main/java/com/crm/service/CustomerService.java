@@ -11,4 +11,6 @@ public interface CustomerService {
     CustomerResponse getCustomerById(final Long id);
 
     CustomerResponse addCustomer(final CustomerRequest customerRequest);
+
+    void deleteCustomer(final Long id);
 }
