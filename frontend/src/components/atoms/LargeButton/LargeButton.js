@@ -3,9 +3,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Container = styled.button`
-  margin-top: ${({ marginTop }) => `${marginTop}px`};
-  margin-left: ${({ marginLeft }) => `${marginLeft}px`};
-  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,17 +31,17 @@ const Label = styled.span`
   transition: all 0.3s ease-in-out;
 `;
 
-const LargeButton = ({ background, color, fontSize, fullWidth, mt, ml, onClick, ...props }) => (
+const LargeButton = ({ background, color, fontSize, fullWidth, onClick, type, children }) => (
   <Container
-    type={props.type}
+    type={type}
     color={color}
     background={background}
     fullWidth={fullWidth}
     onClick={onClick}
-    marginTop={mt}
-    marginLeft={ml}
   >
-    <Label color={color} fontSize={fontSize} {...props} />
+    <Label color={color} fontSize={fontSize}>
+      {children}
+    </Label>
   </Container>
 );
 
@@ -55,8 +52,7 @@ LargeButton.propTypes = {
   fontSize: PropTypes.string,
   fullWidth: PropTypes.bool,
   onClick: PropTypes.func,
-  mt: PropTypes.number,
-  ml: PropTypes.number,
+  children: PropTypes.string.isRequired,
 };
 
 LargeButton.defaultProps = {
@@ -66,8 +62,6 @@ LargeButton.defaultProps = {
   fullWidth: false,
   fontSize: '42px',
   onClick: undefined,
-  mt: 0,
-  ml: 0,
 };
 
 export default LargeButton;

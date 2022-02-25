@@ -1,6 +1,7 @@
 import React from 'react';
 import theme from 'theme/MainTheme';
 import { ThemeProvider } from 'styled-components';
+import PropTypes from 'prop-types';
 import LargeButton from './LargeButton';
 
 export default {
@@ -17,16 +18,20 @@ export default {
     color: {
       control: 'color',
     },
-    fontSize: {
-      control: 'text',
-    },
     fullWidth: {
       control: 'boolean',
+    },
+    onClick: {
+      action: 'large button clicked',
     },
   },
 };
 
-const Template = (args) => <ThemeProvider theme={theme}><LargeButton {...args} /></ThemeProvider>;
+const Template = ({ children, ...args }) => (
+  <ThemeProvider theme={theme}>
+    <LargeButton {...args}>{children}</LargeButton>
+  </ThemeProvider>
+);
 
 export const LoginButton = Template.bind({});
 LoginButton.args = {
@@ -36,10 +41,6 @@ LoginButton.args = {
   background: '#ffb400',
   fontSize: '42px',
   fullWidth: false,
-  mt: 0,
-  ml: 0,
-  // eslint-disable-next-line no-console
-  onClick: () => console.log('clicked'),
 };
 
 export const RegisterButton = Template.bind({});
@@ -50,8 +51,8 @@ RegisterButton.args = {
   background: '#ffb400',
   fontSize: '42px',
   fullWidth: true,
-  mt: 0,
-  ml: 0,
-  // eslint-disable-next-line no-console
-  onClick: () => console.log('clicked'),
+};
+
+Template.propTypes = {
+  children: PropTypes.string.isRequired,
 };
