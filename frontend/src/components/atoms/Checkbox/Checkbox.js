@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Container = styled.div`
-  margin-top: ${({ marginTop }) => `${marginTop}px`};
-  margin-left: ${({ marginLeft }) => `${marginLeft}px`};
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -35,10 +33,8 @@ const Checkbox = ({
   disabled,
   onChange,
   fontSize,
-  mt,
-  ml,
 }) => (
-  <Container marginTop={mt} marginLeft={ml}>
+  <Container>
     <Box
       name={name}
       checked={checked}
@@ -56,17 +52,13 @@ Checkbox.propTypes = {
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
-  mt: PropTypes.number,
-  ml: PropTypes.number,
   fontSize: PropTypes.string,
 };
 
 Checkbox.defaultProps = {
   checked: false,
   disabled: false,
-  onChange: (e) => e.preventDefault(),
-  mt: 0,
-  ml: 0,
+  onChange: undefined,
   fontSize: '18px',
 };
 

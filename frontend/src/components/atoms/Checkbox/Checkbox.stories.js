@@ -6,11 +6,6 @@ import Checkbox from './Checkbox';
 export default {
   title: 'Atoms/Checkbox',
   component: Checkbox,
-  argTypes: {
-    label: {
-      control: 'text',
-    },
-  },
 };
 
 const Template = (args) => (
@@ -21,44 +16,36 @@ const Template = (args) => (
 
 export const Unchecked = Template.bind({});
 Unchecked.args = {
-  label: 'Unchecked',
+  label: 'Zapamiętaj',
   name: 'Unchecked',
   checked: false,
   disabled: false,
-  mt: 0,
-  ml: 0,
   fontSize: '18px',
 };
 
 export const Checked = Template.bind({});
 Checked.args = {
-  label: 'Checked',
+  label: 'Przeczytałem',
   name: 'Checked',
   checked: true,
   disabled: false,
-  mt: 0,
-  ml: 0,
   fontSize: '18px',
 };
 
 export const UncheckedAndDisabled = Template.bind({});
 UncheckedAndDisabled.args = {
-  label: 'Unchecked',
+  label: 'Opcja nie aktywna',
   name: 'Unchecked',
   checked: false,
   disabled: true,
-  mt: 0,
-  ml: 0,
   fontSize: '18px',
 };
 
 export const CheckedAndDisabled = Template.bind({});
 CheckedAndDisabled.args = {
-  label: 'Checked',
+  label: 'Parametr testowy',
   name: 'Checked',
   checked: true,
   disabled: true,
-  mt: 0,
-  ml: 0,
   fontSize: '18px',
 };
