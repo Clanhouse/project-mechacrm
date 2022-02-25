@@ -1,9 +1,8 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import theme from 'theme/MainTheme';
-import {
-  FaFacebookF, FaGoogle,
-} from 'react-icons/fa';
+import { FaFacebookF, FaGoogle } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 import AdvancedButton from './AdvancedButton';
 
 export default {
@@ -12,9 +11,6 @@ export default {
   argTypes: {
     Icon: {
       control: 'hidden',
-    },
-    fontSize: {
-      control: 'text',
     },
     fullWidth: {
       control: 'boolean',
@@ -28,12 +24,15 @@ export default {
     color: {
       control: 'color',
     },
+    onClick: {
+      action: 'advanced button clicked',
+    },
   },
 };
 
-const Template = (args) => (
+const Template = ({ children, ...args }) => (
   <ThemeProvider theme={theme}>
-    <AdvancedButton {...args} />
+    <AdvancedButton {...args}>{children}</AdvancedButton>
   </ThemeProvider>
 );
 
@@ -45,10 +44,6 @@ TextButton.args = {
   borderColor: '#000',
   color: '#04294F',
   background: '#fff',
-  // eslint-disable-next-line no-console
-  onClick: () => console.log('clicked text button'),
-  mt: 0,
-  ml: 0,
 };
 
 export const Google = Template.bind({});
@@ -60,10 +55,6 @@ Google.args = {
   borderColor: '#000',
   color: '#04294F',
   background: '#fff',
-  // eslint-disable-next-line no-console
-  onClick: () => console.log('clicked google button'),
-  mt: 0,
-  ml: 0,
 };
 
 export const Facebook = Template.bind({});
@@ -75,8 +66,8 @@ Facebook.args = {
   borderColor: '#000',
   color: '#04294F',
   background: '#fff',
-  // eslint-disable-next-line no-console
-  onClick: () => console.log('clicked facebook button'),
-  mt: 0,
-  ml: 0,
+};
+
+Template.propTypes = {
+  children: PropTypes.string.isRequired,
 };
