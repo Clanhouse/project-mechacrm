@@ -9,30 +9,59 @@ const Container = styled.div`
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
+  
+  @media only screen and (max-width: 1400px) {
+    grid-template-columns: 1fr 2fr;
+  }
 `;
 
 const LeftSide = styled.div`
   height: 100%;
   background-color: ${({ theme }) => theme.color.light};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const LogoBox = styled.div`
   width: 200px;
-  margin: 100px 0 0 80px;
+  margin: 0 auto 80px;
 `;
 
 const SloganBox = styled.div`
-  margin-top: 100px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  
+  & > h1 {
+    margin-top: 40px;
+  }
+  
+  & > p {
+    margin-top: 24px;
+  }
 `;
 
 const RightSide = styled.div`
-  padding-left: 40px;
+  padding: 0 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  
+  & > p {
+    margin-top: 16px;
+  }
+  
+  & form {
+    & > div:nth-child(2) {
+      margin-left: 16px;
+    }
+    
+    & button {
+      margin-top: 16px;
+    }
+  }
 `;
 
 const RegisterPageTemplate = ({ formSection }) => (
@@ -43,18 +72,15 @@ const RegisterPageTemplate = ({ formSection }) => (
       </LogoBox>
       <SloganBox>
         <MotomoGear height={150} />
-        <Typography variant="h1" fontSize="40px" align="center" mt={40}>
+        <Typography variant="h1" fontSize="40px" align="center">
           Zaufaj profesjonalistom
         </Typography>
-        <Typography align="center" mt={24}>
+        <Typography align="center">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          hdhdhdhfhffhhh
         </Typography>
       </SloganBox>
     </LeftSide>
-    <RightSide>
-      {formSection}
-    </RightSide>
+    <RightSide>{formSection}</RightSide>
   </Container>
 );
 

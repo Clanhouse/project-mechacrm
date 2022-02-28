@@ -6,8 +6,7 @@ import Typography from 'components/atoms/Typography/Typography';
 import { Link } from 'react-router-dom';
 import AdvancedButton from 'components/atoms/AdvancedButton/AdvancedButton';
 import {
-  FaEnvelope, FaEye,
-  FaFacebookF, FaGoogle, FaPhone,
+  FaEnvelope, FaEye, FaFacebookF, FaGoogle, FaPhone,
 } from 'react-icons/fa';
 import InputField from 'components/atoms/InputField/InputField';
 import Checkbox from 'components/atoms/Checkbox/Checkbox';
@@ -15,7 +14,7 @@ import LargeButton from 'components/atoms/LargeButton/LargeButton';
 
 const SocialButtons = styled.div`
   margin-top: 32px;
-  margin-left: 16px;
+  //margin-left: 16px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 20px;
@@ -40,7 +39,6 @@ const Divider = styled.div`
 `;
 
 const Form = styled.form`
-  padding-left: 16px;
 `;
 
 const FormRow = styled(SocialButtons)`
@@ -48,6 +46,8 @@ const FormRow = styled(SocialButtons)`
 `;
 
 const AlreadyHaveAccountBox = styled.div`
+  margin-top: 16px;
+  
   & span {
     color: ${({ theme }) => theme.color.primary};
     transition: all 0.3s ease-in-out;
@@ -61,7 +61,7 @@ const AlreadyHaveAccountBox = styled.div`
 const AcceptTermsBox = styled.div`
   margin-top: 8px;
   display: flex;
-  
+
   & > a {
     text-decoration: underline;
   }
@@ -120,10 +120,10 @@ const RegisterPage = () => {
     <RegisterPageTemplate
       formSection={(
         <>
-          <Typography variant="h2" fontSize="32px" ml={16}>
+          <Typography variant="h2" fontSize="32px">
             Zarejestruj się
           </Typography>
-          <Typography fontSize="16px" mt={16} ml={16}>
+          <Typography fontSize="16px">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
           </Typography>
           <SocialButtons>
@@ -157,7 +157,7 @@ const RegisterPage = () => {
             validate={validate}
             onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
           >
-            {({ values, handleChange, handleSubmit }) => (
+            {({ values, handleChange, handleBlur, handleSubmit }) => (
               <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
                 <FormRow>
                   <InputField
@@ -166,6 +166,7 @@ const RegisterPage = () => {
                     placeholder="Wpisz swoje imię"
                     value={values.firstname}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     errorMessage={errors.firstname}
                   />
                   <InputField
@@ -174,6 +175,7 @@ const RegisterPage = () => {
                     placeholder="Wpisz swoje imię"
                     value={values.lastname}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     errorMessage={errors.lastname}
                   />
                   <InputField
@@ -182,6 +184,7 @@ const RegisterPage = () => {
                     placeholder="+48 ___ ___ ___"
                     value={values.phone}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     errorMessage={errors.phone}
                     Icon={FaPhone}
                   />
@@ -191,6 +194,7 @@ const RegisterPage = () => {
                     placeholder="Wpisz email"
                     value={values.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     errorMessage={errors.email}
                     Icon={FaEnvelope}
                   />
@@ -201,6 +205,7 @@ const RegisterPage = () => {
                     placeholder="Wpisz hasło"
                     value={values.password}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     errorMessage={errors.password}
                     Icon={FaEye}
                   />
@@ -211,6 +216,7 @@ const RegisterPage = () => {
                     placeholder="Wpisz hasło"
                     value={values.password2}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     errorMessage={errors.password2}
                     Icon={FaEye}
                   />
@@ -225,11 +231,13 @@ const RegisterPage = () => {
                     fontSize="16px"
                   />
                   <Link to="\terms-of-use">
-                    <Typography ml={-8} fontSize="16px">Regulamin serwisu</Typography>
+                    <Typography fontSize="16px">
+                      Regulamin serwisu
+                    </Typography>
                   </Link>
                 </AcceptTermsBox>
 
-                <LargeButton type="submit" mt={32} fullWidth>
+                <LargeButton type="submit" fullWidth>
                   Zarejestruj się
                 </LargeButton>
               </Form>
@@ -237,7 +245,7 @@ const RegisterPage = () => {
           </Formik>
 
           <AlreadyHaveAccountBox>
-            <Typography mt={16} align="center" fontSize="16px">
+            <Typography align="center" fontSize="16px">
               Masz już konto?{' '}
               <Link to="/login">
                 <span>Zaloguj się</span>
