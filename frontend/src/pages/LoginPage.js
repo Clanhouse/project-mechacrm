@@ -5,9 +5,7 @@ import Typography from 'components/atoms/Typography/Typography';
 import AdvancedButton from 'components/atoms/AdvancedButton/AdvancedButton';
 import LargeButton from 'components/atoms/LargeButton/LargeButton';
 import { Link } from 'react-router-dom';
-import {
-  FaEye, FaGoogle,
-} from 'react-icons/fa';
+import { FaEye, FaGoogle } from 'react-icons/fa';
 import { Formik } from 'formik';
 import InputField from 'components/atoms/InputField/InputField';
 import Checkbox from 'components/atoms/Checkbox/Checkbox';
@@ -17,20 +15,20 @@ const Divider = styled.div`
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.color.dark};
-  
+
   & span {
     height: 1px;
     width: 100%;
     background-color: ${({ theme }) => theme.color.dark};
   }
-  
+
   & p {
     margin: 0 21px;
   }
 `;
 
 const Form = styled.form`
-  margin-top: 24px;
+  margin-top: 16px;
 `;
 
 const RememberMeBox = styled.div`
@@ -39,7 +37,7 @@ const RememberMeBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
+
   & > a {
     text-decoration: underline;
   }
@@ -47,12 +45,12 @@ const RememberMeBox = styled.div`
 
 const NewAccountBox = styled.div`
   margin: 16px auto 0;
-  
+
   & span {
     color: ${({ theme }) => theme.color.primary};
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    
+
     &:hover {
       color: ${({ theme }) => theme.color.secondary};
     }
@@ -85,10 +83,10 @@ const LoginPage = () => {
             Witaj w Motomo
           </Typography>
 
-          <Typography mt={10}>Zaloguj się podając informacje poniżej</Typography>
+          <Typography>Zaloguj się podając informacje poniżej</Typography>
 
           <Link to="/login-by-google">
-            <AdvancedButton mt={52} fullWidth Icon={FaGoogle}>
+            <AdvancedButton fullWidth Icon={FaGoogle}>
               Zaloguj się przez Google
             </AdvancedButton>
           </Link>
@@ -103,7 +101,8 @@ const LoginPage = () => {
             initialValues={{ login: '', password: '', rememberMe: false }}
             validate={validate}
             onSubmit={(values) => {
-              alert(JSON.stringify(values, null, 2));
+              console.log(values);
+              // alert(JSON.stringify(values, null, 2));
             }}
           >
             {({ values, handleChange, handleBlur, handleSubmit }) => (
@@ -131,22 +130,30 @@ const LoginPage = () => {
                 <RememberMeBox>
                   <Checkbox
                     fontSize="16px"
-                    ml={16}
                     label="Zapamiętaj mnie"
                     checked={values.rememberMe}
                     onChange={handleChange}
                     name="rememberMe"
                   />
-                  <Link to="/recovery"><Typography fontSize="14px">Nie pamiętasz hasła?</Typography></Link>
+                  <Link to="/recovery">
+                    <Typography fontSize="14px">Nie pamiętasz hasła?</Typography>
+                  </Link>
                 </RememberMeBox>
-                <LargeButton type="submit" fullWidth mt={24}>
-                  Zaloguj
-                </LargeButton>
+                <Link to="/dashboard">
+                  <LargeButton type="submit" fullWidth>
+                    Zaloguj
+                  </LargeButton>
+                </Link>
               </Form>
             )}
           </Formik>
           <NewAccountBox>
-            <Typography fontSize="16px">Nie masz jeszcze konta? <Link to="/register"><span>Zarejestruj się</span></Link></Typography>
+            <Typography fontSize="16px">
+              Nie masz jeszcze konta?{' '}
+              <Link to="/register">
+                <span>Zarejestruj się</span>
+              </Link>
+            </Typography>
           </NewAccountBox>
         </>
       )}

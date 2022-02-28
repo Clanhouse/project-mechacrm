@@ -30,7 +30,9 @@ const Logo = styled.div`
   width: 200px;
 `;
 
-const RightSection = styled.div``;
+const RightSection = styled.div`
+  
+`;
 
 const SloganSection = styled.div`
   margin-top: 160px;
@@ -43,6 +45,24 @@ const LoginSection = styled.div`
   justify-content: center;
   
   padding: 50px;
+
+  & > h2 {
+    margin-bottom: 24px;
+  }
+  
+  & > p {
+    margin-bottom: 16px;
+  }
+  
+  & > form {
+    & div:nth-child(3) {
+      margin-left: 16px;
+    }
+    
+    & button {
+      margin-top: 16px;
+    }
+  }
 `;
 
 const LoginPageTemplate = ({ loginSection }) => (
