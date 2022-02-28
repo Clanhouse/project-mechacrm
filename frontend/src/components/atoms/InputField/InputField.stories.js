@@ -14,9 +14,6 @@ export default {
       options: ['text', 'password'],
       control: 'inline-radio',
     },
-    fontSize: {
-      control: 'text',
-    },
     color: {
       control: 'color',
     },
@@ -31,12 +28,6 @@ export default {
     },
     Icon: {
       control: 'none',
-    },
-    errorMessage: {
-      control: 'text',
-    },
-    value: {
-      control: 'text',
     },
   },
 };

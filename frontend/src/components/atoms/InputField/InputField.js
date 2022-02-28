@@ -21,7 +21,10 @@ const Input = styled.input`
   letter-spacing: 0.014em;
   padding: ${({ icon }) => (icon ? '0 48px 0 16px' : '0 16px')};
   border-radius: 25px;
-  border: ${({ borderColor, errorMessage, theme }) => (errorMessage.trim.length > 0 ? `1px solid ${theme.color.danger}` : `1px solid ${borderColor}`)};
+  border: ${({ borderColor, errorMessage, theme }) => (errorMessage.length > 0
+    ? `1px solid ${theme.color.danger}`
+    : `1px solid ${borderColor}`
+  )};
   outline: none;
   background-color: ${({ backgroundColor }) => backgroundColor};
   transition: all 0.3s ease-in-out;
@@ -29,9 +32,11 @@ const Input = styled.input`
   &::placeholder {
     color: ${({ placeholderColor }) => placeholderColor};
   }
-  
+
   &:focus {
-    border: ${({ errorMessage, theme }) => (errorMessage.length > 0 ? `1px solid ${theme.color.danger}` : `1px solid ${theme.color.primary}`)};
+    border: ${({ errorMessage, theme }) => (errorMessage.length > 0
+    ? `1px solid ${theme.color.danger}`
+    : `1px solid ${theme.color.primary}`)};
   }
 `;
 
@@ -45,6 +50,7 @@ const IconBox = styled.div`
 `;
 
 const Message = styled.div`
+  height: 19px;
   margin: 4px 16px 0;
   white-space: pre-wrap;
   font-size: 14px;
@@ -68,14 +74,14 @@ const InputField = ({
   onChange,
   onBlur,
 }) => {
-  const [type, setType] = useState(variant);
+  const [variantState, setVariantState] = useState(variant);
   return (
     <Container>
       <Label htmlFor={name}>{label}</Label>
       <Input
         id={name}
         name={name}
-        type={type}
+        type={variantState}
         fontSize={fontSize}
         color={color}
         backgroundColor={backgroundColor}
@@ -93,7 +99,7 @@ const InputField = ({
           variant={variant}
           onClick={() => {
             if (variant === 'password') {
-              return (type === 'password' ? setType('text') : setType('password'));
+              return variantState === 'password' ? setVariantState('text') : setVariantState('password');
             }
             return 0;
           }}
@@ -101,7 +107,7 @@ const InputField = ({
           <Icon size={24} />
         </IconBox>
       )}
-      <Message fontSize={fontSize}>{errorMessage || ' '}</Message>
+      <Message fontSize={fontSize}>{errorMessage}</Message>
     </Container>
   );
 };
@@ -119,8 +125,8 @@ InputField.propTypes = {
   Icon: PropTypes.func,
   errorMessage: PropTypes.string,
   value: PropTypes.string,
-  onChange: PropTypes.func,
-  onBlur: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
 };
 
 InputField.defaultProps = {
@@ -135,8 +141,6 @@ InputField.defaultProps = {
   Icon: null,
   errorMessage: '',
   value: '',
-  onChange: undefined,
-  onBlur: undefined,
 };
 
 export default InputField;
