@@ -26,12 +26,6 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(getSource(request), errorMessages);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ErrorResponse handleResourceNotFoundException(final ResourceNotFoundException e, final HttpServletRequest request) {
-        return new ErrorResponse(getSource(request), List.of(e.getMessage()));
-    }
-
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(CustomerException.class)
     public ErrorResponse handleCustomerConflictException(final CustomerException e, final HttpServletRequest request) {

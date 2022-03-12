@@ -17,13 +17,7 @@ import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-import static com.crm.exception.ErrorDict.EMAIL_FORMAT_INVALID;
-import static com.crm.exception.ErrorDict.LOGIN_CAN_NOT_BE_EMPTY;
-import static com.crm.exception.ErrorDict.LOGIN_FORMAT_INVALID;
-import static com.crm.exception.ErrorDict.LOGIN_LENGTH_MUST_BETWEEN;
-import static com.crm.exception.ErrorDict.PASSWORD_CAN_NOT_BE_EMPTY;
-import static com.crm.exception.ErrorDict.PASSWORD_FORMAT_INVALID;
-import static com.crm.exception.ErrorDict.PASSWORD_LENGTH_MUST_BETWEEN;
+import static com.crm.exception.ErrorDict.*;
 
 @Builder
 @Getter

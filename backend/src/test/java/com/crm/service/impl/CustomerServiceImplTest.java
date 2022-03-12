@@ -5,7 +5,6 @@ import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.exception.CustomerException;
 import com.crm.exception.ErrorDict;
-import com.crm.exception.ResourceNotFoundException;
 import com.crm.model.db.AddressEntity;
 import com.crm.model.db.CustomerEntity;
 import com.crm.repository.CustomerRepository;
@@ -24,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -79,9 +79,9 @@ public class CustomerServiceImplTest {
         assertNotNull(response);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = NoSuchElementException.class)
     public void shouldThrowCustomerNotFoundWhenGetCustomerWithWrongId() {
-        when(customerRepository.findById(ID)).thenThrow(new ResourceNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
+        when(customerRepository.findById(ID)).thenThrow(new NoSuchElementException(ErrorDict.CUSTOMER_NOT_FOUND));
 
         customerService.getCustomerById(ID);
 
@@ -180,10 +180,10 @@ public class CustomerServiceImplTest {
 
     @Test
     public void shouldThrowCustomerNotFoundWhenUpdateCustomerWithWrongId () {
-        when(customerRepository.findById(ID)).thenThrow(new ResourceNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
+        when(customerRepository.findById(ID)).thenThrow(new NoSuchElementException(ErrorDict.CUSTOMER_NOT_FOUND));
 
         assertThatThrownBy(() -> customerService.updateCustomer(customerRequest, ID))
-                .isInstanceOf(ResourceNotFoundException.class)
+                .isInstanceOf(NoSuchElementException.class)
                 .hasMessage(ErrorDict.CUSTOMER_NOT_FOUND);
 
         verify(customerRepository, times(1)).findById(ID);
@@ -225,7 +225,7 @@ public class CustomerServiceImplTest {
         when(customerRepository.existsById(ID)).thenReturn(false);
 
         assertThatThrownBy(() -> customerService.deleteCustomer(ID))
-                .isInstanceOf(ResourceNotFoundException.class)
+                .isInstanceOf(NoSuchElementException.class)
                 .hasMessage(ErrorDict.CUSTOMER_NOT_FOUND);
 
         verify(customerRepository, times(1)).existsById(ID);

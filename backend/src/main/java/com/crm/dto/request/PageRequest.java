@@ -3,10 +3,7 @@ package com.crm.dto.request;
 import com.crm.exception.validator.ValidParam;
 import lombok.Setter;
 
-import static com.crm.exception.ErrorDict.PAGINATED_EMPTY_PAGE;
-import static com.crm.exception.ErrorDict.PAGINATED_EMPTY_SIZE;
-import static com.crm.exception.ErrorDict.PAGINATED_INVALID_PAGE;
-import static com.crm.exception.ErrorDict.PAGINATED_INVALID_SIZE;
+import static com.crm.exception.ErrorDict.*;
 
 @Setter
 public class PageRequest {

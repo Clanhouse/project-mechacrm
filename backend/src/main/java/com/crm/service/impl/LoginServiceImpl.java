@@ -20,8 +20,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-import static com.crm.exception.ErrorDict.INVALID_CREDENTIALS;
-import static com.crm.exception.ErrorDict.USER_DISABLED;
+import static com.crm.exception.ErrorDict.*;
 
 @Service
 @RequiredArgsConstructor

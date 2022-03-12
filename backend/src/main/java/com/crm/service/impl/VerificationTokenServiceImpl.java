@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static com.crm.exception.ErrorDict.TOKEN_EXPIRED;
+import static com.crm.exception.ErrorDict.*;
 
 @Service
 @RequiredArgsConstructor

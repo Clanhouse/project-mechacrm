@@ -4,7 +4,6 @@ import com.crm.dto.mapper.CarMapper;
 import com.crm.dto.request.CarRequest;
 import com.crm.dto.response.CarResponse;
 import com.crm.exception.CarException;
-import com.crm.exception.ResourceNotFoundException;
 import com.crm.exception.ErrorDict;
 import com.crm.model.db.CarEntity;
 import com.crm.model.db.CarTypeEntity;
@@ -19,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -71,7 +71,7 @@ public class CarServiceImplTest {
         verify(carMapper, times(1)).convertToDto(carEntity);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = NoSuchElementException.class)
     public void shouldThrowCarNotFoundOnWrongCarId() {
         when(carRepository.findById(ID)).thenReturn(Optional.empty());
 
@@ -92,7 +92,7 @@ public class CarServiceImplTest {
         verify(carMapper, times(1)).convertToDto(any());
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = NoSuchElementException.class)
     public void shouldThrowCarNotFoundForInvalidRegistrationNumber() {
         when(carRepository.findByRegistrationNumberIgnoreCase(REGISTRATION_NUMBER)).thenReturn(Optional.empty());
 
@@ -107,7 +107,7 @@ public class CarServiceImplTest {
         final String vinTooShort = "V455";
 
         assertThatThrownBy(() -> carService.getCarByVIN(vinTooShort))
-                .isInstanceOf(ResourceNotFoundException.class)
+                .isInstanceOf(NoSuchElementException.class)
                 .hasMessage(ErrorDict.VIN_LENGTH_INVALID);
 
         verify(carRepository, times(0)).findByVinIgnoreCase(vinTooShort);
@@ -118,7 +118,7 @@ public class CarServiceImplTest {
         final String vinTooLong = "V455467475455845FDLKPRTFGG";
 
         assertThatThrownBy(() -> carService.getCarByVIN(vinTooLong))
-                .isInstanceOf(ResourceNotFoundException.class)
+                .isInstanceOf(NoSuchElementException.class)
                 .hasMessage(ErrorDict.VIN_LENGTH_INVALID);
 
         verify(carRepository, times(0)).findByVinIgnoreCase(vinTooLong);
@@ -130,7 +130,7 @@ public class CarServiceImplTest {
         final String vinWithCharO = "VIN4003876543920O";
 
         assertThatThrownBy(() -> carService.getCarByVIN(vinWithCharO))
-                .isInstanceOf(ResourceNotFoundException.class)
+                .isInstanceOf(NoSuchElementException.class)
                 .hasMessage(ErrorDict.VIN_FORMAT_INVALID);
 
         verify(carRepository, times(0)).findByVinIgnoreCase(vinWithCharO);
@@ -142,7 +142,7 @@ public class CarServiceImplTest {
         final String vinWithCharI = "VIN4003876543920i";
 
         assertThatThrownBy(() -> carService.getCarByVIN(vinWithCharI))
-                .isInstanceOf(ResourceNotFoundException.class)
+                .isInstanceOf(NoSuchElementException.class)
                 .hasMessage(ErrorDict.VIN_FORMAT_INVALID);
 
         verify(carRepository, times(0)).findByVinIgnoreCase(vinWithCharI);
@@ -154,7 +154,7 @@ public class CarServiceImplTest {
         final String vinWithCharQ = "VINq4003876543920";
 
         assertThatThrownBy(() -> carService.getCarByVIN(vinWithCharQ))
-                .isInstanceOf(ResourceNotFoundException.class)
+                .isInstanceOf(NoSuchElementException.class)
                 .hasMessage(ErrorDict.VIN_FORMAT_INVALID);
 
         verify(carRepository, times(0)).findByVinIgnoreCase(vinWithCharQ);

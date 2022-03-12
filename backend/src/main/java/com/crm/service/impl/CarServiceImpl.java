@@ -4,8 +4,6 @@ import com.crm.dto.mapper.CarMapper;
 import com.crm.dto.request.CarRequest;
 import com.crm.dto.response.CarResponse;
 import com.crm.exception.CarException;
-import com.crm.exception.ResourceNotFoundException;
-import com.crm.exception.ErrorDict;
 import com.crm.model.db.CarEntity;
 import com.crm.model.db.CarTypeEntity;
 import com.crm.repository.CarRepository;
@@ -20,7 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
+import static com.crm.exception.ErrorDict.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,27 +50,27 @@ public class CarServiceImpl implements CarService {
     @Override
     public CarResponse getCarById(final Long id) {
         return carMapper.convertToDto(carRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorDict.CAR_NOT_FOUND)));
+                .orElseThrow(() -> new NoSuchElementException(CAR_NOT_FOUND)));
     }
 
     @Override
     public CarResponse getCarByRegistrationNumber(final String registrationNumber) {
         return carRepository.findByRegistrationNumberIgnoreCase(registrationNumber)
                 .map(carMapper::convertToDto)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorDict.REGISTRATION_NUMBER_NOT_FOUND));
+                .orElseThrow(() -> new NoSuchElementException(REGISTRATION_NUMBER_NOT_FOUND));
     }
 
     @Override
     public CarResponse getCarByVIN(final String vin) {
         if (vin.length() != VIN_LENGTH)
-            throw new ResourceNotFoundException(ErrorDict.VIN_LENGTH_INVALID);
+            throw new NoSuchElementException(VIN_LENGTH_INVALID);
 
         if (hasVinIllegalCharacters(vin))
-            throw new ResourceNotFoundException(ErrorDict.VIN_FORMAT_INVALID);
+            throw new NoSuchElementException(VIN_FORMAT_INVALID);
 
         return carRepository.findByVinIgnoreCase(vin)
                 .map(carMapper::convertToDto)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorDict.VIN_NOT_FOUND));
+                .orElseThrow(() -> new NoSuchElementException(VIN_NOT_FOUND));
     }
 
     private boolean hasVinIllegalCharacters(final String vin) {
@@ -92,11 +93,11 @@ public class CarServiceImpl implements CarService {
 
     private void checkIfCarAlreadyExists(CarRequest carRequest) {
         if (carRepository.findByRegistrationNumberIgnoreCase(carRequest.getRegistrationNumber()).isPresent()) {
-            throw new CarException(ErrorDict.CAR_CREATE_REGISTRATION_NUMBER_EXISTS);
+            throw new CarException(CAR_CREATE_REGISTRATION_NUMBER_EXISTS);
         }
 
         if (carRepository.findByVinIgnoreCase(carRequest.getVin()).isPresent()) {
-            throw new CarException(ErrorDict.CAR_CREATE_VIN_EXISTS);
+            throw new CarException(CAR_CREATE_VIN_EXISTS);
         }
     }
 

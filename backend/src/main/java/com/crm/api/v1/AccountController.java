@@ -22,7 +22,7 @@ public class AccountController {
 
     @PostMapping("/sign-up")
     @ApiOperation(value = "Create and save new Account in database", notes = "Add new account object to request body")
-    public ResponseEntity createAccountRequest(@RequestBody @Valid final NewAccountRequest newAccountRequest) {
+    public ResponseEntity<Void> createAccountRequest(@RequestBody @Valid final NewAccountRequest newAccountRequest) {
         accountService.save(newAccountRequest);
         return ResponseEntity.ok().build();
     }
