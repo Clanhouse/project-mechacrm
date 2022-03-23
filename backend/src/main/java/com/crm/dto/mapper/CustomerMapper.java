@@ -20,4 +20,13 @@ public class CustomerMapper {
     public CustomerEntity convertToEntity(final CustomerRequest customerRequest) {
         return modelMapper.map(customerRequest, CustomerEntity.class);
     }
+
+    public CustomerEntity updateProperties(final CustomerEntity customerEntity, final CustomerRequest customerRequest) {
+        customerEntity.setName(customerRequest.getName());
+        customerEntity.setSurname(customerRequest.getSurname());
+        customerEntity.setPhone(customerRequest.getPhone());
+        customerEntity.setAddress(customerRequest.getAddress());
+
+        return customerEntity;
+    }
 }

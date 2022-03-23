@@ -41,29 +41,9 @@ public class CustomerMapperTest {
 
     @BeforeClass
     public static void setUp() {
-        addressEntity = AddressEntity.builder()
-                .country("Poland")
-                .city("Bełchatów")
-                .postalCode("00-000")
-                .streetName("Kaliska")
-                .streetNumber("12")
-                .build();
-
-        customerRequest = CustomerRequest.builder()
-                .name(NAME)
-                .surname(SURNAME)
-                .phone(PHONE)
-                .address(addressEntity)
-                .build();
-
-        customerEntity = CustomerEntity.builder()
-                .id(ID)
-                .name(NAME)
-                .surname(SURNAME)
-                .phone(PHONE)
-                .address(addressEntity)
-                .cars(new HashSet<>())
-                .build();
+        addressEntity = createAddressEntity();
+        customerRequest = createCustomerRequest();
+        customerEntity = createCustomerEntity();
     }
 
     @Test
@@ -95,4 +75,53 @@ public class CustomerMapperTest {
         verify(modelMapper, times(1)).map(customerRequest, CustomerEntity.class);
     }
 
+    @Test
+    public void shouldUpdatePropertiesOfCustomerEntity() {
+        var existingCustomer = createCustomerEntity();
+        var updateRequest = CustomerRequest.builder()
+                .name("test1")
+                .surname("test1")
+                .phone("500500500")
+                .address(addressEntity)
+                .build();
+
+        final CustomerEntity updatedCustomer = customerMapper.updateProperties(existingCustomer, updateRequest);
+
+        assertAll(
+                () -> assertEquals(updateRequest.getName(), updatedCustomer.getName()),
+                () -> assertEquals(updateRequest.getSurname(), updatedCustomer.getSurname()),
+                () -> assertEquals(updateRequest.getPhone(), updatedCustomer.getPhone()),
+                () -> assertEquals(updateRequest.getAddress(), updatedCustomer.getAddress())
+        );
+    }
+
+    private static CustomerEntity createCustomerEntity() {
+        return CustomerEntity.builder()
+                .id(ID)
+                .name(NAME)
+                .surname(SURNAME)
+                .phone(PHONE)
+                .address(addressEntity)
+                .cars(new HashSet<>())
+                .build();
+    }
+
+    private static CustomerRequest createCustomerRequest() {
+        return CustomerRequest.builder()
+                .name(NAME)
+                .surname(SURNAME)
+                .phone(PHONE)
+                .address(addressEntity)
+                .build();
+    }
+
+    private static AddressEntity createAddressEntity() {
+        return AddressEntity.builder()
+                .country("Poland")
+                .city("Bełchatów")
+                .postalCode("00-000")
+                .streetName("Kaliska")
+                .streetNumber("12")
+                .build();
+    }
 }

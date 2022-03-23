@@ -55,37 +55,14 @@ public class VerificationTokeServiceImplTest {
     private static final Integer LOGIN_ATTEMPTS = 0;
     private static final RoleEntity ROLE = RoleEntity.builder().id(1L).name("user").build();
     private static final String VERIFICATION_TOKEN = "token";
-    private static final LocalDateTime NEVER_EXPIRED_TOKEN = LocalDateTime.of(2050, 1, 1, 1, 1, 1);
-    private static final LocalDateTime EXPIRED_TOKEN = LocalDateTime.of(2010, 1, 1, 1, 1, 1);
+    private static final LocalDateTime TOKEN_EXPIRY_DATE = LocalDateTime.of(2050, 1, 1, 1, 1, 1);
+    private static final LocalDateTime EXPIRED_TOKEN_EXPIRY_DATE = LocalDateTime.of(2010, 1, 1, 1, 1, 1);
 
     @BeforeClass
     public static void setUp() {
-        accountEntity = AccountEntity.builder()
-                .id(ID)
-                .login(LOGIN)
-                .email(EMAIL)
-                .password(PASSWORD)
-                .isActive(IS_ACTIVATED)
-                .lastFailedLogin(LAST_FAILED_LOGIN)
-                .lastSuccessfulLogin(LAST_SUCCESSFUL_LOGIN)
-                .loginAttempts(LOGIN_ATTEMPTS)
-                .registrationDate(REGISTRATION_DATE)
-                .role(ROLE)
-                .build();
-
-        expiredVerificationToken = VerificationTokenEntity.builder()
-                .id(ID)
-                .token(VERIFICATION_TOKEN)
-                .user(accountEntity)
-                .expiryDate(Timestamp.valueOf(EXPIRED_TOKEN))
-                .build();
-
-        neverExpiredVerificationToken = VerificationTokenEntity.builder()
-                .id(ID)
-                .token(VERIFICATION_TOKEN)
-                .user(accountEntity)
-                .expiryDate(Timestamp.valueOf(NEVER_EXPIRED_TOKEN))
-                .build();
+        accountEntity = createAccountEntity();
+        expiredVerificationToken = createVerificationTokenEntity();
+        neverExpiredVerificationToken = createNotExpiredVerificationToken();
     }
 
     @Test
@@ -95,7 +72,7 @@ public class VerificationTokeServiceImplTest {
 
         String token = verificationTokenService.saveVerificationToken(accountEntity);
 
-        assertEquals(token, VERIFICATION_TOKEN);
+        assertEquals(VERIFICATION_TOKEN, token);
         verify(verificationTokenRepository, times(1)).save(any(VerificationTokenEntity.class));
         verify(verificationTokenRepository, times(1)).deleteByUserId(ID);
     }
@@ -128,5 +105,37 @@ public class VerificationTokeServiceImplTest {
                 .hasMessage(ErrorDict.TOKEN_EXPIRED);
     }
 
+    private static VerificationTokenEntity createNotExpiredVerificationToken() {
+        return VerificationTokenEntity.builder()
+                .id(ID)
+                .token(VERIFICATION_TOKEN)
+                .user(accountEntity)
+                .expiryDate(Timestamp.valueOf(TOKEN_EXPIRY_DATE))
+                .build();
+    }
+
+    private static VerificationTokenEntity createVerificationTokenEntity() {
+        return VerificationTokenEntity.builder()
+                .id(ID)
+                .token(VERIFICATION_TOKEN)
+                .user(accountEntity)
+                .expiryDate(Timestamp.valueOf(EXPIRED_TOKEN_EXPIRY_DATE))
+                .build();
+    }
+
+    private static AccountEntity createAccountEntity() {
+        return AccountEntity.builder()
+                .id(ID)
+                .login(LOGIN)
+                .email(EMAIL)
+                .password(PASSWORD)
+                .isActive(IS_ACTIVATED)
+                .lastFailedLogin(LAST_FAILED_LOGIN)
+                .lastSuccessfulLogin(LAST_SUCCESSFUL_LOGIN)
+                .loginAttempts(LOGIN_ATTEMPTS)
+                .registrationDate(REGISTRATION_DATE)
+                .role(ROLE)
+                .build();
+    }
 
 }

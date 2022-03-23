@@ -3,28 +3,22 @@ package com.crm.api.v1;
 import com.crm.App;
 import com.crm.BaseIntegrationTest;
 import com.crm.dto.request.AuthenticationRequest;
-import com.crm.dto.request.NewAccountRequest;
-import com.crm.exception.ElementAlreadyExistException;
 import com.crm.exception.InvalidCredentialsException;
 import com.crm.exception.UserDisabledException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.crm.exception.ErrorDict.ACCOUNT_ALREADY_EXIST_BY_EMAIL;
-import static com.crm.exception.ErrorDict.ACCOUNT_ALREADY_EXIST_BY_LOGIN;
 import static com.crm.exception.ErrorDict.INVALID_CREDENTIALS;
 import static com.crm.exception.ErrorDict.USER_DISABLED;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -34,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes = App.class)
 @AutoConfigureMockMvc
-@RunWith(SpringRunner.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AuthenticationControllerIT extends BaseIntegrationTest {
 
     @Autowired
@@ -43,12 +37,12 @@ class AuthenticationControllerIT extends BaseIntegrationTest {
     @Autowired
     private ObjectMapper mapper;
 
-    private static AuthenticationRequest existedAccount;
-    private static AuthenticationRequest notExistedAccount;
-    private static AuthenticationRequest disabledAccount;
+    private AuthenticationRequest existedAccount;
+    private AuthenticationRequest notExistedAccount;
+    private AuthenticationRequest disabledAccount;
 
     @BeforeAll
-    public static void setUp() {
+    public void setUp() {
         existedAccount = new AuthenticationRequest("admin", "admin");
         notExistedAccount = new AuthenticationRequest("Trevor7657499", "exhausted");
         disabledAccount = new AuthenticationRequest("user3", "user3");

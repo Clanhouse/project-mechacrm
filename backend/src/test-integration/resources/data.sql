@@ -346,12 +346,12 @@ INSERT INTO accounts(id, login, password, email, login_attempts, registration_da
                                                                 WHERE name = 'ROLE_USER');
 
 INSERT INTO accounts(login, password, email, login_attempts, registration_date, role_id, is_active) (SELECT 'user3',
-                                                                                                               '$2a$10$/WyYH3xYwdfYC23Xucxx6O.Dqtw4yqoWQ/9bIWhax.d1wyVYge1oG',
-                                                                                                               'user3@mail.com', 0,
-                                                                                                               '2021-05-24 14:00:00',
-                                                                                                               id, false
-                                                                                                        FROM roles
-                                                                                                        WHERE name = 'ROLE_USER');
+                                                                       '$2a$10$/WyYH3xYwdfYC23Xucxx6O.Dqtw4yqoWQ/9bIWhax.d1wyVYge1oG',
+                                                                       'user3@mail.com', 0,
+                                                                       '2021-05-24 14:00:00',
+                                                                       id, false
+                                                                FROM roles
+                                                                WHERE name = 'ROLE_USER');
 
 INSERT INTO verification_tokens(token, account_id, expiry_date) values ('af1aca10-e04c-4ea5-a6ed-56a777c22d99', 91919191, '2050-10-10 23:58:59')
 

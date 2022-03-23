@@ -4,7 +4,6 @@ import com.crm.dto.mapper.CustomerMapper;
 import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.exception.CustomerException;
-import com.crm.exception.CustomerNotFoundException;
 import com.crm.exception.ErrorDict;
 import com.crm.model.db.AddressEntity;
 import com.crm.model.db.CustomerEntity;
@@ -24,10 +23,12 @@ import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -43,6 +44,9 @@ public class CustomerServiceImplTest {
     private static final String SURNAME = "Kowalski";
     private static final String PHONE = "665456987";
 
+    private static final int PAGE = 0;
+    private static final int SIZE = 20;
+
     @Mock
     private CustomerRepository customerRepository;
 
@@ -52,36 +56,15 @@ public class CustomerServiceImplTest {
     @InjectMocks
     private CustomerServiceImpl customerService;
 
-    private static AddressEntity addressEntity;
     private static CustomerEntity customerEntity;
-    private static CustomerRequest customerRequest;
-    private static CustomerResponse customerResponse;
-    private static Pageable pageable;
 
-    private static final int PAGE = 0;
-    private static final int SIZE = 20;
+    private static final CustomerRequest customerRequest = new CustomerRequest();
+    private static final CustomerResponse customerResponse = new CustomerResponse();
+    private static final Pageable pageable = PageRequest.of(PAGE, SIZE);
 
     @BeforeClass
     public static void setUp() {
-        addressEntity = AddressEntity.builder()
-                .country("Poland")
-                .city("Bełchatów")
-                .postalCode("00-000")
-                .streetName("Kaliska")
-                .streetNumber("12")
-                .build();
-
-        customerEntity = CustomerEntity.builder()
-                .id(ID)
-                .name(NAME)
-                .surname(SURNAME)
-                .phone(PHONE)
-                .address(addressEntity)
-                .build();
-
-        customerRequest = new CustomerRequest();
-        customerResponse = new CustomerResponse();
-        pageable = PageRequest.of(PAGE, SIZE);
+        customerEntity = createCustomerEntity();
     }
 
     @Test
@@ -96,9 +79,9 @@ public class CustomerServiceImplTest {
         assertNotNull(response);
     }
 
-    @Test(expected = CustomerNotFoundException.class)
-    public void shouldThrowCustomerNotFoundExceptionOnWrongCustomerId() {
-        when(customerRepository.findById(ID)).thenThrow(new CustomerNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
+    @Test(expected = NoSuchElementException.class)
+    public void shouldThrowCustomerNotFoundWhenGetCustomerWithWrongId() {
+        when(customerRepository.findById(ID)).thenThrow(new NoSuchElementException(ErrorDict.CUSTOMER_NOT_FOUND));
 
         customerService.getCustomerById(ID);
 
@@ -122,10 +105,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void shouldAddCustomerWhenPhoneIsNotDuplicated() {
-        customerRequest = CustomerRequest.builder()
-                .phone(PHONE)
-                .build();
-
+        var customerRequest = createCustomerRequest();
         when(customerRepository.findByPhone(customerRequest.getPhone())).thenReturn(Optional.empty());
         when(customerMapper.convertToEntity(customerRequest)).thenReturn(customerEntity);
         when(customerRepository.save(customerEntity)).thenReturn(customerEntity);
@@ -140,14 +120,8 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    public void shouldThrowConflictWhenCustomerIsDuplicated() {
-        customerRequest = CustomerRequest.builder()
-                .name(NAME)
-                .surname(SURNAME)
-                .phone(PHONE)
-                .address(addressEntity)
-                .build();
-
+    public void shouldNotAddCustomerAndThrowConflictWhenCustomerIsDuplicated() {
+        var customerRequest = createCustomerRequest();
         when(customerRepository.findByPhone(customerRequest.getPhone())).thenReturn(Optional.of(customerEntity));
 
         assertThatThrownBy(() -> customerService.addCustomer(customerRequest))
@@ -161,8 +135,8 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    public void shouldThrowConflictWhenPhoneExists() {
-        customerRequest = CustomerRequest.builder()
+    public void shouldNotAddCustomerAndThrowConflictWhenPhoneExists() {
+        var customerRequest = CustomerRequest.builder()
                 .phone(PHONE)
                 .build();
 
@@ -170,12 +144,70 @@ public class CustomerServiceImplTest {
 
         assertThatThrownBy(() -> customerService.addCustomer(customerRequest))
                 .isInstanceOf(CustomerException.class)
-                .hasMessage(ErrorDict.CUSTOMER_CREATE_PHONE_EXISTS);
+                .hasMessage(ErrorDict.CUSTOMER_PHONE_EXISTS);
 
         verify(customerRepository, times(1)).findByPhone(customerRequest.getPhone());
         verify(customerMapper, times(0)).convertToEntity(customerRequest);
         verify(customerRepository, times(0)).save(customerEntity);
         verify(customerMapper, times(0)).convertToDto(customerEntity);
+    }
+
+    @Test
+    public void shouldUpdateCustomerWhenPhoneIsNotDuplicated () {
+        var customerRequest = createCustomerRequest();
+        var updatedCustomer = CustomerEntity.builder()
+                .name("Jan")
+                .surname("Kowalski")
+                .phone("661662663")
+                .address(createAddressEntity())
+                .build();
+
+        when(customerRepository.findById(ID)).thenReturn(Optional.ofNullable(customerEntity));
+        when(customerRepository.findByPhone(customerRequest.getPhone())).thenReturn(Optional.empty());
+        when(customerMapper.updateProperties(customerEntity, customerRequest)).thenReturn(updatedCustomer);
+        when(customerRepository.save(updatedCustomer)).thenReturn(updatedCustomer);
+        when(customerMapper.convertToDto(updatedCustomer)).thenReturn(customerResponse);
+
+        assertEquals(customerResponse, customerService.updateCustomer(customerRequest, ID));
+        assertNotEquals(customerEntity, updatedCustomer);
+
+        verify(customerRepository, times(1)).findById(ID);
+        verify(customerRepository, times(1)).findByPhone(customerRequest.getPhone());
+        verify(customerMapper, times(1)).updateProperties(customerEntity, customerRequest);
+        verify(customerRepository, times(1)).save(updatedCustomer);
+        verify(customerMapper, times(1)).convertToDto(updatedCustomer);
+    }
+
+    @Test
+    public void shouldThrowCustomerNotFoundWhenUpdateCustomerWithWrongId () {
+        when(customerRepository.findById(ID)).thenThrow(new NoSuchElementException(ErrorDict.CUSTOMER_NOT_FOUND));
+
+        assertThatThrownBy(() -> customerService.updateCustomer(customerRequest, ID))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage(ErrorDict.CUSTOMER_NOT_FOUND);
+
+        verify(customerRepository, times(1)).findById(ID);
+        verify(customerRepository, times(0)).findByPhone(customerRequest.getPhone());
+        verify(customerMapper, times(0)).updateProperties(customerEntity, customerRequest);
+        verify(customerRepository, times(0)).save(any());
+        verify(customerMapper, times(0)).convertToDto(any());
+    }
+
+    @Test
+    public void shouldNotUpdateCustomerAndThrowConflictWhenCustomerIsDuplicated () {
+        var customerRequest = createCustomerRequest();
+        when(customerRepository.findById(ID)).thenReturn(Optional.ofNullable(customerEntity));
+        when(customerRepository.findByPhone(customerRequest.getPhone())).thenReturn(Optional.of(customerEntity));
+
+        assertThatThrownBy(() -> customerService.updateCustomer(customerRequest, ID))
+                .isInstanceOf(CustomerException.class)
+                .hasMessage(ErrorDict.CUSTOMER_DUPLICATE);
+
+        verify(customerRepository, times(1)).findById(ID);
+        verify(customerRepository, times(1)).findByPhone(customerRequest.getPhone());
+        verify(customerMapper, times(0)).updateProperties(customerEntity, customerRequest);
+        verify(customerRepository, times(0)).save(any());
+        verify(customerMapper, times(0)).convertToDto(any());
     }
 
     @Test
@@ -193,10 +225,40 @@ public class CustomerServiceImplTest {
         when(customerRepository.existsById(ID)).thenReturn(false);
 
         assertThatThrownBy(() -> customerService.deleteCustomer(ID))
-                .isInstanceOf(CustomerNotFoundException.class)
+                .isInstanceOf(NoSuchElementException.class)
                 .hasMessage(ErrorDict.CUSTOMER_NOT_FOUND);
 
         verify(customerRepository, times(1)).existsById(ID);
         verify(customerRepository, times(0)).deleteById(ID);
+
+    }
+
+    private static CustomerEntity createCustomerEntity () {
+        return CustomerEntity.builder()
+                .id(ID)
+                .name(NAME)
+                .surname(SURNAME)
+                .phone(PHONE)
+                .address(createAddressEntity())
+                .build();
+    }
+
+    private CustomerRequest createCustomerRequest () {
+        return CustomerRequest.builder()
+                .name(NAME)
+                .surname(SURNAME)
+                .phone(PHONE)
+                .address(createAddressEntity())
+                .build();
+    }
+
+    private static AddressEntity createAddressEntity () {
+        return AddressEntity.builder()
+                .country("Poland")
+                .city("Bełchatów")
+                .postalCode("00-000")
+                .streetName("Kaliska")
+                .streetNumber("12")
+                .build();
     }
 }

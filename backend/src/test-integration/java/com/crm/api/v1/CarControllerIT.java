@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -40,13 +41,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 class CarControllerIT extends BaseIntegrationTest {
 
-    private CarRequest carRequest;
-
     @Autowired
     private MockMvc mvc;
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    private CarRequest carRequest;
 
     @BeforeEach
     public void setUp() {
@@ -205,13 +206,7 @@ class CarControllerIT extends BaseIntegrationTest {
     void shouldResponseWith_NotFound_WhenVinIsInvalid() {
         final String expectedMessage = ErrorDict.VIN_LENGTH_INVALID;
 
-        MvcResult mvcResult = mvc.perform(get("/cars/search?vin=vvvvv"))
-                .andDo(print())
-                .andExpect(status().isNotFound())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult
-                .getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenGetCarByNonExistingVin("vvvvv");
 
         assertTrue(errorResponse.getMessage().contains(expectedMessage));
         assertEquals(1, errorResponse.getMessage().size());
@@ -223,13 +218,7 @@ class CarControllerIT extends BaseIntegrationTest {
         final String expectedMessage = ErrorDict.VIN_FORMAT_INVALID;
         final String vinWithInvalidCharacters = "vavaaav123456781q";
 
-        MvcResult mvcResult = mvc.perform(get("/cars/search?vin=" + vinWithInvalidCharacters))
-                .andDo(print())
-                .andExpect(status().isNotFound())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult
-                .getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenGetCarByNonExistingVin(vinWithInvalidCharacters);
 
         assertTrue(errorResponse.getMessage().contains(expectedMessage));
         assertEquals(1, errorResponse.getMessage().size());
@@ -239,15 +228,9 @@ class CarControllerIT extends BaseIntegrationTest {
     @SneakyThrows
     void shouldResponseWith_NotFound_WhenVinDoesNotExists() {
         final String expectedMessage = ErrorDict.VIN_NOT_FOUND;
-        final String vinDoesNotExists = "a1w2e3r4t5y6u7g8b";
+        final String nonExistingVin = "a1w2e3r4t5y6u7g8b";
 
-        MvcResult mvcResult = mvc.perform(get("/cars/search?vin=" + vinDoesNotExists))
-                .andDo(print())
-                .andExpect(status().isNotFound())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult
-                .getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenGetCarByNonExistingVin(nonExistingVin);
 
         assertTrue(errorResponse.getMessage().contains(expectedMessage));
         assertEquals(1, errorResponse.getMessage().size());
@@ -256,16 +239,16 @@ class CarControllerIT extends BaseIntegrationTest {
     @Test
     @SneakyThrows
     void shouldResponseWith_Ok_WhenVinExists() {
-        final String vinDoesExists = "TMB67890123456452";
+        final String existingVin = "TMB67890123456452";
 
-        MvcResult mvcResult = mvc.perform(get("/cars/search?vin=" + vinDoesExists))
+        MvcResult mvcResult = mvc.perform(get("/cars/search?vin=" + existingVin))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 
         CarResponse carResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), CarResponse.class);
 
-        assertEquals(carResponse.getVin(), vinDoesExists);
+        assertEquals(carResponse.getVin(), existingVin);
     }
 
     @Test
@@ -279,24 +262,18 @@ class CarControllerIT extends BaseIntegrationTest {
     @Test
     @SneakyThrows
     void shouldResponseWith_BadRequest_WhenBodyIsEmpty() {
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult
-                .getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody("{}");
 
         List<String> message = errorResponse.getMessage();
 
-        assertTrue(message.contains(ErrorDict.CAR_VIN_INVALID));
-        assertTrue(message.contains(ErrorDict.CAR_BRAND_INVALID));
-        assertTrue(message.contains(ErrorDict.CAR_MODEL_INVALID));
-        assertTrue(message.contains(ErrorDict.CAR_PRODUCTION_YEAR_INVALID));
-        assertTrue(message.contains(ErrorDict.CAR_MILEAGE_INVALID));
-        assertTrue(message.contains(ErrorDict.CAR_TYPE_INVALID));
+        assertAll(
+                () -> assertTrue(message.contains(ErrorDict.CAR_VIN_INVALID)),
+                () -> assertTrue(message.contains(ErrorDict.CAR_BRAND_INVALID)),
+                () -> assertTrue(message.contains(ErrorDict.CAR_MODEL_INVALID)),
+                () -> assertTrue(message.contains(ErrorDict.CAR_PRODUCTION_YEAR_INVALID)),
+                () -> assertTrue(message.contains(ErrorDict.CAR_MILEAGE_INVALID)),
+                () -> assertTrue(message.contains(ErrorDict.CAR_TYPE_INVALID))
+        );
     }
 
     @Test
@@ -305,14 +282,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setVin("");
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CAR_VIN_INVALID));
     }
@@ -323,14 +293,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setVin("VFTOQ123456789654");
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.VIN_FORMAT_INVALID));
     }
@@ -341,14 +304,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setVin("V6789654");
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CAR_VIN_INVALID));
     }
@@ -359,14 +315,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setRegistrationNumber("KR");
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.REGISTRATION_NUMBER_LENGTH_MUST_BETWEEN));
     }
@@ -377,14 +326,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setRegistrationNumber("KR123456789");
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.REGISTRATION_NUMBER_LENGTH_MUST_BETWEEN));
     }
@@ -395,14 +337,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setRegistrationNumber("KR@1234");
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.REGISTRATION_NUMBER_FORMAT_INVALID));
     }
@@ -413,14 +348,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setBrand("");
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CAR_BRAND_INVALID));
     }
@@ -431,14 +359,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setBrand("Se");
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.BRAND_LENGTH_MUST_BETWEEN));
     }
@@ -449,14 +370,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setBrand("SedanSedanSedanSedanSedanSedanS");
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.BRAND_LENGTH_MUST_BETWEEN));
     }
@@ -467,14 +381,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setModel("");
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CAR_MODEL_INVALID));
     }
@@ -485,14 +392,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setModel("AstraAstraAstraAstraAstraAstraA");
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.MODEL_LENGTH_NOT_GREATER_THAN));
     }
@@ -503,14 +403,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setProductionYear(null);
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CAR_PRODUCTION_YEAR_INVALID));
     }
@@ -521,14 +414,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setProductionYear(1949);
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CAR_PRODUCTION_YEAR_INVALID));
     }
@@ -539,14 +425,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setMileage(null);
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CAR_MILEAGE_INVALID));
     }
@@ -557,14 +436,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setMileage(-1);
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CAR_MILEAGE_INVALID));
     }
@@ -575,14 +447,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setDescription("a".repeat(251));
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.DESCRIPTION_LENGTH_NOT_GREATER_THAN));
     }
@@ -593,14 +458,7 @@ class CarControllerIT extends BaseIntegrationTest {
         carRequest.setCarTypeEntity(null);
         final String body = objectMapper.writeValueAsString(carRequest);
 
-        MvcResult mvcResult = mvc.perform(post("/cars")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        ErrorResponse errorResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+        ErrorResponse errorResponse = whenAddCarWithInvalidRequestBody(body);
 
         assertTrue(errorResponse.getMessage().contains(ErrorDict.CAR_TYPE_INVALID));
     }
@@ -615,5 +473,27 @@ class CarControllerIT extends BaseIntegrationTest {
                         .content(body))
                 .andDo(print())
                 .andExpect(status().isCreated());
+    }
+
+    private ErrorResponse whenAddCarWithInvalidRequestBody(String body) throws Exception {
+        MvcResult mvcResult = mvc.perform(post("/cars")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        return objectMapper.readValue(mvcResult.getResponse()
+                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
+    }
+
+    private ErrorResponse whenGetCarByNonExistingVin(String vin) throws Exception {
+        MvcResult mvcResult = mvc.perform(get("/cars/search?vin=" + vin))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        return objectMapper.readValue(mvcResult.getResponse()
+                .getContentAsString(StandardCharsets.UTF_8), ErrorResponse.class);
     }
 }

@@ -21,10 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
-import static com.crm.exception.ErrorDict.ACCOUNT_ALREADY_EXIST_BY_EMAIL;
-import static com.crm.exception.ErrorDict.ACCOUNT_ALREADY_EXIST_BY_LOGIN;
-import static com.crm.exception.ErrorDict.ACCOUNT_DOES_NOT_EXIST;
-import static com.crm.exception.ErrorDict.ACCOUNT_IS_ACTIVE;
+import static com.crm.exception.ErrorDict.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +34,7 @@ public class AccountServiceImpl implements AccountService {
     private final RoleRepository roleRepository;
     private final VerificationTokenService verificationTokenService;
 
-    private static final String userRole = "ROLE_USER";
+    private static final String USER_ROLE = "ROLE_USER";
 
     @Transactional
     @Override
@@ -107,6 +104,6 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private RoleEntity getDefaultUserRole() {
-        return roleRepository.findByName(userRole).orElseThrow(() -> new NoSuchElementException(ErrorDict.ROLE_DOES_NOT_EXIST));
+        return roleRepository.findByName(USER_ROLE).orElseThrow(() -> new NoSuchElementException(ErrorDict.ROLE_DOES_NOT_EXIST));
     }
 }

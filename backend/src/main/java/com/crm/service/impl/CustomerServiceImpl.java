@@ -4,8 +4,6 @@ import com.crm.dto.mapper.CustomerMapper;
 import com.crm.dto.request.CustomerRequest;
 import com.crm.dto.response.CustomerResponse;
 import com.crm.exception.CustomerException;
-import com.crm.exception.CustomerNotFoundException;
-import com.crm.exception.ErrorDict;
 import com.crm.model.db.CustomerEntity;
 import com.crm.repository.CustomerRepository;
 import com.crm.service.CustomerService;
@@ -17,8 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.crm.exception.ErrorDict.*;
 
 @Service
 @RequiredArgsConstructor
@@ -45,29 +46,43 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponse getCustomerById(final Long id) {
         return customerRepository.findById(id)
                 .map(customerMapper::convertToDto)
-                .orElseThrow(() -> new CustomerNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND));
+                .orElseThrow(() -> new NoSuchElementException(CUSTOMER_NOT_FOUND));
     }
 
     @Override
     public CustomerResponse addCustomer(final CustomerRequest customerRequest) {
-        Optional<CustomerEntity> customerByPhone = customerRepository.findByPhone(customerRequest.getPhone());
-
-        customerByPhone.ifPresent(c -> {
-            if (isDuplicateCustomer(customerRequest, c)) {
-                throw new CustomerException(ErrorDict.CUSTOMER_DUPLICATE);
-            } else {
-                throw new CustomerException(ErrorDict.CUSTOMER_CREATE_PHONE_EXISTS);
-            }
-        });
-
+        verifyCustomerNotDuplicated(customerRequest);
         CustomerEntity newCustomer = customerMapper.convertToEntity(customerRequest);
         return customerMapper.convertToDto(customerRepository.save(newCustomer));
     }
 
     @Override
+    public CustomerResponse updateCustomer(final CustomerRequest customerRequest, final Long id) {
+        CustomerEntity customerEntity = customerRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(CUSTOMER_NOT_FOUND));
+
+        verifyCustomerNotDuplicated(customerRequest);
+        customerEntity = customerMapper.updateProperties(customerEntity, customerRequest);
+        CustomerEntity updatedCustomer = customerRepository.save(customerEntity);
+        
+        return customerMapper.convertToDto(updatedCustomer);
+    }
+
+    private void verifyCustomerNotDuplicated(final CustomerRequest customerRequest) {
+        Optional<CustomerEntity> customerByPhone = customerRepository.findByPhone(customerRequest.getPhone());
+        customerByPhone.ifPresent(c -> {
+            if (isDuplicateCustomer(customerRequest, c)) {
+                throw new CustomerException(CUSTOMER_DUPLICATE);
+            } else {
+                throw new CustomerException(CUSTOMER_PHONE_EXISTS);
+            }
+        });
+    }
+
+    @Override
     public void deleteCustomer(final Long id) {
         if (!customerRepository.existsById(id)) {
-            throw new CustomerNotFoundException(ErrorDict.CUSTOMER_NOT_FOUND);
+            throw new NoSuchElementException(CUSTOMER_NOT_FOUND);
         }
 
         customerRepository.deleteById(id);

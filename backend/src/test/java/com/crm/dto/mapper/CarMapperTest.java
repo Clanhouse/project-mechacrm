@@ -43,34 +43,9 @@ public class CarMapperTest {
 
     @BeforeClass
     public static void setUp() {
-        carTypeEntity = CarTypeEntity.builder()
-                .id(ID)
-                .name("type")
-                .build();
-
-        carRequest = CarRequest.builder()
-                .id(ID)
-                .vin(VIN)
-                .registrationNumber(REGISTRATION_NUMBER)
-                .brand(BRAND)
-                .model(MODEL)
-                .productionYear(PRODUCTION_YEAR)
-                .mileage(MILEAGE)
-                .description(DESCRIPTION)
-                .carTypeEntity(carTypeEntity)
-                .build();
-
-        carEntity = CarEntity.builder()
-                .id(ID)
-                .vin(VIN)
-                .registrationNumber(REGISTRATION_NUMBER)
-                .brand(BRAND)
-                .model(MODEL)
-                .productionYear(PRODUCTION_YEAR)
-                .mileage(MILEAGE)
-                .description(DESCRIPTION)
-                .carTypeEntity(carTypeEntity)
-                .build();
+        carTypeEntity = createCarTypeEntity();
+        carRequest = createCarRequest();
+        carEntity = createCarEntity();
     }
 
     @Test
@@ -109,6 +84,41 @@ public class CarMapperTest {
         );
 
         verify(modelMapper, times(1)).map(carRequest, CarEntity.class);
+    }
+
+    private static CarEntity createCarEntity() {
+        return CarEntity.builder()
+                .id(ID)
+                .vin(VIN)
+                .registrationNumber(REGISTRATION_NUMBER)
+                .brand(BRAND)
+                .model(MODEL)
+                .productionYear(PRODUCTION_YEAR)
+                .mileage(MILEAGE)
+                .description(DESCRIPTION)
+                .carTypeEntity(carTypeEntity)
+                .build();
+    }
+
+    private static CarRequest createCarRequest() {
+        return CarRequest.builder()
+                .id(ID)
+                .vin(VIN)
+                .registrationNumber(REGISTRATION_NUMBER)
+                .brand(BRAND)
+                .model(MODEL)
+                .productionYear(PRODUCTION_YEAR)
+                .mileage(MILEAGE)
+                .description(DESCRIPTION)
+                .carTypeEntity(carTypeEntity)
+                .build();
+    }
+
+    private static CarTypeEntity createCarTypeEntity() {
+        return CarTypeEntity.builder()
+                .id(ID)
+                .name("type")
+                .build();
     }
 
 }

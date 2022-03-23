@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,14 +43,23 @@ public class CustomerController {
     @PostMapping
     @ApiOperation(value = "Adds new customer", notes = "Add body \"CustomerRequest\" to add new customer to database")
     public ResponseEntity<CustomerResponse> addCustomer(@Valid @RequestBody final CustomerRequest customerRequest) {
-        CustomerResponse customerResponse = customerService.addCustomer(customerRequest);
+        CustomerResponse savedCustomer = customerService.addCustomer(customerRequest);
 
         return ResponseEntity.created(ServletUriComponentsBuilder
                         .fromCurrentRequest()
-                        .path("/" + customerResponse.getId().toString())
+                        .path("/" + savedCustomer.getId().toString())
                         .build()
                         .toUri())
-                .body(customerResponse);
+                .body(savedCustomer);
+    }
+
+    @PutMapping("/{id}")
+    @ApiOperation(value = "Updates existing customer", notes = "Add body \"CustomerRequest\" and path variable \"id\""
+            + " of existing customer to proceed the update")
+    public ResponseEntity<CustomerResponse> updateCustomer(@Valid @RequestBody final CustomerRequest customerRequest,
+                                                           @PathVariable final Long id) {
+        CustomerResponse updatedCustomer = customerService.updateCustomer(customerRequest, id);
+        return ResponseEntity.ok(updatedCustomer);
     }
 
     @DeleteMapping("/{id}")
