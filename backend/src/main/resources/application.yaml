@@ -1,1 +1,23 @@
+spring:
+  application:
+    name: motomo
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
 
+server:
+  port: 7000
+  servlet:
+    context-path: /api
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+server:
+  port: 8080
