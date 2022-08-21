@@ -56,10 +56,14 @@ node("${JENKINS_AGENT_NAME}") {
 
                 stage('docker cleaning') {
                     echo "${COLOR_GREEN} REMOVING OLD DOCKER IMAGES ${COLOR_RESET}"
-                    sh "docker image rm $(docker images | grep 'motomo') -f"
+                    sh "docker image rm 'motomo' -f"
                     echo "${COLOR_YELLOW} Images list: \n"
                     sh "docker image ls"
                     echo "${COLOR_RESET}"
+                }
+
+                stage('show env') {
+                    echo 'env'
                 }
 
             } catch (Exception e) {
