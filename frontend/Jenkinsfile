@@ -10,26 +10,22 @@ node("${JENKINS_AGENT_NAME}") {
             try {
 
                 stage('Cleaning workspace') {
-                    echo "${COLOR_GREEN} Cleaning workspace ${COLOR_RESET}"
+                    echo "${COLOR_GREEN} CLEANING WORKSPACE ${COLOR_RESET}"
                     cleanWs()
-                    sh 'env'
-                    echo "Dir type is: ${PWD}"
                 }
 
                 stage('git clone') {
-                    echo "${COLOR_GREEN} Git cloning ${COLOR_RESET}"
+                    echo "${COLOR_GREEN} GIT CLONE ${COLOR_RESET}"
                     git url: "${GIT_REPO_URL}", branch: "${BRANCH_NAME}"
                 }
 
                 stage('npm install') {
-                    echo "${COLOR_GREEN} Git cloning ${COLOR_RESET}"
-                    echo "Dir type is: ${PWD}"
-                    sh 'ls -la ./frontend'
+                    echo "${COLOR_GREEN} NPM INSTALL ${COLOR_RESET}"
                     sh 'docker run --rm -v ${PWD}/frontend/:/motomo -w /motomo node:lts-slim npm i'
                 }
 
                 stage('npm build') {
-                    echo "${COLOR_GREEN} Git cloning ${COLOR_RESET}"
+                    echo "${COLOR_GREEN} NPM BUILD ${COLOR_RESET}"
                     echo "Dir type is: ${PWD}"
                     sh 'docker run --rm -v ${PWD}/frontend/:/motomo -w /motomo node:lts-slim npm run build'
                     sh 'ls -la ./frontend/build'
