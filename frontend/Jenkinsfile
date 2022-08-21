@@ -49,7 +49,7 @@ node("${JENKINS_AGENT_NAME}") {
 
                 stage('docker run') {
                     echo "${COLOR_GREEN} RUNNING DOCKER CONTAINER ${COLOR_RESET}"
-                    sh "docker stop ${DOCKER_IMAGE_NAME}:${VERSION}"
+                    sh "docker stop frontend"
                     sh "docker rm ${DOCKER_IMAGE_NAME}:${VERSION}"
                     sh "docker run -d --restart=always --name frontend -p 7000:80 ${DOCKER_IMAGE_NAME}:${VERSION}"
                 }
