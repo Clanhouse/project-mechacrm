@@ -48,12 +48,18 @@ node("${JENKINS_AGENT_NAME}") {
                 }
 
                 stage('docker run') {
-                    echo "${COLOR_GREEN} DOCKER COMPOSE UP ${COLOR_RESET}"
+                    echo "${COLOR_GREEN} RUNNING DOCKER CONTAINER ${COLOR_RESET}"
+                    sh "docker stop ${DOCKER_IMAGE_NAME}:${VERSION}"
+                    sh "docker rm ${DOCKER_IMAGE_NAME}:${VERSION}"
                     sh "docker run -d --restart=always --name frontend -p 7000:80 ${DOCKER_IMAGE_NAME}:${VERSION}"
                 }
 
                 stage('docker cleaning') {
-                    echo "${COLOR_GREEN} DOCKER COMPOSE UP ${COLOR_RESET}"
+                    echo "${COLOR_GREEN} REMOVING OLD DOCKER IMAGES ${COLOR_RESET}"
+                    sh "docker image rm $(docker images | grep 'motomo') -f"
+                    echo "${COLOR_YELLOW} Images list: \n"
+                    sh "docker image ls"
+                    echo "${COLOR_RESET}"
                 }
 
             } catch (Exception e) {
