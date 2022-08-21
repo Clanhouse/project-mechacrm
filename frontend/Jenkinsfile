@@ -28,7 +28,7 @@ node("${JENKINS_AGENT_NAME}") {
                     echo "${COLOR_GREEN} NPM BUILD ${COLOR_RESET}"
                     echo "Dir type is: ${PWD}"
                     sh 'docker run --rm -v ${PWD}/frontend/:/motomo -w /motomo node:lts-slim npm run build'
-                    sh 'ls -la ./frontend/build'
+                    sh 'ls -la ./frontend'
                 }
 
             } catch (Exception e) {
