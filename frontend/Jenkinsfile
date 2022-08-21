@@ -1,3 +1,5 @@
+#!groovy
+
 // https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html#8-colors
 def COLOR_RED = "\u001b[41m"
 def COLOR_GREEN = "\u001b[42m"
@@ -17,7 +19,7 @@ node("${JENKINS_AGENT_NAME}") {
         ansiColor('xterm') {
             try {
 
-                stage('Cleaning workspace') {
+                stage('cleaning workspace') {
                     echo "${COLOR_GREEN} CLEANING WORKSPACE ${COLOR_RESET}"
                     cleanWs()
                 }
@@ -45,9 +47,13 @@ node("${JENKINS_AGENT_NAME}") {
                     sh "docker build -t ${DOCKER_IMAGE_NAME}:${VERSION} ./frontend/"
                 }
 
-                stage('docker compose') {
+                stage('docker run') {
                     echo "${COLOR_GREEN} DOCKER COMPOSE UP ${COLOR_RESET}"
-                    sh "docker run -d -p 7000:80 ${DOCKER_IMAGE_NAME}:${VERSION}"
+                    sh "docker run -d --restart=always --name frontend -p 7000:80 ${DOCKER_IMAGE_NAME}:${VERSION}"
+                }
+
+                stage('docker cleaning') {
+                    echo "${COLOR_GREEN} DOCKER COMPOSE UP ${COLOR_RESET}"
                 }
 
             } catch (Exception e) {
