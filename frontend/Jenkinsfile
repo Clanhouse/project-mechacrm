@@ -67,6 +67,7 @@ node("${JENKINS_AGENT_NAME}") {
 
                 stage('show env') {
                     sh 'env'
+                    echo "${currentBuild}"
                 }
 
             } catch (Exception e) {
