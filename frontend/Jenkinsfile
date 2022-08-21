@@ -45,6 +45,11 @@ node("${JENKINS_AGENT_NAME}") {
                     sh "docker build -t ${DOCKER_IMAGE_NAME}:${VERSION} ./frontend/"
                 }
 
+                stage('docker compose') {
+                    echo "${COLOR_GREEN} DOCKER COMPOSE UP ${COLOR_RESET}"
+                    sh "docker compose -t ./frontend/docker-compose.yml up -d"
+                }
+
             } catch (Exception e) {
                 echo "${COLOR_RED} Failed :( ${COLOR_RESET}"
             }
