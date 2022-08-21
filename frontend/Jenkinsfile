@@ -1,8 +1,16 @@
+// https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html#8-colors
+def COLOR_RED = "\u001b[41m"
 def COLOR_GREEN = "\u001b[42m"
+def COLOR_YELLOW = "\u001b[43m"
+def COLOR_BLUE = "\u001b[44m"
+def COLOR_MAGENTA = "\u001b[45m"
+def COLOR_CYAN = "\u001b[46m"
+def COLOR_WHITE = "\u001b[47m"
 def COLOR_RESET = "\u001b[0m"
 
 def JENKINS_AGENT_NAME = "Motomo"
 def GIT_REPO_URL = "https://github.com/Clanhouse/project-mechacrm.git"
+def DOCKER_IMAGE_NAME = "motomo-frontend"
 
 node("${JENKINS_AGENT_NAME}") {
     timestamps {
@@ -31,8 +39,14 @@ node("${JENKINS_AGENT_NAME}") {
                     sh 'ls -la ./frontend'
                 }
 
+                stage('docker image') {
+                    echo "${COLOR_GREEN} BUILDING DOCKER IMAGE ${COLOR_RESET}"
+                    echo "${COLOR_BLUE} Image name: ${DOCKER_IMAGE_NAME}:${VERSION}"
+                    sh 'docker build -t ${DOCKER_IMAGE_NAME}:${VERSION} ./frontend/'
+                }
+
             } catch (Exception e) {
-                echo "\u001b[41;1m Failed :( \u001b[0m\n"
+                echo "${COLOR_RED} Failed :( ${COLOR_RESET}"
             }
         }
     }
