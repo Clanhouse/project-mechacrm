@@ -1,0 +1,7 @@
+version: '3.7'
+services:
+  motomo:
+    container_name: motomo-frontend
+    image: motomo-frontend
+    ports:
+      - "7000:80"
