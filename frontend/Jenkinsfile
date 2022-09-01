@@ -68,6 +68,7 @@ node("${JENKINS_AGENT_NAME}") {
                 stage('show env') {
                     sh 'env'
                     echo "${currentBuild}"
+                    echo "${wordic-discord}"
                 }
 
             } catch (Exception e) {
