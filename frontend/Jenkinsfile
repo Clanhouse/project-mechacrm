@@ -88,7 +88,7 @@ node("${JENKINS_AGENT_NAME}") {
                     description: ">>> **Build no:**  `${currentBuild.displayName}`",
                     footer: "Build time: ${buildTime} sec",
                     showChangeset: true,
-                    result: 'FAILURE'
+                    result: "FAILURE",
                     enableArtifactsList: true,
                     webhookURL: "$hook"
                 }
