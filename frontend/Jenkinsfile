@@ -70,15 +70,17 @@ node("${JENKINS_AGENT_NAME}") {
                     sh 'env'
                     echo "${COLOR_YELLOW}ENV end${COLOR_RESET}"
                     def buildTime = currentBuild.duration / 1000
-                        withCredentials([string(credentialsId: 'wordic-discord', variable: 'hook')]) {
-                            discordSend title: 'Motomo - frontend',
-                                description: ">>> **Build no:**  `${currentBuild.displayName}`\n**Result:** `${currentBuild.currentResult}`",
-                                footer: "Build time: ${buildTime} sec",
-                                result: currentBuild.currentResult,
-                                showChangeset: true,
-                                enableArtifactsList: true,
-                                webhookURL: "$hook"
-                        }
+                    currentBuild.description = ${VERSION}
+
+                    withCredentials([string(credentialsId: 'wordic-discord', variable: 'hook')]) {
+                        discordSend title: 'Motomo - frontend',
+                            description: ">>> **Build no:**  `${currentBuild.displayName}`\n**Result:** `${currentBuild.currentResult}`\n**Version:** ${VERSION}",
+                            footer: "Build time: ${buildTime} sec",
+                            result: currentBuild.currentResult,
+                            showChangeset: true,
+                            enableArtifactsList: true,
+                            webhookURL: "$hook"
+                    }
                 }
 
             } catch (Exception e) {
