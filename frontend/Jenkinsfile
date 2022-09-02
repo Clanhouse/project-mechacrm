@@ -69,13 +69,13 @@ node("${JENKINS_AGENT_NAME}") {
                     echo "${COLOR_YELLOW}ENV begin${COLOR_RESET}"
                     sh 'env'
                     echo "${COLOR_YELLOW}ENV end${COLOR_RESET}"
-                    def buildTime = currentBuild.duration / 1000
+                    def buildTime = parseExecutionTime()
                     currentBuild.description = "${VERSION}"
 
                     withCredentials([string(credentialsId: 'wordic-discord', variable: 'hook')]) {
                         discordSend title: 'Motomo - frontend',
                             description: ">>> **Build no:**  `${currentBuild.displayName}`\n**Result:** `${currentBuild.currentResult}`\n**Version:** ${VERSION}",
-                            footer: "Build time: ${buildTime} sec",
+                            footer: "Build time: ${buildTime}",
                             result: currentBuild.currentResult,
                             showChangeset: true,
                             enableArtifactsList: true,
@@ -97,4 +97,13 @@ node("${JENKINS_AGENT_NAME}") {
             }
         }
     }
+}
+
+def parseExecutionTime() {
+    def buildTime = currentBuild.duration / 1000
+
+    def minutes = buildTime / 60
+    def seconds = buildTime % 60
+
+    return "${minutes}min ${seconds}s"
 }
