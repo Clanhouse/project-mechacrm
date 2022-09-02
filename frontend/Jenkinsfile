@@ -65,15 +65,33 @@ node("${JENKINS_AGENT_NAME}") {
                     echo "${COLOR_RESET}"
                 }
 
-                stage('show env') {
+                stage('notify') {
+                    echo "${COLOR_YELLOW}ENV begin${COLOR_RESET}"
                     sh 'env'
-                    echo "${currentBuild}"
-                    echo "Wordic-discord"
-                    echo 'wordic-discord'
+                    echo "${COLOR_YELLOW}ENV end${COLOR_RESET}"
+                    def buildTime = currentBuild.duration / 1000
+                        withCredentials([string(credentialsId: 'wordic-discord', variable: 'hook')]) {
+                            discordSend title: 'Motomo - frontend',
+                                description: ">>> **Build no:**  `${currentBuild.displayName}`\n**Result:** `${currentBuild.currentResult}`",
+                                footer: "Build time: ${buildTime} sec",
+                                result: currentBuild.currentResult,
+                                showChangeset: true,
+                                enableArtifactsList: true,
+                                webhookURL: "$hook"
+                        }
                 }
 
             } catch (Exception e) {
                 echo "${COLOR_RED} Failed :( ${COLOR_RESET}"
+                withCredentials([string(credentialsId: 'wordic-discord', variable: 'hook')]) {
+                    discordSend title: 'Motomo - frontend',
+                    description: ">>> **Build no:**  `${currentBuild.displayName}`",
+                    footer: "Build time: ${buildTime} sec",
+                    showChangeset: true,
+                    result: 'FAILURE'
+                    enableArtifactsList: true,
+                    webhookURL: "$hook"
+                }
             }
         }
     }
