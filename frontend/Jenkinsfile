@@ -70,7 +70,7 @@ node("${JENKINS_AGENT_NAME}") {
                     sh 'env'
                     echo "${COLOR_YELLOW}ENV end${COLOR_RESET}"
                     def buildTime = currentBuild.duration / 1000
-                    currentBuild.description = ${VERSION}
+                    currentBuild.description = "${VERSION}"
 
                     withCredentials([string(credentialsId: 'wordic-discord', variable: 'hook')]) {
                         discordSend title: 'Motomo - frontend',
