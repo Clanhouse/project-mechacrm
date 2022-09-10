@@ -62,7 +62,7 @@ node("${JENKINS_AGENT_NAME}") {
                 stage('docker cleaning') {
                     echo "${COLOR_GREEN} REMOVING OLD DOCKER IMAGES ${COLOR_RESET}"
                     sh "docker image rm 'motomo' -f"
-                    sh "docker image rm \\$(docker images -f dangling=true -q)"
+                    removeDanglingDockerImages()
                     echo "${COLOR_MAGENTA} Containers list: \n"
                     sh "docker ps -a"
                     echo "${COLOR_RESET}"
@@ -75,7 +75,6 @@ node("${JENKINS_AGENT_NAME}") {
                     echo "${COLOR_YELLOW}ENV begin${COLOR_RESET}"
                     sh 'env'
                     echo "${COLOR_YELLOW}ENV end${COLOR_RESET}"
-//                     def buildTime = parseExecutionTime()
                     currentBuild.description = "${VERSION}"
 
                     withCredentials([string(credentialsId: 'wordic-discord', variable: 'hook')]) {
@@ -105,11 +104,9 @@ node("${JENKINS_AGENT_NAME}") {
     }
 }
 
-// def parseExecutionTime() {
-//     def buildTime = currentBuild.duration / 1000
-//
-//     def minutes = buildTime / 60
-//     def seconds = buildTime % 60
-//
-//     return "${minutes}min ${seconds}s"
-// }
+def removeDanglingDockerImages() {
+    def List<Sting> danglingImages = sh(returnStdout: true, script: 'docker image rm $(docker images -f dangling=true -q)')
+    echo "${COLOR_YELLOW} danglingImages list: \n"
+    echo "${danglingImages}"
+    echo "${COLOR_RESET}"
+}
