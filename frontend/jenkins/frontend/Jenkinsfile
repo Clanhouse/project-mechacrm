@@ -13,7 +13,7 @@ def COLOR_RESET = "\u001b[0m"
 def JENKINS_AGENT_NAME = "Motomo"
 def GIT_REPO_URL = "https://github.com/Clanhouse/project-mechacrm.git"
 def DOCKER_IMAGE_NAME = "motomo-frontend"
-def CICD_FOLDER = "docker/main"
+def DOCKERFILE_NAME = "Dockerfile-frontend"
 
 node("${JENKINS_AGENT_NAME}") {
     timestamps {
@@ -45,7 +45,7 @@ node("${JENKINS_AGENT_NAME}") {
                 stage('docker image') {
                     echo "${COLOR_GREEN} BUILDING DOCKER IMAGE ${COLOR_RESET}"
                     echo "${COLOR_BLUE} Image name: ${DOCKER_IMAGE_NAME}:${VERSION} ${COLOR_RESET}"
-                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${VERSION} ./frontend/${CICD_FOLDER}"
+                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${VERSION} ${DOCKERFILE_NAME} ."
                 }
 
                 stage('docker run') {
