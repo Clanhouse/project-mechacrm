@@ -62,7 +62,7 @@ node("${JENKINS_AGENT_NAME}") {
                 stage('docker cleaning') {
                     echo "${COLOR_GREEN} REMOVING OLD DOCKER IMAGES ${COLOR_RESET}"
                     sh "docker image rm 'motomo' -f"
-                    sh "docker image rm '$(docker images -f dangling=true -q)'"
+                    sh "docker image rm \$(docker images -f dangling=true -q)"
                     echo "${COLOR_MAGENTA} Containers list: \n"
                     sh "docker ps -a"
                     echo "${COLOR_RESET}"
