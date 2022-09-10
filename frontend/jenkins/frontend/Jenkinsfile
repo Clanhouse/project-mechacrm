@@ -105,7 +105,8 @@ node("${JENKINS_AGENT_NAME}") {
 }
 
 def removeDanglingDockerImages() {
-    def List<String> danglingImages = sh(returnStdout: true, script: 'docker image rm $(docker images -f dangling=true -q)')
+    def List<String> danglingImages = sh(returnStdout: true, script: '(docker images -f dangling=true -q)')
+//     def List<String> danglingImages = sh(returnStdout: true, script: 'docker image rm $(docker images -f dangling=true -q)')
     echo "${COLOR_YELLOW} danglingImages list: \n"
     echo "${danglingImages}"
     echo "${COLOR_RESET}"
