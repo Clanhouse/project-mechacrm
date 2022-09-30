@@ -76,7 +76,7 @@ node("${JENKINS_AGENT_NAME}") {
                     echo "${COLOR_YELLOW}ENV end${COLOR_RESET}"
                     currentBuild.description = "${VERSION}"
 
-                    withCredentials([string(credentialsId: 'wordic-discord', variable: 'hook')]) {
+                    withCredentials([string(credentialsId: 'motomo-discord', variable: 'hook')]) {
                         discordSend title: 'Motomo - storybook',
                             description: ">>> **Build no:**  `${currentBuild.displayName}`\n**Result:** `${currentBuild.currentResult}`\n**Version:** ${VERSION}",
                             footer: "Build time: ${currentBuild.durationString}",
