@@ -1,17 +1,19 @@
 const lightTheme = {
   color: {
-    primary: '#3F80EA',
-    secondary: '#7F838E',
-    success: '#4BBF73',
-    info: '#1F9BCF',
-    warning: '#CC8B37',
-    danger: '#D9534F',
+    primary: '#4D73FB',
+    secondary: '#1ED3A8',
+    light_blue: '#3FDBF6',
+    purple: '#B28DFF',
+    pink: '#FF6388',
+    orange: '#FF8969',
+    error: '#EC5952',
+    success: '#63D988',
     text: {
-      primary: '#495057',
-      secondary: '#6C757D',
+      primary: '#F8F8F8',
+      secondary: '#BEBEBF',
     },
     background: {
-      primary: '#F7F9FC',
+      primary: '#F8F8F8',
       secondary: '#FFFFFF',
     },
     buttonText: '#fff',

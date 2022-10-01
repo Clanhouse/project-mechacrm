@@ -1,17 +1,19 @@
 const darkTheme = {
   color: {
-    primary: '#3F80EA',
-    secondary: '#7F838E',
-    success: '#4BBF73',
-    info: '#1F9BCF',
-    warning: '#CC8B37',
-    danger: '#D9534F',
+    primary: '#5F81FF',
+    secondary: '#2FE8BB',
+    light_blue: '#56E6FF',
+    purple: '#C2A5FF',
+    pink: '#FF5E84',
+    orange: '#FF9F69',
+    error: '#EC5952',
+    success: '#63D988',
     text: {
-      primary: '#FFFFFF',
-      secondary: '#898e99',
+      primary: '#F8F8F8',
+      secondary: '#BEBEBF',
     },
     background: {
-      primary: '#202634',
+      primary: '#0F0F10',
       secondary: '#293042',
     },
     buttonText: '#fff',
