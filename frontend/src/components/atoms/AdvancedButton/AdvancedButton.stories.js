@@ -1,19 +1,16 @@
 import React from 'react';
-import { ReactComponent as GoogleIcon } from 'assets/svgs/google-brands.svg';
-import { ReactComponent as FacebookIcon } from 'assets/svgs/facebook-f-brands.svg';
 import { ThemeProvider } from 'styled-components';
 import theme from 'theme/MainTheme';
+import { FaFacebookF, FaGoogle } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 import AdvancedButton from './AdvancedButton';
 
 export default {
   title: 'Atoms/AdvancedButton',
   component: AdvancedButton,
   argTypes: {
-    icon: {
+    Icon: {
       control: 'hidden',
-    },
-    fontSize: {
-      control: 'text',
     },
     fullWidth: {
       control: 'boolean',
@@ -27,49 +24,50 @@ export default {
     color: {
       control: 'color',
     },
+    onClick: {
+      action: 'advanced button clicked',
+    },
   },
 };
 
-const Template = (args) => (
+const Template = ({ children, ...args }) => (
   <ThemeProvider theme={theme}>
-    <AdvancedButton {...args} />
+    <AdvancedButton {...args}>{children}</AdvancedButton>
   </ThemeProvider>
 );
 
 export const TextButton = Template.bind({});
 TextButton.args = {
-  text: 'Zaloguj się przez email',
+  children: 'Zaloguj się przez email',
   fullWidth: false,
   fontSize: '18px',
   borderColor: '#000',
   color: '#04294F',
   background: '#fff',
-  // eslint-disable-next-line no-console
-  onClick: () => console.log('clicked text button'),
 };
 
 export const Google = Template.bind({});
 Google.args = {
-  icon: <GoogleIcon />,
-  text: 'Zaloguj się przez Google',
+  Icon: FaGoogle,
+  children: 'Zaloguj się przez Google',
   fullWidth: true,
   fontSize: '18px',
   borderColor: '#000',
   color: '#04294F',
   background: '#fff',
-  // eslint-disable-next-line no-console
-  onClick: () => console.log('clicked google button'),
 };
 
 export const Facebook = Template.bind({});
 Facebook.args = {
-  icon: <FacebookIcon />,
-  text: 'Zaloguj się przez Facebook',
+  Icon: FaFacebookF,
+  children: 'Zaloguj się przez Facebook',
   fullWidth: false,
   fontSize: '18px',
   borderColor: '#000',
   color: '#04294F',
   background: '#fff',
-  // eslint-disable-next-line no-console
-  onClick: () => console.log('clicked facebook button'),
+};
+
+Template.propTypes = {
+  children: PropTypes.string.isRequired,
 };

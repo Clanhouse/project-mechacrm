@@ -7,9 +7,10 @@
     "linebreak-style": "off",
     "object-curly-newline": [
       "error",
-      { "ImportDeclaration": { "multiline": true, "minProperties": 2 } }
+      { "ImportDeclaration": { "multiline": true, "minProperties": 3 } }
     ],
-    "object-property-newline": "error"
+    "object-property-newline": "error",
+    "react/function-component-definition": ["error", { "namedComponents": "arrow-function" }]
   },
   "env": {
     "browser": true,

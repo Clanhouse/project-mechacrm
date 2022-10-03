@@ -1,6 +1,4 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
-import theme from 'theme/MainTheme';
 import LoginPageTemplate from './LoginPageTemplate';
 
 export default {
@@ -8,11 +6,7 @@ export default {
   component: LoginPageTemplate,
 };
 
-const Template = (args) => (
-  <ThemeProvider theme={theme}>
-    <LoginPageTemplate {...args} />
-  </ThemeProvider>
-);
+const Template = (args) => <LoginPageTemplate {...args} />;
 
 export const LoginPage = Template.bind({});
 LoginPage.parameters = {
@@ -20,6 +14,7 @@ LoginPage.parameters = {
 };
 
 LoginPage.args = {
-  slogan: <div style={{ display: 'block', width: '100%', height: '100%', backgroundColor: '#600' }} />,
-  loginSection: <div style={{ display: 'block', width: '100%', height: '800px', backgroundColor: '#640' }} />,
+  loginSection: (
+    <div style={{ display: 'block', width: '100%', height: '800px', backgroundColor: '#640' }} />
+  ),
 };

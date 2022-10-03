@@ -4,20 +4,15 @@ import PropTypes from 'prop-types';
 
 const Container = styled.button`
   padding: 0 16px;
-  
   display: flex;
   justify-content: center;
-
   width: ${({ fullWidth }) => fullWidth && '100%'};
-
   border-radius: 25px;
   border: ${({ borderColor }) => borderColor && `1px solid ${borderColor}`};
-
-  background-color: ${({ background }) => (background)};
+  background-color: ${({ background }) => background};
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-  
   transition: all 0.3s ease-in-out;
-  
+
   &:hover {
     background-color: #f4f0f0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -29,42 +24,35 @@ const IconBox = styled.div`
   display: flex;
   justify-content: flex-end;
   align-self: center;
-
   margin-right: 15px;
-
   width: 24px;
   height: 24px;
-
-  color: ${({ color }) => (color)}
+  color: ${({ color }) => color};
 `;
 
 const LabelBox = styled.div`
   padding: 18px 0;
-  
   display: flex;
   justify-content: flex-start;
   align-self: center;
-
   margin-left: ${({ icon }) => icon && '15px'};
-
   font-family: ${({ theme }) => theme.fontFamily};
   font-weight: ${({ theme }) => theme.fontWeight.regular};
   font-size: ${({ fontSize }) => fontSize};
-
   letter-spacing: 0.014em;
   line-height: 20px;
-  color: ${({ color }) => (color)}
+  color: ${({ color }) => color};
 `;
 
 const AdvancedButton = ({
-  icon,
-  text,
+  Icon,
   fontSize,
   fullWidth,
   borderColor,
   background,
   color,
   onClick,
+  children,
 }) => (
   <Container
     fullWidth={fullWidth}
@@ -72,14 +60,20 @@ const AdvancedButton = ({
     background={background}
     onClick={onClick}
   >
-    {icon && <IconBox icon={icon} color={color}>{icon}</IconBox>}
-    <LabelBox fontSize={fontSize} color={color} icon={icon}>{text}</LabelBox>
+    {Icon && (
+      <IconBox color={color}>
+        <Icon size={24} />
+      </IconBox>
+    )}
+    <LabelBox fontSize={fontSize} color={color} icon={Icon}>
+      {children}
+    </LabelBox>
   </Container>
 );
 
 AdvancedButton.propTypes = {
-  icon: PropTypes.element,
-  text: PropTypes.string.isRequired,
+  Icon: PropTypes.elementType,
+  children: PropTypes.string.isRequired,
   fontSize: PropTypes.string,
   fullWidth: PropTypes.bool,
   borderColor: PropTypes.string,
@@ -89,7 +83,7 @@ AdvancedButton.propTypes = {
 };
 
 AdvancedButton.defaultProps = {
-  icon: null,
+  Icon: undefined,
   fontSize: '18px',
   fullWidth: false,
   borderColor: '#000',

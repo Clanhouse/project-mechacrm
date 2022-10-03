@@ -1,14 +1,16 @@
 import React from 'react';
 import theme from 'theme/MainTheme';
 import { ThemeProvider } from 'styled-components';
+import PropTypes from 'prop-types';
 import LargeButton from './LargeButton';
 
 export default {
   title: 'Atoms/LargeButton',
   component: LargeButton,
   argTypes: {
-    text: {
-      control: 'text',
+    type: {
+      options: ['button', 'submit'],
+      control: 'inline-radio',
     },
     background: {
       control: 'color',
@@ -16,35 +18,41 @@ export default {
     color: {
       control: 'color',
     },
-    fontSize: {
-      control: 'text',
-    },
     fullWidth: {
       control: 'boolean',
+    },
+    onClick: {
+      action: 'large button clicked',
     },
   },
 };
 
-const Template = (args) => <ThemeProvider theme={theme}><LargeButton {...args} /></ThemeProvider>;
+const Template = ({ children, ...args }) => (
+  <ThemeProvider theme={theme}>
+    <LargeButton {...args}>{children}</LargeButton>
+  </ThemeProvider>
+);
 
 export const LoginButton = Template.bind({});
 LoginButton.args = {
-  text: 'Zaloguj',
+  type: 'button',
+  children: 'Zaloguj',
   color: '#04294F',
   background: '#ffb400',
   fontSize: '42px',
   fullWidth: false,
-  // eslint-disable-next-line no-console
-  onClick: () => console.log('clicked'),
 };
 
 export const RegisterButton = Template.bind({});
 RegisterButton.args = {
-  text: 'Zarejestruj się',
+  type: 'submit',
+  children: 'Zarejestruj się',
   color: '#04294F',
   background: '#ffb400',
   fontSize: '42px',
   fullWidth: true,
-  // eslint-disable-next-line no-console
-  onClick: () => console.log('clicked'),
+};
+
+Template.propTypes = {
+  children: PropTypes.string.isRequired,
 };

@@ -1,133 +1,161 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import LoginPageTemplate from 'components/templates/LoginPageTemplate/LoginPageTemplate';
 import Typography from 'components/atoms/Typography/Typography';
 import AdvancedButton from 'components/atoms/AdvancedButton/AdvancedButton';
-import InputField from 'components/atoms/InputField/InputField';
-import { ReactComponent as GoogleIcon } from 'assets/svgs/google-brands.svg';
-import eyeIcon from 'assets/svgs/eye-solid.svg';
-import Checkbox from 'components/atoms/Checkbox/Checkbox';
 import LargeButton from 'components/atoms/LargeButton/LargeButton';
 import { Link } from 'react-router-dom';
-
-const Wrapper = styled.div`
-  margin: 178px 0 0 20px;
-`;
+import { FaEye, FaGoogle } from 'react-icons/fa';
+import { Formik } from 'formik';
+import InputField from 'components/atoms/InputField/InputField';
+import Checkbox from 'components/atoms/Checkbox/Checkbox';
 
 const Divider = styled.div`
+  margin-top: 20px;
   display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.color.dark};
+
+  & span {
+    height: 1px;
+    width: 100%;
+    background-color: ${({ theme }) => theme.color.dark};
+  }
+
+  & p {
+    margin: 0 21px;
+  }
 `;
 
-const Line = styled.span`
-  width: 231px;
-  height: 1px;
-  background-color: #979797;
+const Form = styled.form`
+  margin-top: 16px;
+`;
+
+const RememberMeBox = styled.div`
+  margin-top: 8px;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & > a {
+    text-decoration: underline;
+  }
+`;
+
+const NewAccountBox = styled.div`
+  margin: 16px auto 0;
+
+  & span {
+    color: ${({ theme }) => theme.color.primary};
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      color: ${({ theme }) => theme.color.secondary};
+    }
+  }
 `;
 
 const LoginPage = () => {
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const errors = {};
+  const validate = (values) => {
+    if (!values.login) {
+      errors.login = 'Pole wymagane';
+    } else {
+      errors.login = '';
+    }
 
-  const handleSubmit = () => {
-    setLogin('');
-    setPassword('');
-    setRememberMe(false);
+    if (!values.password) {
+      errors.password = 'Pole wymagane';
+    } else if (values.password.length < 8) {
+      errors.password = 'Minimalna długość hasła, 8 znaków';
+    } else {
+      errors.password = '';
+    }
   };
 
   return (
     <LoginPageTemplate
-      slogan={(
-        <>
-          <div style={{ margin: '52px 0 0 0' }}>
-            <Typography
-              variant="h2"
-              text="Kontrola biznesu w zasięgu ręki"
-              fontSize="38px"
-            />
-          </div>
-          <div style={{ margin: '52px 0 0 0' }}>
-            <Typography
-              variant="text"
-              text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-              fontSize="24px"
-            />
-          </div>
-        </>
-      )}
       loginSection={(
-        <Wrapper>
-          <Typography
-            variant="h2"
-            text="Witaj w Motomo"
-            fontSize="42px"
-          />
+        <>
+          <Typography variant="h2" fontSize="36px">
+            Witaj w Motomo
+          </Typography>
 
-          <div style={{ margin: '25px 0 0 10px' }}>
-            <Typography
-              variant="text"
-              text="Zaloguj się podając informacje poniżej"
-              fontSize="18px"
-            />
-          </div>
+          <Typography>Zaloguj się podając informacje poniżej</Typography>
 
-          <Link style={{ textDecoration: 'none' }} to="/login-by-google">
-            <div style={{ margin: '52px 0 0 0' }}>
-              <AdvancedButton
-                text="Zaloguj się przez Google"
-                fullWidth
-                icon={<GoogleIcon />}
-              />
-            </div>
+          <Link to="/login-by-google">
+            <AdvancedButton fullWidth Icon={FaGoogle}>
+              Zaloguj się przez Google
+            </AdvancedButton>
           </Link>
-          <div style={{ margin: '40px 0 0 0' }}>
-            <Divider>
-              <Line />
-              <div style={{ margin: '0 21px' }}>
-                <Typography variant="text" text="lub" fontSize="18px" />
-              </div>
-              <Line />
-            </Divider>
-          </div>
-          <div style={{ margin: '40px 0 0 0' }}>
-            <InputField
-              value={login}
-              onChange={(e) => setLogin(e.target.value)}
-              label="Nazwa użytkownika/email"
-              placeholder="Wpisz nazwę użytkownika/email"
-            />
-          </div>
-          <div style={{ margin: '45px 0 0 0' }}>
-            <InputField
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              label="Hasło"
-              placeholder="Wpisz hasło"
-              variant="password"
-              icon={eyeIcon}
-            />
-          </div>
-          <div style={{ margin: '25px 15px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Checkbox
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
-              labelText="Zapamiętaj mnie"
-            />
-            <Link style={{ textDecoration: 'none' }} to="/password-recovery">
-              <Typography variant="text" text="Nie pamiętasz hasła?" fontSize="18px" />
-            </Link>
-          </div>
-          <div style={{ margin: '45px 0 0 0' }}>
-            <LargeButton text="Zaloguj" background="#ffb400" fullWidth onClick={() => handleSubmit()} />
-          </div>
-          <div style={{ margin: '24px 0 0 0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Typography variant="text" text="Nie masz jeszcze konta?&nbsp;" fontSize="18px" />
-            <Link style={{ textDecoration: 'none' }} to="/register">
-              <Typography variant="text" text="Zarejestruj się" fontSize="18px" color="#ffb400" />
-            </Link>
-          </div>
-        </Wrapper>
+
+          <Divider>
+            <span />
+            <p>lub</p>
+            <span />
+          </Divider>
+
+          <Formik
+            initialValues={{ login: '', password: '', rememberMe: false }}
+            validate={validate}
+            onSubmit={(values) => {
+              console.log(values);
+              // alert(JSON.stringify(values, null, 2));
+            }}
+          >
+            {({ values, handleChange, handleBlur, handleSubmit }) => (
+              <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
+                <InputField
+                  name="login"
+                  label="Nazwa użytkownika/email"
+                  placeholder="Wpisz nazwę użytkownika/email"
+                  value={values.login}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  errorMessage={errors.login}
+                />
+                <InputField
+                  name="password"
+                  variant="password"
+                  label="Hasło"
+                  placeholder="Wpisz hasło"
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  errorMessage={errors.password}
+                  Icon={FaEye}
+                />
+                <RememberMeBox>
+                  <Checkbox
+                    fontSize="16px"
+                    label="Zapamiętaj mnie"
+                    checked={values.rememberMe}
+                    onChange={handleChange}
+                    name="rememberMe"
+                  />
+                  <Link to="/recovery">
+                    <Typography fontSize="14px">Nie pamiętasz hasła?</Typography>
+                  </Link>
+                </RememberMeBox>
+                <Link to="/dashboard">
+                  <LargeButton type="submit" fullWidth>
+                    Zaloguj
+                  </LargeButton>
+                </Link>
+              </Form>
+            )}
+          </Formik>
+          <NewAccountBox>
+            <Typography fontSize="16px">
+              Nie masz jeszcze konta?{' '}
+              <Link to="/register">
+                <span>Zarejestruj się</span>
+              </Link>
+            </Typography>
+          </NewAccountBox>
+        </>
       )}
     />
   );

@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Container = styled.div`
-  padding: 0;
-  margin: auto 0;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -17,47 +15,51 @@ const Box = styled.input.attrs({ type: 'checkbox' })`
   border: 1px solid #3f3d56;
   box-sizing: border-box;
   border-radius: 2px;
-  margin: 0;
+  cursor: pointer;
 `;
 
 const Label = styled.span`
-  font-size: 18px;
-  font-family: ${({ theme }) => theme.fontFamily};
-  font-weight: ${({ theme }) => theme.fontWeight.regular}
+  font-size: ${({ fontSize }) => fontSize};
   line-height: 21px;
-  color: ${({ theme }) => theme.color.text.primary};
+  color: ${({ theme }) => theme.color.secondary};
   margin: 0 16px;
   letter-spacing: 0.014em;
 `;
 
 const Checkbox = ({
-  labelText,
+  name,
+  label,
   checked,
   disabled,
   onChange,
+  fontSize,
 }) => (
   <Container>
     <Box
+      name={name}
       checked={checked}
       disabled={disabled}
-      labelText={labelText}
+      label={label}
       onChange={onChange}
     />
-    <Label>{labelText}</Label>
+    <Label fontSize={fontSize}>{label}</Label>
   </Container>
 );
 
 Checkbox.propTypes = {
-  labelText: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
+  fontSize: PropTypes.string,
 };
 
 Checkbox.defaultProps = {
-  checked: true,
+  checked: false,
   disabled: false,
-  onChange: (e) => e.preventDefault(),
+  onChange: undefined,
+  fontSize: '18px',
 };
 
 export default Checkbox;

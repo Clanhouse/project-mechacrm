@@ -2,121 +2,60 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Component = styled.div`
-  margin: 0;
-
-  font-family: ${({ theme }) => theme.fontFamily};
-  font-size: ${({ fontSize }) => fontSize};
-  font-weight: ${({ theme }) => theme.fontWeight.regular};
+const Component = styled.p`
+  margin-top: ${({ marginTop }) => `${marginTop}px`};
+  margin-left: ${({ marginLeft }) => `${marginLeft}px`};
+  color: ${({ color, theme }) => color || theme.color.primary};
   letter-spacing: 0.014em;
-  line-height: ${({ fontSize }) => `calc(${fontSize} + 4px)`};
-
-  color: ${({
-    color,
-    theme,
-  }) => (color || theme.color.text.primary)};
+  text-align: ${({ align }) => align};
+  font-weight: ${({ theme, variant }) => (variant === 'text' ? theme.fontWeight.regular : theme.fontWeight.bold)};
+  font-size: ${({ fontSize }) => fontSize};
+  text-shadow: ${({ variant }) => {
+    switch (variant) {
+      case 'h1':
+      case 'h2':
+        return '0px 4px 4px rgba(0, 0, 0, 0.4)';
+      case 'h3':
+      case 'h4':
+        return '0px 3px 3px rgba(0, 0, 0, 0.4)';
+      case 'h5':
+      case 'h6':
+        return '0px 2px 2px rgba(0, 0, 0, 0.4)';
+      default:
+        return 'none';
+    }
+  }};
 `;
 
-const Typography = ({
-  variant,
-  text,
-  fontSize,
-  color,
-}) => (
-  <>
-    {variant === 'text' && <Component fontSize={fontSize} color={color}>{text}</Component>}
-
-    {variant === 'h1' && (
-    <Component
-      as="h1"
-      style={{
-        fontWeight: 'bold',
-        textShadow: '0px 4px 4px rgba(0, 0, 0, 0.4)',
-      }}
-      fontSize={fontSize}
-      color={color}
-    >{text}
-    </Component>
-    )}
-
-    {variant === 'h2' && (
-      <Component
-        as="h2"
-        style={{
-          fontWeight: 'bold',
-          textShadow: '0px 4px 4px rgba(0, 0, 0, 0.4)',
-        }}
-        fontSize={fontSize}
-        color={color}
-      >{text}
-      </Component>
-    )}
-
-    {variant === 'h3' && (
-      <Component
-        as="h3"
-        style={{
-          fontWeight: 'bold',
-          textShadow: '0px 3px 3px rgba(0, 0, 0, 0.4)',
-        }}
-        fontSize={fontSize}
-        color={color}
-      >{text}
-      </Component>
-    )}
-
-    {variant === 'h4' && (
-      <Component
-        as="h4"
-        style={{
-          fontWeight: 'bold',
-          textShadow: '0px 3px 3px rgba(0, 0, 0, 0.4)',
-        }}
-        fontSize={fontSize}
-        color={color}
-      >{text}
-      </Component>
-    )}
-
-    {variant === 'h5' && (
-      <Component
-        as="h5"
-        style={{
-          fontWeight: 'bold',
-          textShadow: '0px 2px 2px rgba(0, 0, 0, 0.4)',
-        }}
-        fontSize={fontSize}
-        color={color}
-      >{text}
-      </Component>
-    )}
-
-    {variant === 'h6' && (
-      <Component
-        as="h6"
-        style={{
-          fontWeight: 'bold',
-          textShadow: '0px 2px 2px rgba(0, 0, 0, 0.4)',
-        }}
-        fontSize={fontSize}
-        color={color}
-      >{text}
-      </Component>
-    )}
-  </>
+const Typography = ({ variant, color, fontSize, mt, ml, align, ...props }) => (
+  <Component
+    as={variant === 'text' ? 'p' : variant}
+    variant={variant}
+    color={color}
+    fontSize={fontSize}
+    marginTop={mt}
+    marginLeft={ml}
+    align={align}
+    {...props}
+  />
 );
 
 Typography.propTypes = {
-  text: PropTypes.string.isRequired,
   variant: PropTypes.oneOf(['text', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']),
   fontSize: PropTypes.string,
   color: PropTypes.string,
+  mt: PropTypes.number,
+  ml: PropTypes.number,
+  align: PropTypes.oneOf(['center', 'inherit', 'justify', 'left', 'right']),
 };
 
 Typography.defaultProps = {
   variant: 'text',
   fontSize: '18px',
   color: '#04294F',
+  mt: 0,
+  ml: 0,
+  align: 'inherit',
 };
 
 export default Typography;
