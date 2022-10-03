@@ -9,8 +9,8 @@ const lightTheme = {
     error: '#EC5952',
     success: '#63D988',
     text: {
-      primary: '#F8F8F8',
-      secondary: '#BEBEBF',
+      primary: '#0F0F10',
+      secondary: '#293042',
     },
     background: {
       primary: '#F8F8F8',
