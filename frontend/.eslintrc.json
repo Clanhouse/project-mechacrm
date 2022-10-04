@@ -46,6 +46,7 @@
         ],
         "jsx-quotes": [
             "error", "prefer-single"
-        ]
+        ],
+        "react/prop-types": [2, { "ignore": ["children"] }]
     }
 }

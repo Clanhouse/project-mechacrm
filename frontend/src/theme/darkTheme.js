@@ -13,8 +13,8 @@ const darkTheme = {
       secondary: '#BEBEBF',
     },
     background: {
-      primary: '#0F0F10',
-      secondary: '#293042',
+      primary: '#F8F8F8',
+      secondary: '#FFFFFF',
     },
     buttonText: '#fff',
   },
