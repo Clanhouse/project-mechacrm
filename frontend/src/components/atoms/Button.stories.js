@@ -1,4 +1,5 @@
 import React from 'react';
+import { BsCheckLg, HiTrash } from 'react-icons/all';
 import Button from './Button';
 
 export default {
@@ -6,6 +7,9 @@ export default {
   component: Button,
   argTypes: {
     variant: {
+      control: 'inline-radio',
+    },
+    size: {
       control: 'inline-radio',
     },
   },
@@ -17,20 +21,23 @@ export const RegularButton = Template.bind({});
 RegularButton.args = {
   color: 'primary',
   children: 'Button',
-  variant: 'normal',
+  variant: 'contained',
+  size: 'normal',
 };
 
 export const RegularButtonWithIcon = Template.bind({});
 RegularButtonWithIcon.args = {
   color: 'primary',
   children: 'Button',
-  icon: 'Button',
-  variant: 'normal',
+  Icon: BsCheckLg,
+  variant: 'contained',
+  size: 'normal',
 };
 
 export const IconButton = Template.bind({});
 IconButton.args = {
   color: 'primary',
-  icon: 'Button',
-  variant: 'normal',
+  Icon: HiTrash,
+  variant: 'contained',
+  size: 'normal',
 };
