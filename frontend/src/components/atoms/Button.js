@@ -1,11 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useRef } from 'react';
+import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Container = styled.button`
   display: flex;
   align-items: center;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
   border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
@@ -13,52 +16,118 @@ const Container = styled.button`
   transition: all 0.2s ease-in-out;
 
   padding: ${({ size, Icon, text }) => {
-    if (Icon && text === null) return '8px 13px';
+    if (Icon && text === undefined) return '8px 12px';
     if (size === 'normal') return '12px 40px';
     return '8px 40px';
   }};
 
-  height: ${({ size }) => (size === 'normal' ? '45px' : '37px')};
+  height: ${({ size }) => (size === 'normal' ? '46px' : '38px')};
 
   color: ${({ theme, color, variant }) => {
     if (variant === 'contained') return '#F8F8F8';
-    return theme.color[color];
+    return theme.color[color][1];
   }};
 
-  background-color: ${({ theme, color, variant }) => {
-    if (variant === 'contained') return theme.color[color];
-    return 'transparent';
-  }};
+  background-color: transparent;
 
   border: ${({ theme, color, variant }) => {
     if (variant === 'text') return '2px solid transparent';
-    return `2px solid ${theme.color[color]}`;
+    return `2px solid ${theme.color[color][1]}`;
   }};
+
+  &::after {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    content: '';
+    width: 100%;
+    background-color: ${({ theme, color, variant }) => {
+      if (variant === 'contained') return theme.color[color][1];
+      return 'transparent';
+    }};
+  }
+
+  &:hover {
+    border: ${({ theme, color, variant }) => {
+      if (variant === 'text') return '2px solid transparent';
+      return `2px solid ${theme.color[color][2]}`;
+    }};
+
+    background-color: ${({ theme, color, variant }) => {
+      if (variant === 'contained') return theme.color[color][2];
+      return 'transparent';
+    }};
+  }
 `;
 
-const IconBox = styled.p``;
+const zoom = keyframes`
+  to {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+`;
+
+const Circle = styled.span`
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background-color: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ${zoom} 0.5s;
+  display: none;
+`;
+
+const IconBox = styled.div`
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Text = styled.p`
   margin-left: ${({ Icon, children }) => Icon && children && '8px'};
 `;
 
-const Button = ({ variant, children, Icon, color, size, onClick }) => (
-  <Container
-    variant={variant}
-    color={color}
-    size={size}
-    onClick={onClick}
-    Icon={Icon}
-    text={children}
-  >
-    {Icon && (
-      <IconBox>
-        <Icon size={16} />
-      </IconBox>
-    )}
-    <Text Icon={Icon}>{children}</Text>
-  </Container>
-);
+const Button = ({ variant, children, Icon, color, size, onClick }) => {
+  const circleRef = useRef(null);
+
+  const btnAnimation = (e) => {
+    const top = e.clientY - e.target.offsetTop;
+    const left = e.clientX - e.target.offsetLeft;
+
+    circleRef.current.style.top = `${top}px`;
+    circleRef.current.style.left = `${left}px`;
+    circleRef.current.style.display = 'block';
+
+    setTimeout(() => {
+      circleRef.current.style.display = 'none';
+      return 0;
+    }, 300);
+  };
+
+  return (
+    <div onClick={(e) => btnAnimation(e)} aria-hidden='true'>
+      <Container
+        variant={variant}
+        color={color}
+        size={size}
+        onClick={onClick}
+        Icon={Icon}
+        text={children}
+      >
+        {Icon && (
+          <IconBox>
+            <Icon size={16} />
+          </IconBox>
+        )}
+        <Text Icon={Icon}>{children}</Text>
+        <Circle ref={circleRef} />
+      </Container>
+    </div>
+  );
+};
 
 Button.propTypes = {
   color: PropTypes.oneOf([
