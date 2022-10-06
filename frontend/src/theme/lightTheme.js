@@ -1,6 +1,6 @@
 const lightTheme = {
   color: {
-    primary: '#4D73FB',
+    primary: ['#EBF3FF', '#4D73FB', '#314DB4'],
     secondary: '#1ED3A8',
     light_blue: '#3FDBF6',
     purple: '#B28DFF',
