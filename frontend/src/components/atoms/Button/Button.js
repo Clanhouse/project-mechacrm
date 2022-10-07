@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const Container = styled.button`
   display: flex;
   align-items: center;
-  cursor: pointer;
+  cursor: ${({ inactive }) => !inactive && 'pointer'};
   position: relative;
   overflow: hidden;
 
@@ -24,7 +24,8 @@ const Container = styled.button`
 
   background-color: transparent;
 
-  border: ${({ theme, color, variant }) => {
+  border: ${({ theme, color, variant, inactive }) => {
+    if (inactive) return `2px solid ${theme.color.gray[3]}`;
     if (variant === 'text') return '2px solid transparent';
     return `2px solid ${theme.color[color][1]}`;
   }};
@@ -35,19 +36,22 @@ const Container = styled.button`
     z-index: -1;
     content: '';
     width: 100%;
-    background-color: ${({ theme, color, variant }) => {
+    background-color: ${({ theme, color, variant, inactive }) => {
+      if (inactive) return theme.color.gray[3];
       if (variant === 'contained') return theme.color[color][1];
       return 'transparent';
     }};
   }
 
   &:hover {
-    border: ${({ theme, color, variant }) => {
+    border: ${({ theme, color, variant, inactive }) => {
+      if (inactive) return `2px solid ${theme.color.gray[3]}`;
       if (variant === 'text') return '2px solid transparent';
       return `2px solid ${theme.color[color][2]}`;
     }};
 
-    background-color: ${({ theme, color, variant }) => {
+    background-color: ${({ theme, color, variant, inactive }) => {
+      if (inactive) return theme.color.gray[3];
       if (variant === 'contained') return theme.color[color][2];
       return 'transparent';
     }};
@@ -87,21 +91,31 @@ const Text = styled.p`
   margin-left: ${({ Icon, children }) => Icon && children && '8px'};
 `;
 
-const Button = ({ variant, children, Icon, color, size, onClick }) => {
+const Button = ({
+  variant,
+  children,
+  Icon,
+  color,
+  size,
+  onClick,
+  inactive,
+}) => {
   const circleRef = useRef(null);
 
   const btnAnimation = (e) => {
-    const top = e.clientY - e.target.offsetTop;
-    const left = e.clientX - e.target.offsetLeft;
+    if (!inactive) {
+      const top = e.clientY - e.target.offsetTop;
+      const left = e.clientX - e.target.offsetLeft;
 
-    circleRef.current.style.top = `${top}px`;
-    circleRef.current.style.left = `${left}px`;
-    circleRef.current.style.display = 'block';
+      circleRef.current.style.top = `${top}px`;
+      circleRef.current.style.left = `${left}px`;
+      circleRef.current.style.display = 'block';
 
-    setTimeout(() => {
-      circleRef.current.style.display = 'none';
-      return 0;
-    }, 300);
+      setTimeout(() => {
+        circleRef.current.style.display = 'none';
+        return 0;
+      }, 300);
+    }
   };
 
   return (
@@ -113,6 +127,7 @@ const Button = ({ variant, children, Icon, color, size, onClick }) => {
         onClick={onClick}
         Icon={Icon}
         text={children}
+        inactive={inactive}
       >
         {Icon && (
           <IconBox>
@@ -141,6 +156,7 @@ Button.propTypes = {
   Icon: PropTypes.elementType,
   size: PropTypes.oneOf(['small', 'normal']),
   onClick: PropTypes.func,
+  inactive: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -149,6 +165,7 @@ Button.defaultProps = {
   Icon: undefined,
   size: 'normal',
   onClick: undefined,
+  inactive: false,
 };
 
 export default Button;

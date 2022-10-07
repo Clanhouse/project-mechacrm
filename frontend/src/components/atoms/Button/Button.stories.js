@@ -23,6 +23,7 @@ TextButton.args = {
   children: 'Button',
   variant: 'contained',
   size: 'normal',
+  inactive: false,
 };
 
 export const TextButtonWithIcon = Template.bind({});
@@ -32,4 +33,5 @@ TextButtonWithIcon.args = {
   Icon: BsCheckLg,
   variant: 'contained',
   size: 'normal',
+  inactive: false,
 };
