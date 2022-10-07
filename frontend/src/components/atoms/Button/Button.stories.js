@@ -1,6 +1,6 @@
 import React from 'react';
-import { BsCheckLg, HiTrash } from 'react-icons/all';
-import Button from './Button';
+import { BsCheckLg } from 'react-icons/all';
+import Button from 'components/atoms/Button/Button';
 
 export default {
   title: 'Atoms/Button',
@@ -17,27 +17,19 @@ export default {
 
 const Template = (args) => <Button {...args} />;
 
-export const RegularButton = Template.bind({});
-RegularButton.args = {
+export const TextButton = Template.bind({});
+TextButton.args = {
   color: 'primary',
   children: 'Button',
   variant: 'contained',
   size: 'normal',
 };
 
-export const RegularButtonWithIcon = Template.bind({});
-RegularButtonWithIcon.args = {
+export const TextButtonWithIcon = Template.bind({});
+TextButtonWithIcon.args = {
   color: 'primary',
   children: 'Button',
   Icon: BsCheckLg,
-  variant: 'contained',
-  size: 'normal',
-};
-
-export const IconButton = Template.bind({});
-IconButton.args = {
-  color: 'primary',
-  Icon: HiTrash,
   variant: 'contained',
   size: 'normal',
 };

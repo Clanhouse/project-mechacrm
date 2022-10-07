@@ -15,18 +15,12 @@ const Container = styled.button`
   letter-spacing: 0.02em;
   transition: all 0.2s ease-in-out;
 
-  padding: ${({ size, Icon, text }) => {
-    if (Icon && text === undefined) return '8px 12px';
-    if (size === 'normal') return '12px 40px';
-    return '8px 40px';
-  }};
+  padding: ${({ size }) => (size === 'normal' ? '12px 40px' : '8px 40px')};
 
   height: ${({ size }) => (size === 'normal' ? '46px' : '38px')};
 
-  color: ${({ theme, color, variant }) => {
-    if (variant === 'contained') return '#F8F8F8';
-    return theme.color[color][1];
-  }};
+  color: ${({ theme, color, variant }) =>
+    variant === 'contained' ? theme.color.gray[1] : theme.color[color][1]};
 
   background-color: transparent;
 
@@ -57,6 +51,9 @@ const Container = styled.button`
       if (variant === 'contained') return theme.color[color][2];
       return 'transparent';
     }};
+
+    color: ${({ theme, color, variant }) =>
+      variant !== 'contained' ? theme.color[color][2] : theme.color.gray[1]};
   }
 `;
 
