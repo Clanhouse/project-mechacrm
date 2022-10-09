@@ -1,0 +1,104 @@
+#!groovy
+
+// https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html#8-colors
+def COLOR_RED = "\u001b[41m"
+def COLOR_GREEN = "\u001b[42m"
+def COLOR_YELLOW = "\u001b[43m"
+def COLOR_BLUE = "\u001b[44m"
+def COLOR_MAGENTA = "\u001b[45m"
+def COLOR_CYAN = "\u001b[46m"
+def COLOR_WHITE = "\u001b[47m"
+def COLOR_RESET = "\u001b[0m"
+
+def JENKINS_AGENT_NAME = "Motomo"
+def GIT_REPO_URL = "https://github.com/Clanhouse/project-mechacrm.git"
+def DOCKER_IMAGE_NAME = "motomo-frontend"
+def DOCKERFILE_NAME = "Dockerfile-frontend"
+
+node("${JENKINS_AGENT_NAME}") {
+    timestamps {
+        ansiColor('xterm') {
+            try {
+
+                stage('cleaning workspace') {
+                    echo "${COLOR_GREEN} CLEANING WORKSPACE ${COLOR_RESET}"
+                    cleanWs()
+                }
+
+                stage('git clone') {
+                    echo "${COLOR_GREEN} GIT CLONE ${COLOR_RESET}"
+                    git url: "${GIT_REPO_URL}", branch: "${BRANCH_NAME}"
+                }
+
+                stage('npm install') {
+                    echo "${COLOR_GREEN} NPM INSTALL ${COLOR_RESET}"
+                    sh 'docker run --rm -v ${PWD}/frontend/:/motomo -w /motomo node:lts-slim npm i'
+                }
+
+                stage('npm build') {
+                    echo "${COLOR_GREEN} NPM BUILD ${COLOR_RESET}"
+                    echo "Dir type is: ${PWD}"
+                    sh 'docker run --rm -v ${PWD}/frontend/:/motomo -w /motomo node:lts-slim npm run build'
+                    sh 'ls -la ./frontend'
+                }
+
+                stage('docker image') {
+                    echo "${COLOR_GREEN} BUILDING DOCKER IMAGE ${COLOR_RESET}"
+                    echo "${COLOR_BLUE} Image name: ${DOCKER_IMAGE_NAME}:${VERSION} ${COLOR_RESET}"
+                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${VERSION} -f frontend/${DOCKERFILE_NAME} ."
+                }
+
+                stage('docker run') {
+                    echo "${COLOR_GREEN} RUNNING DOCKER CONTAINER ${COLOR_RESET}"
+                    try {
+                        sh "docker stop frontend"
+                        sh "docker rm frontend"
+                    } catch(Exception e) {
+                        echo "${COLOR_YELLOW} CONTAINER WAS NOT RUNNING ${COLOR_RESET}"
+                    }
+                    sh "docker run -d --restart=always --name frontend -p 7000:80 ${DOCKER_IMAGE_NAME}:${VERSION}"
+                }
+
+                stage('docker cleaning') {
+                    echo "${COLOR_GREEN} REMOVING OLD DOCKER IMAGES ${COLOR_RESET}"
+                    sh "docker image rm 'motomo' -f"
+                    echo "${COLOR_MAGENTA} Containers list: \n"
+                    sh "docker ps -a"
+                    echo "${COLOR_RESET}"
+                    echo "${COLOR_YELLOW} Images list: \n"
+                    sh "docker image ls"
+                    echo "${COLOR_RESET}"
+                }
+
+                stage('notify') {
+                    echo "${COLOR_YELLOW}ENV begin${COLOR_RESET}"
+                    sh 'env'
+                    echo "${COLOR_YELLOW}ENV end${COLOR_RESET}"
+                    currentBuild.description = "${VERSION}"
+
+                    withCredentials([string(credentialsId: 'wordic-discord', variable: 'hook')]) {
+                        discordSend title: 'Motomo - frontend',
+                            description: ">>> **Build no:**  `${currentBuild.displayName}`\n**Result:** `${currentBuild.currentResult}`\n**Version:** ${VERSION}",
+                            footer: "Build time: ${currentBuild.durationString}",
+                            result: currentBuild.currentResult,
+                            showChangeset: true,
+                            enableArtifactsList: true,
+                            webhookURL: "$hook"
+                    }
+                }
+
+            } catch (Exception e) {
+                echo "${COLOR_RED} Failed :( ${COLOR_RESET}"
+                withCredentials([string(credentialsId: 'wordic-discord', variable: 'hook')]) {
+                    discordSend title: 'Motomo - frontend',
+                    description: ">>> **Build no:**  `${currentBuild.displayName}`",
+                    footer: "Build time: ${buildTime} sec",
+                    showChangeset: true,
+                    result: "FAILURE",
+                    enableArtifactsList: true,
+                    webhookURL: "$hook"
+                }
+            }
+        }
+    }
+}
