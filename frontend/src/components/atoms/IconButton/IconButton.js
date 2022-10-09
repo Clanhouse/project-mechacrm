@@ -16,13 +16,10 @@ const Container = styled.button`
   letter-spacing: 0.02em;
   transition: all 0.2s ease-in-out;
 
-  padding: ${({ size }) => (size === 'normal' ? '12px 40px' : '8px 40px')};
-
+  padding: ${({ size }) => (size === 'normal' ? '12px 12px' : '8px 8px')};
   height: ${({ size }) => (size === 'normal' ? '46px' : '38px')};
-
   color: ${({ theme, color, variant }) =>
     variant === 'contained' ? theme.color.gray[1] : theme.color[color][1]};
-
   background-color: transparent;
 
   border: ${({ theme, color, variant, inactive }) => {
@@ -88,19 +85,7 @@ const IconBox = styled.div`
   align-items: center;
 `;
 
-const Text = styled.p`
-  margin-left: ${({ Icon, children }) => Icon && children && '8px'};
-`;
-
-const Button = ({
-  variant,
-  children,
-  Icon,
-  color,
-  size,
-  onClick,
-  inactive,
-}) => {
+const IconButton = ({ variant, Icon, color, size, onClick, inactive }) => {
   const circleRef = useRef(null);
   return (
     <div
@@ -113,7 +98,6 @@ const Button = ({
         size={size}
         onClick={onClick}
         Icon={Icon}
-        text={children}
         inactive={inactive}
       >
         {Icon && (
@@ -121,14 +105,13 @@ const Button = ({
             <Icon size={16} />
           </IconBox>
         )}
-        <Text Icon={Icon}>{children}</Text>
         <Circle ref={circleRef} />
       </Container>
     </div>
   );
 };
 
-Button.propTypes = {
+IconButton.propTypes = {
   color: PropTypes.oneOf([
     'primary',
     'secondary',
@@ -140,19 +123,18 @@ Button.propTypes = {
     'success',
   ]),
   variant: PropTypes.oneOf(['contained', 'outlined', 'text']),
-  Icon: PropTypes.elementType,
+  Icon: PropTypes.elementType.isRequired,
   size: PropTypes.oneOf(['small', 'normal']),
   onClick: PropTypes.func,
   inactive: PropTypes.bool,
 };
 
-Button.defaultProps = {
+IconButton.defaultProps = {
   color: 'primary',
   variant: 'contained',
-  Icon: undefined,
   size: 'normal',
   onClick: undefined,
   inactive: false,
 };
 
-export default Button;
+export default IconButton;
