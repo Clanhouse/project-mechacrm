@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { btnAnimation } from 'helper/btnAnimation';
 import PropTypes from 'prop-types';
 
 const Container = styled.button`
@@ -101,25 +102,11 @@ const Button = ({
   inactive,
 }) => {
   const circleRef = useRef(null);
-
-  const btnAnimation = (e) => {
-    if (!inactive) {
-      const top = e.clientY - e.target.offsetTop;
-      const left = e.clientX - e.target.offsetLeft;
-
-      circleRef.current.style.top = `${top}px`;
-      circleRef.current.style.left = `${left}px`;
-      circleRef.current.style.display = 'block';
-
-      setTimeout(() => {
-        circleRef.current.style.display = 'none';
-        return 0;
-      }, 300);
-    }
-  };
-
   return (
-    <div onClick={(e) => btnAnimation(e)} aria-hidden='true'>
+    <div
+      onClick={(e) => btnAnimation(e, inactive, circleRef)}
+      aria-hidden='true'
+    >
       <Container
         variant={variant}
         color={color}
