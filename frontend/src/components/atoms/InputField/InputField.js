@@ -8,7 +8,7 @@ const Input = styled.input`
   width: 100%;
   min-height: 42px;
 
-  padding: 12px 24px;
+  padding: 12px 16px;
 
   font-size: 14px;
   line-height: 18px;
@@ -18,8 +18,8 @@ const Input = styled.input`
   border-radius: 2px;
   border: ${({ theme, error }) =>
     error
-      ? `2px solid ${theme.color.error[1]}`
-      : `2px solid ${theme.color.gray[2]}`};
+      ? `1px solid ${theme.color.error[1]}`
+      : `1px solid ${theme.color.gray[2]}`};
 
   transition: border 0.3s ease-in-out;
 
@@ -27,8 +27,8 @@ const Input = styled.input`
   &:hover {
     border: ${({ theme, error }) =>
       error
-        ? `2px solid ${theme.color.error[1]}`
-        : `2px solid ${theme.color.primary[1]}`};
+        ? `1px solid ${theme.color.error[1]}`
+        : `1px solid ${theme.color.primary[1]}`};
   }
 
   &::placeholder {
