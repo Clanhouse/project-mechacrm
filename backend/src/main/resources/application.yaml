@@ -12,6 +12,19 @@ server:
   servlet:
     context-path: /api
 
+jwt:
+  expiration: 3600000
+  secret: secret
+
+allowedEndpoints:
+  anonymous: /authenticate, /signup
+  user: /hello
+  admin: /hello
+
+  spring:
+    jpa:
+      hibernate:
+        ddl-auto: create
 ---
 
 spring:
@@ -21,9 +34,3 @@ spring:
 
 server:
   port: 8080
----
-
-
-jwt:
-  expiration: 3600000
-  secret: secret

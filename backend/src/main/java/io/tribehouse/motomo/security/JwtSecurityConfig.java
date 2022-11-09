@@ -1,5 +1,7 @@
 package io.tribehouse.motomo.security;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,22 +14,17 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@RequiredArgsConstructor
 public class JwtSecurityConfig {
 
     private final JwtRequestFilter jwtRequestFilter;
 
-    String[] anonymousWhiteList = {"/authenticate", "/signup"};
-    String[] userWhiteList = {"/hello"};
-    String[] adminWhiteList = {"/hello"};
-
-    public JwtSecurityConfig(JwtRequestFilter jwtRequestFilter) {
-        this.jwtRequestFilter = jwtRequestFilter;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    @Value("${allowedEndpoints.anonymous}")
+    String[] anonymousWhiteList;
+    @Value("${allowedEndpoints.user}")
+    String[] userWhiteList;
+    @Value("${allowedEndpoints.admin}")
+    String[] adminWhiteList;
 
     @Bean
     public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration) throws Exception {

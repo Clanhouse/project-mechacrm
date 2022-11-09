@@ -1,10 +1,14 @@
 package io.tribehouse.motomo.security;
 
+import io.tribehouse.motomo.user.UserRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,26 +18,23 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtTokenService jwtTokenService;
-
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtUserDetailsService jwtUserDetailsService, JwtTokenService jwtTokenService) {//constructor
-        this.authenticationManager = authenticationManager;
-        this.jwtUserDetailsService = jwtUserDetailsService;
-        this.jwtTokenService = jwtTokenService;
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/authenticate")
-    public AuthenticationResponse authenticate(@RequestBody @Valid final LoginCredentials loginCredentials) {
+    public AuthenticationResponse authenticate(@RequestBody @Valid final UserRequest userRequest) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginCredentials.getEmail(), loginCredentials.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userRequest.getEmail(), userRequest.getPassword()));
         } catch (final BadCredentialsException badCredentialsException) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or Password", badCredentialsException);
         }
-        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(loginCredentials.getEmail());
+        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userRequest.getEmail());
         final AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setAccessToken(jwtTokenService.generateToken(userDetails));
         return authenticationResponse;

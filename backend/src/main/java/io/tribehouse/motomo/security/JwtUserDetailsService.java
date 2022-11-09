@@ -1,6 +1,8 @@
 package io.tribehouse.motomo.security;
 
-import io.tribehouse.motomo.user.UserRepository;
+import io.tribehouse.motomo.user.UserDto;
+import io.tribehouse.motomo.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,16 +10,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
-
-    public JwtUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final io.tribehouse.motomo.user.User client = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User" + username + "not found"));
+        final UserDto client = userService.findByEmail(username);
         return new User(username, client.getPassword(), client.getAuthorities());
     }
 }
