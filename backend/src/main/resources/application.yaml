@@ -6,12 +6,23 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 server:
   port: 7000
   servlet:
     context-path: /api
 
+jwt:
+  expiration: 3600000
+  secret: secret
+
+allowedEndpoints:
+  anonymous: /authenticate, /signup
+  user: /hello
+  admin: /hello
 ---
 
 spring:
