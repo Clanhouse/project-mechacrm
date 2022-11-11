@@ -1,7 +1,6 @@
 package io.tribehouse.motomo.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,7 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
-    @Autowired
-    public PasswordEncoder passwordEncoder;
+    public final PasswordEncoder passwordEncoder;
 
     /**
      * Every created account gets User role by default.
@@ -42,11 +40,12 @@ public class UserService {
     }
 
     public boolean checkIfUserExist(String email) {
-        Optional<UserDto> user = userRepository.findByEmail(email);
+        Optional<UserEntity> user = userRepository.findUserEntityByEmail(email);
         return user.isPresent();
     }
 
     public UserDto findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User" + email + "not found"));
+        UserEntity entity = userRepository.findUserEntityByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User" + email + "not found"));
+        return UserMapper.INSTANCE.userEntityToUserDto(entity);
     }
 }

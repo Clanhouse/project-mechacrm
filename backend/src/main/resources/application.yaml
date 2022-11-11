@@ -6,6 +6,9 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 server:
   port: 7000
@@ -20,11 +23,6 @@ allowedEndpoints:
   anonymous: /authenticate, /signup
   user: /hello
   admin: /hello
-
-  spring:
-    jpa:
-      hibernate:
-        ddl-auto: create
 ---
 
 spring:

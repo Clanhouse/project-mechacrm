@@ -2,13 +2,11 @@ package io.tribehouse.motomo.security;
 
 import io.tribehouse.motomo.user.UserRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,8 +22,6 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtTokenService jwtTokenService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/authenticate")
     public AuthenticationResponse authenticate(@RequestBody @Valid final UserRequest userRequest) {
