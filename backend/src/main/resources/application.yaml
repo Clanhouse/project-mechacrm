@@ -19,6 +19,10 @@ jwt:
   expiration: 3600000
   secret: secret
 
+springdoc:
+  swagger-ui:
+    path: /documentation
+
 allowedEndpoints:
   anonymous: /authenticate, /signup
   user: /hello
